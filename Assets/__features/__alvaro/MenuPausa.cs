@@ -6,6 +6,7 @@ public class MenuPausa : MonoBehaviour
 {
 
     public GameObject menuPausa;
+    public GameObject menuOpciones;
     private bool isGamePaused = false;
 
     void Update()
@@ -34,8 +35,9 @@ public class MenuPausa : MonoBehaviour
             Time.timeScale = 1;
 
             menuPausa.SetActive(false);
+            menuOpciones.SetActive(false);
 
-            
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
