@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/__features/__fuseriv/Strikes/TestStrikes.unity
+    guid: b9a2cab95e3cea8458e0a264177e2526
+  - enabled: 1
+    path: Assets/__features/__fuseriv/Strikes/LobbyTemporal.unity
+    guid: d3c3527153652c94ca6f32286179be58
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
