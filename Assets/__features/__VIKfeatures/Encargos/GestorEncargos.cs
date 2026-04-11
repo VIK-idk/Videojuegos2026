@@ -21,9 +21,11 @@ public class GestorEncargos : MonoBehaviour
     [SerializeField] private int encargosCompletados = 0;
 
     private bool encargoTerminado = false;
+    private GameManager gm;
 
     void Start()
     {
+        gm = FindObjectOfType<GameManager>();
         if (SceneManager.GetActiveScene().name != nombreEscenaActiva)
         {
             gameObject.SetActive(false);
@@ -32,6 +34,7 @@ public class GestorEncargos : MonoBehaviour
 
         if (ui != null)
             ui.OcultarInstantaneo();
+            
     }
 
     void Update()
@@ -139,6 +142,8 @@ public class GestorEncargos : MonoBehaviour
         encargoActual.enProceso = false;
         encargoActual.completado = true;
         encargosCompletados++;
+        if (gm != null)
+    gm.CompletarEncargo();
 
         if (uiEstado != null)
             uiEstado.MostrarCompletado();

@@ -90,7 +90,8 @@ private void OnTriggerEnter(Collider other)
     if (other.CompareTag("Amarillo"))
     {
         other.tag = "Untagged";
-        gm.SumarPuntos(15);
+        if (gm != null)
+    gm.SumarPez();
 
         if (gestor != null)
         {

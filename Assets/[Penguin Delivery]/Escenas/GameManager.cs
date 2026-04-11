@@ -1,24 +1,34 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    
-    public TextMeshProUGUI textoPuntos; 
+    [SerializeField] private TextMeshProUGUI textoPuntos;
+
+    [SerializeField] private int puntosPorPez = 5;
+    [SerializeField] private int puntosPorEncargo = 100;
+
+
     private int puntos = 0;
 
     void Start()
     {
-        ActualizarInterfaz();
+        ActualizarUI();
     }
 
-    public void SumarPuntos(int cantidad)
+    public void SumarPez()
     {
-        puntos += cantidad;
-        ActualizarInterfaz();
+        puntos += puntosPorPez;
+        ActualizarUI();
     }
 
-    void ActualizarInterfaz()
+    public void CompletarEncargo()
+    {
+        puntos += puntosPorEncargo;
+        ActualizarUI();
+    }
+
+    void ActualizarUI()
     {
         textoPuntos.text = "Puntos: " + puntos;
     }
