@@ -17,12 +17,13 @@ public class PecesTestManager : MonoBehaviour
     // PUNTOS
     // ====================
     [Header("Puntos")]
+    [SerializeField] private bool sumarPuntosAlRecoger = true;
     [SerializeField] private int puntosPorPez = 5;
 
     // ====================
-    // COLORES CORRECTOS
+    // COLORES ACTIVOS
     // ====================
-    [Header("Colores correctos del test")]
+    [Header("Colores activos")]
     [SerializeField] private bool rosaActivo = true;
     [SerializeField] private bool amarilloActivo = false;
     [SerializeField] private bool verdeActivo = false;
@@ -32,6 +33,7 @@ public class PecesTestManager : MonoBehaviour
     // ====================
     private Pez[] todosLosPeces;
     private GameManager gm;
+    private GestorEncargosTest gestorEncargos;
 
     private bool ultimoRosaActivo;
     private bool ultimoAmarilloActivo;
@@ -43,6 +45,8 @@ public class PecesTestManager : MonoBehaviour
     private void Start()
     {
         gm = FindFirstObjectByType<GameManager>();
+        gestorEncargos = FindFirstObjectByType<GestorEncargosTest>();
+
         BuscarPeces();
         ActivarPecesAleatorios();
 
@@ -69,6 +73,39 @@ public class PecesTestManager : MonoBehaviour
     }
 
     // ====================
+    // REINICIAR
+    // ====================
+    public void ReiniciarTodosLosPeces()
+    {
+        if (todosLosPeces == null || todosLosPeces.Length == 0)
+            return;
+
+        for (int i = 0; i < todosLosPeces.Length; i++)
+        {
+            if (todosLosPeces[i] != null)
+            {
+                todosLosPeces[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    // ====================
+    // SET COLORES
+    // ====================
+    public void SetColoresActivos(bool rosa, bool amarillo, bool verde)
+    {
+        rosaActivo = rosa;
+        amarilloActivo = amarillo;
+        verdeActivo = verde;
+
+        ultimoRosaActivo = rosaActivo;
+        ultimoAmarilloActivo = amarilloActivo;
+        ultimoVerdeActivo = verdeActivo;
+
+        ActualizarPecesActivos();
+    }
+
+    // ====================
     // BUSCAR
     // ====================
     private void BuscarPeces()
@@ -90,7 +127,7 @@ public class PecesTestManager : MonoBehaviour
     }
 
     // ====================
-    // ACTIVAR INICIAL
+    // ACTIVAR
     // ====================
     public void ActivarPecesAleatorios()
     {
@@ -128,7 +165,7 @@ public class PecesTestManager : MonoBehaviour
     }
 
     // ====================
-    // ACTUALIZAR ACTIVOS
+    // ACTUALIZAR
     // ====================
     private void ActualizarPecesActivos()
     {
@@ -155,23 +192,28 @@ public class PecesTestManager : MonoBehaviour
         if (pezRecogido == null)
             return;
 
-        bool esCorrecto = EsColorCorrecto(pezRecogido.GetColorPez());
-
-        if (esCorrecto)
+        if (gestorEncargos == null)
         {
-            Debug.Log("Pez correcto recogido. Color: " + pezRecogido.GetColorPez() + " | ID: " + pezRecogido.GetColorId());
-        }
-        else
-        {
-            Debug.Log("Pez incorrecto recogido. Color: " + pezRecogido.GetColorPez() + " | ID: " + pezRecogido.GetColorId());
+            gestorEncargos = FindFirstObjectByType<GestorEncargosTest>();
         }
 
-        if (gm != null)
+        ColorPez colorRecogido = pezRecogido.GetColorPez();
+
+        pezRecogido.gameObject.SetActive(false);
+
+        if (gestorEncargos != null)
+        {
+            gestorEncargos.RegistrarPezRecogido(colorRecogido);
+        }
+
+        if (sumarPuntosAlRecoger && gm != null)
         {
             gm.SumarPuntos(puntosPorPez);
         }
 
-        pezRecogido.gameObject.SetActive(false);
+        if (gestorEncargos != null && gestorEncargos.EstaEncargoTerminado())
+            return;
+
         ReponerPezEnOtroSitio(pezRecogido);
     }
 
@@ -211,38 +253,18 @@ public class PecesTestManager : MonoBehaviour
         List<ColorPez> coloresDisponibles = new List<ColorPez>();
 
         if (rosaActivo)
-        {
             coloresDisponibles.Add(ColorPez.Rosa);
-        }
 
         if (amarilloActivo)
-        {
             coloresDisponibles.Add(ColorPez.Amarillo);
-        }
 
         if (verdeActivo)
-        {
             coloresDisponibles.Add(ColorPez.Verde);
-        }
 
         if (coloresDisponibles.Count == 0)
-        {
             return ColorPez.Rosa;
-        }
 
         int indice = Random.Range(0, coloresDisponibles.Count);
         return coloresDisponibles[indice];
-    }
-
-    // ====================
-    // COLOR CORRECTO
-    // ====================
-    public bool EsColorCorrecto(ColorPez color)
-    {
-        if (color == ColorPez.Rosa && rosaActivo) return true;
-        if (color == ColorPez.Amarillo && amarilloActivo) return true;
-        if (color == ColorPez.Verde && verdeActivo) return true;
-
-        return false;
     }
 }
