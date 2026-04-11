@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 5380027973922860330}
   - component: {fileID: 8109545288571724069}
   - component: {fileID: 4682517723479998279}
+  - component: {fileID: 5410062417430190281}
   m_Layer: 0
   m_Name: Jugador
   m_TagString: Player
@@ -237,6 +238,29 @@ MonoBehaviour:
   jumpTrampolin: 40
   multiplicadorCaida: 10
   multiplicadorSaltoBajo: 2
+--- !u!136 &5410062417430190281
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539632212186004729}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1 &6616762937888342208
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +380,6 @@ GameObject:
   - component: {fileID: 1308211444343304868}
   - component: {fileID: 4731636694064030015}
   - component: {fileID: 3202321640593785448}
-  - component: {fileID: 6101579540769522672}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -434,29 +457,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6101579540769522672
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6769039282497240143}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!1 &8122339015828771306
 GameObject:
   m_ObjectHideFlags: 0

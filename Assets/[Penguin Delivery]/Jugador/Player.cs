@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float multiplicadorSaltoBajo = 2f;
 
     private Rigidbody rb;
-    private GameManager gm;
 
     private float inputX;
     private float inputZ;
@@ -18,9 +17,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        gm = FindObjectOfType<GameManager>();
-
-        rb.freezeRotation = true; 
+        rb.freezeRotation = true;
     }
 
     void Update()
@@ -37,13 +34,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
         Vector3 velocidad = direccion * speed;
         velocidad.y = rb.linearVelocity.y;
 
         rb.linearVelocity = velocidad;
-
 
         if (rb.linearVelocity.y < 0)
         {
@@ -66,15 +61,6 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Orbe"))
-        {
-            gm.SumarPuntos(15);
-            Destroy(other.gameObject);
         }
     }
 }
