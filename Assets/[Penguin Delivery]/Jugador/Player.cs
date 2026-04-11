@@ -37,13 +37,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
         Vector3 velocidad = direccion * speed;
         velocidad.y = rb.linearVelocity.y;
 
         rb.linearVelocity = velocidad;
-
 
         if (rb.linearVelocity.y < 0)
         {
