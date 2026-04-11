@@ -1,31 +1,34 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GestorEncargos : MonoBehaviour
 {
-    [Header("Encargo actual")]
+    [SerializeField] private string nombreEscenaActiva;
+
+    [SerializeField] private UIEncargo ui;
+    [SerializeField] private UiEstadoEncargo uiEstado;
+
     [SerializeField] private Encargo encargoActual;
 
-    [Header("Progreso")]
     [SerializeField] private int pecesAmarillosActual = 0;
     [SerializeField] private int pecesRosasActual = 0;
     [SerializeField] private int pecesVerdesActual = 0;
 
-    [Header("Tiempo")]
     [SerializeField] private float tiempoRestante;
 
-    [Header("Control")]
     [SerializeField] private bool sistemaIniciado = false;
     [SerializeField] private int encargosCompletados = 0;
 
-    private UiEstadoEncargo uiEstado;
-    private UIEncargo ui;
+    private bool encargoTerminado = false;
 
     void Start()
     {
-        ui = FindObjectOfType<UIEncargo>();
-        uiEstado = FindObjectOfType<UiEstadoEncargo>();
-
+        if (SceneManager.GetActiveScene().name != nombreEscenaActiva)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
 
         if (ui != null)
             ui.OcultarInstantaneo();
@@ -35,6 +38,7 @@ public class GestorEncargos : MonoBehaviour
     {
         if (!sistemaIniciado) return;
         if (encargoActual == null) return;
+        if (encargoTerminado) return;
 
         tiempoRestante -= Time.deltaTime;
 
@@ -46,14 +50,20 @@ public class GestorEncargos : MonoBehaviour
 
         ComprobarEncargo();
 
-        ui.ActualizarUI(encargoActual, tiempoRestante,
-            pecesAmarillosActual, pecesRosasActual, pecesVerdesActual);
+        if (ui != null)
+        {
+            ui.ActualizarUI(encargoActual, tiempoRestante,
+                pecesAmarillosActual,
+                pecesRosasActual,
+                pecesVerdesActual);
+        }
     }
 
-    // 🚀 Se llama cuando el jugador se mueve por primera vez
     public void IniciarSistema()
     {
         if (sistemaIniciado) return;
+
+        if (SceneManager.GetActiveScene().name != nombreEscenaActiva) return;
 
         sistemaIniciado = true;
         IniciarEncargo();
@@ -73,7 +83,10 @@ public class GestorEncargos : MonoBehaviour
         pecesRosasActual = 0;
         pecesVerdesActual = 0;
 
-        ui.Mostrar();
+        encargoTerminado = false;
+
+        if (ui != null)
+            ui.Mostrar();
     }
 
     Encargo GenerarEncargoRandom()
@@ -98,6 +111,7 @@ public class GestorEncargos : MonoBehaviour
 
     public void SumarPez(string tipo)
     {
+        if (encargoActual == null) return;
         if (!encargoActual.enProceso) return;
 
         if (tipo == "Amarillo") pecesAmarillosActual++;
@@ -117,24 +131,33 @@ public class GestorEncargos : MonoBehaviour
 
     void CompletarEncargo()
     {
+        if (encargoActual == null) return;
+        if (encargoTerminado) return;
+
+        encargoTerminado = true;
+
         encargoActual.enProceso = false;
         encargoActual.completado = true;
         encargosCompletados++;
-        uiEstado.MostrarCompletado();
 
-        ui.ActualizarUI(encargoActual, tiempoRestante,
-            pecesAmarillosActual, pecesRosasActual, pecesVerdesActual);
+        if (uiEstado != null)
+            uiEstado.MostrarCompletado();
 
         StartCoroutine(EsperarYSiguiente());
     }
 
     void FallarEncargo()
     {
+        if (encargoActual == null) return;
+        if (encargoTerminado) return;
+
+        encargoTerminado = true;
+
         encargoActual.enProceso = false;
         encargoActual.fallado = true;
-        uiEstado.MostrarFallado();
-        ui.ActualizarUI(encargoActual, tiempoRestante,
-            pecesAmarillosActual, pecesRosasActual, pecesVerdesActual);
+
+        if (uiEstado != null)
+            uiEstado.MostrarFallado();
 
         StartCoroutine(EsperarYSiguiente());
     }
@@ -143,7 +166,8 @@ public class GestorEncargos : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        ui.Ocultar();
+        if (ui != null)
+            ui.Ocultar();
 
         yield return new WaitForSeconds(0.5f);
 

@@ -31,17 +31,24 @@ public class Player : MonoBehaviour
 
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
+                if (!haEmpezado && (
+            Input.GetKeyDown(KeyCode.W) ||
+            Input.GetKeyDown(KeyCode.A) ||
+            Input.GetKeyDown(KeyCode.S) ||
+            Input.GetKeyDown(KeyCode.D)))
+        {
+            if (gestor != null)
+                gestor.IniciarSistema();
+
+            haEmpezado = true;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && estaEnSuelo)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
         }
-            if (!haEmpezado && (inputX != 0 || inputZ != 0))
-        {
-                gestor.IniciarSistema();
-                haEmpezado = true;
-        }
+
     }
 
     void FixedUpdate()
@@ -80,8 +87,9 @@ public class Player : MonoBehaviour
 
 private void OnTriggerEnter(Collider other)
 {
-    if (other.CompareTag("Orbe"))
+    if (other.CompareTag("Amarillo"))
     {
+        other.tag = "Untagged";
         gm.SumarPuntos(15);
 
         if (gestor != null)
