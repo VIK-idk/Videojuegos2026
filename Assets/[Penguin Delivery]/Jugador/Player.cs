@@ -1,4 +1,5 @@
 using UnityEngine;
+using Ablabla.Habilidades;
 
 public class Player : MonoBehaviour
 {
@@ -9,8 +10,15 @@ public class Player : MonoBehaviour
     [SerializeField] private float multiplicadorCaida = 2.5f;
     [SerializeField] private float multiplicadorSaltoBajo = 2f;
 
+    [Header("Recoleccion")]
+    [SerializeField] private SphereCollider zonaRecoleccion;
+    [SerializeField] private float radioRecoleccionNormal = 1.5f;
+    [SerializeField] private float radioRecoleccionIman = 4f;
+    [SerializeField] private int puntosPorOrbe = 15;
+
     private Rigidbody rb;
     private GameManager gm;
+    private Jugador_Habilidades habilidades;
 
     private float inputX;
     private float inputZ;
@@ -18,15 +26,24 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        gm = FindObjectOfType<GameManager>();
+        gm = FindFirstObjectByType<GameManager>();
+        habilidades = GetComponent<Jugador_Habilidades>();
 
-        rb.freezeRotation = true; 
+        rb.freezeRotation = true;
+
+        if (zonaRecoleccion != null)
+        {
+            zonaRecoleccion.isTrigger = true;
+            zonaRecoleccion.radius = radioRecoleccionNormal;
+        }
     }
 
     void Update()
     {
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
+
+        ActualizarRadioRecoleccion();
 
         if (Input.GetKeyDown(KeyCode.Space) && estaEnSuelo)
         {
@@ -37,13 +54,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
         Vector3 velocidad = direccion * speed;
         velocidad.y = rb.linearVelocity.y;
 
         rb.linearVelocity = velocidad;
-
 
         if (rb.linearVelocity.y < 0)
         {
@@ -52,6 +67,23 @@ public class Player : MonoBehaviour
         else if (rb.linearVelocity.y > 0 && !Input.GetKey(KeyCode.Space))
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (multiplicadorSaltoBajo - 1) * Time.fixedDeltaTime;
+        }
+    }
+
+    private void ActualizarRadioRecoleccion()
+    {
+        if (zonaRecoleccion == null)
+        {
+            return;
+        }
+
+        if (habilidades != null && habilidades.EstaActivaLaHabilidad(Tipo_Habilidades.Iman))
+        {
+            zonaRecoleccion.radius = radioRecoleccionIman;
+        }
+        else
+        {
+            zonaRecoleccion.radius = radioRecoleccionNormal;
         }
     }
 
@@ -73,7 +105,16 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Orbe"))
         {
-            gm.SumarPuntos(15);
+            int puntosGanados = puntosPorOrbe;
+
+            if (habilidades != null && habilidades.EstaActivaLaHabilidad(Tipo_Habilidades.DoblePez))
+            {
+                puntosGanados *= 2;
+            }
+
+            Debug.Log("Orbe recogido. Puntos ganados: " + puntosGanados);
+
+            gm.SumarPuntos(puntosGanados);
             Destroy(other.gameObject);
         }
     }

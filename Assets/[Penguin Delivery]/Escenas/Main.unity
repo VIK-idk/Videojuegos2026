@@ -648,6 +648,10 @@ PrefabInstance:
       propertyPath: jumpTrampolin
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 4682517723479998279, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: zonaRecoleccion
+      value: 
+      objectReference: {fileID: 910680665}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.x
       value: -122.06163
@@ -700,7 +704,16 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1539632212186004729, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 910680661}
+    - targetCorrespondingSourceObject: {fileID: 1539632212186004729, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 910680665}
+    - targetCorrespondingSourceObject: {fileID: 1539632212186004729, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 910680666}
   m_SourcePrefab: {fileID: 100100000, guid: 001f050e03d874349a1a1740ad595858, type: 3}
 --- !u!1 &823773491
 GameObject:
@@ -864,6 +877,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &910680660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1539632212186004729, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+  m_PrefabInstance: {fileID: 793788623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &910680661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910680660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77b8981095e43d4d8a02aab1af4db1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  habilidades:
+  - tipoHabilidad: 1
+    teclaActivacion: 49
+    duracion: 5
+    cooldown: 10
+    estaDesbloqueada: 1
+    soloUnUsoPorPartida: 0
+    estaActiva: 0
+    temporizadorActivo: 0
+    temporizadorCooldown: 0
+    yaUsadaEnEstaPartida: 0
+  - tipoHabilidad: 2
+    teclaActivacion: 50
+    duracion: 5
+    cooldown: 10
+    estaDesbloqueada: 1
+    soloUnUsoPorPartida: 0
+    estaActiva: 0
+    temporizadorActivo: 0
+    temporizadorCooldown: 0
+    yaUsadaEnEstaPartida: 0
+  - tipoHabilidad: 3
+    teclaActivacion: 51
+    duracion: 0.1
+    cooldown: 0
+    estaDesbloqueada: 1
+    soloUnUsoPorPartida: 1
+    estaActiva: 0
+    temporizadorActivo: 0
+    temporizadorCooldown: 0
+    yaUsadaEnEstaPartida: 0
+  gestorStrikes: {fileID: 910680666}
+--- !u!135 &910680665
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910680660}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &910680666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910680660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7308396636786d478eae459edc78de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strikesActuales: 1
+  strikesMaximos: 3
 --- !u!1 &921514069
 GameObject:
   m_ObjectHideFlags: 0
