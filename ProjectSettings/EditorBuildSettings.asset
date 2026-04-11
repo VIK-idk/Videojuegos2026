@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/__features/__VIKfeatures/lobby.unity
+    guid: efe51eeeb7a1f95449702e963ad519f2
+  - enabled: 1
+    path: Assets/__features/__VIKfeatures/PruebaMain.unity
+    guid: d73d4a9454f037a4ab264384c3c2dee1
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

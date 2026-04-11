@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
     [SerializeField] private float speed = 10f;
     [SerializeField] private float jumpForce = 20f;
     [SerializeField] private bool estaEnSuelo = true;
     [SerializeField] private float jumpTrampolin = 40f;
     [SerializeField] private float multiplicadorCaida = 2.5f;
     [SerializeField] private float multiplicadorSaltoBajo = 2f;
-
+    private GestorEncargos gestor;
+    private bool haEmpezado = false;
     private Rigidbody rb;
     private GameManager gm;
 
@@ -17,6 +19,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        gestor = FindObjectOfType<GestorEncargos>();
         rb = GetComponent<Rigidbody>();
         gm = FindObjectOfType<GameManager>();
 
@@ -25,6 +28,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
 
@@ -32,6 +36,11 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
+        }
+            if (!haEmpezado && (inputX != 0 || inputZ != 0))
+        {
+                gestor.IniciarSistema();
+                haEmpezado = true;
         }
     }
 
@@ -69,12 +78,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+private void OnTriggerEnter(Collider other)
+{
+    if (other.CompareTag("Orbe"))
     {
-        if (other.CompareTag("Orbe"))
+        gm.SumarPuntos(15);
+
+        if (gestor != null)
         {
-            gm.SumarPuntos(15);
-            Destroy(other.gameObject);
+            gestor.SumarPez("Amarillo"); 
         }
+
+        Destroy(other.gameObject);
     }
+}
 }
