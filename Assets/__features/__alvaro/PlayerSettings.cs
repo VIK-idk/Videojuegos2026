@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerSettings : MonoBehaviour
@@ -38,5 +38,77 @@ public class PlayerSettings : MonoBehaviour
     {
         PlayerPrefs.SetInt("PantallaCompleta", valor ? 1 : 0);
         PlayerPrefs.Save(); // ?? Fuerza el guardado inmediato
+    }
+}*/
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Audio;
+
+public class PlayerSettings : MonoBehaviour
+{
+    [SerializeField] private Toggle pantallaCompleta;
+    [SerializeField] private Slider volumen;
+    [SerializeField] private Dropdown calidadDrop;
+    [SerializeField] private AudioMixer audioMixer;
+
+    void Start()
+    {
+        CargarYAplicarSettings();
+    }
+
+    private void CargarYAplicarSettings()
+    {
+        bool pantallaCompletaGuardada = PlayerPrefs.GetInt("PantallaCompleta", Screen.fullScreen ? 1 : 0) == 1;
+        float volumenGuardado = PlayerPrefs.GetFloat("Volumen", 0f);
+        int calidadGuardada = PlayerPrefs.GetInt("Calidad", QualitySettings.GetQualityLevel());
+
+        Screen.fullScreen = pantallaCompletaGuardada;
+        QualitySettings.SetQualityLevel(calidadGuardada, true);
+
+        if (audioMixer != null)
+        {
+            audioMixer.SetFloat("Volumen", volumenGuardado);
+        }
+
+        if (pantallaCompleta != null)
+        {
+            pantallaCompleta.SetIsOnWithoutNotify(pantallaCompletaGuardada);
+        }
+
+        if (volumen != null)
+        {
+            volumen.SetValueWithoutNotify(volumenGuardado);
+        }
+
+        if (calidadDrop != null)
+        {
+            calidadDrop.SetValueWithoutNotify(calidadGuardada);
+            calidadDrop.RefreshShownValue();
+        }
+    }
+
+    public void SetPantallaCompletaPref(bool valor)
+    {
+        Screen.fullScreen = valor;
+        PlayerPrefs.SetInt("PantallaCompleta", valor ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void SetVolumePref(float valor)
+    {
+        if (audioMixer != null)
+        {
+            audioMixer.SetFloat("Volumen", valor);
+        }
+
+        PlayerPrefs.SetFloat("Volumen", valor);
+        PlayerPrefs.Save();
+    }
+
+    public void SetCalidadPref(int valor)
+    {
+        QualitySettings.SetQualityLevel(valor, true);
+        PlayerPrefs.SetInt("Calidad", valor);
+        PlayerPrefs.Save();
     }
 }

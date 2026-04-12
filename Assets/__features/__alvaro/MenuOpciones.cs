@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 public class MenuOpciones : MonoBehaviour
-{
+{/*
     [SerializeField] private AudioMixer audioMixer;
     public void PantallaCompleta(bool pantallaCompleta) {
         Screen.fullScreen = pantallaCompleta;
@@ -17,4 +17,5 @@ public class MenuOpciones : MonoBehaviour
     {
         QualitySettings.SetQualityLevel(index);
     }
+    */
 }

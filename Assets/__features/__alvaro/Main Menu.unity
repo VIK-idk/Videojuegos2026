@@ -615,19 +615,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 941769183}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
-        m_MethodName: setCalidadPref
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 941769182}
-        m_TargetAssemblyTypeName: MenuOpciones, Assembly-CSharp
-        m_MethodName: CambiarCalidad
+        m_MethodName: SetCalidadPref
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1747,7 +1735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ee98ff5f867f14d9e3db33a96a6634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
 --- !u!114 &941769183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1763,6 +1750,7 @@ MonoBehaviour:
   pantallaCompleta: {fileID: 1413994512}
   volumen: {fileID: 1217675576}
   calidadDrop: {fileID: 180753822}
+  audioMixer: {fileID: 24100000, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
 --- !u!1 &962264809
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,22 +2267,10 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 941769182}
-        m_TargetAssemblyTypeName: MenuOpciones, Assembly-CSharp
-        m_MethodName: CambiarVolumen
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 941769183}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetVolumePref
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2687,22 +2663,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 941769182}
-        m_TargetAssemblyTypeName: MenuOpciones, Assembly-CSharp
-        m_MethodName: PantallaCompleta
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 941769183}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetPantallaCompletaPref
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
