@@ -28,6 +28,8 @@ public class PanelHabilidadUI : MonoBehaviour
 
         comprado = true;
 
+        Debug.Log("gracais por el pene guapeton.");
+
         if (iconoHabilidad != null)
         {
             iconoHabilidad.color = colorComprado;
