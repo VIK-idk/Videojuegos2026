@@ -29,7 +29,7 @@ public class UIEstadoEncargoLegacy : MonoBehaviour
     public void MostrarRecolecta(float duracion)
     {
         StopAllCoroutines();
-        StartCoroutine(MostrarMensaje("¡Recolecta!", Color.white, duracion));
+        StartCoroutine(MostrarMensaje("¡Salta sobre las morsas para recolectar los peces!", Color.white, duracion));
     }
 
     // ====================

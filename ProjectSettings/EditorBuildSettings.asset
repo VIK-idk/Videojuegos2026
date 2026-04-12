@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/__features/__fuseriv/EncargosTest/TestEncargos.unity
-    guid: b27eb0eab0b445244b319d3274df36f7
-  - enabled: 1
     path: Assets/__features/__fuseriv/LobbyTest/Lobby.unity
     guid: efe51eeeb7a1f95449702e963ad519f2
+  - enabled: 1
+    path: Assets/__features/__fuseriv/EncargosTest/TestEncargos.unity
+    guid: b27eb0eab0b445244b319d3274df36f7
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

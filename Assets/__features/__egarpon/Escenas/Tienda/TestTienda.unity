@@ -2007,7 +2007,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1843608481}
-  - component: {fileID: 1843608483}
   - component: {fileID: 1843608484}
   m_Layer: 5
   m_Name: Panel
@@ -2040,32 +2039,6 @@ RectTransform:
   m_AnchoredPosition: {x: -19.4, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1843608483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843608480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aab4bab38b2f434a9ed25230ebd5e7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  items: []
-  textoNombrePanel: {fileID: 0}
-  textoDescripcionPanel: {fileID: 0}
-  textoPrecioPanel: {fileID: 0}
-  iconoPanel: {fileID: 0}
-  botonComprar: {fileID: 0}
-  itemSeleccionado:
-    nombre: 
-    descripcion: 
-    precio: 
-    icono: {fileID: 0}
-    iconoLista: {fileID: 0}
-    textoPrecioLista: {fileID: 0}
-    comprado: 0
 --- !u!114 &1843608484
 MonoBehaviour:
   m_ObjectHideFlags: 0
