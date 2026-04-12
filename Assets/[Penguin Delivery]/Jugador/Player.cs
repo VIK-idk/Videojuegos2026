@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.Space) && estaEnSuelo)
+        if (Input.GetButtonDown("Saltar") && estaEnSuelo)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (multiplicadorCaida - 1) * Time.fixedDeltaTime;
         }
-        else if (rb.linearVelocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        else if (rb.linearVelocity.y > 0 && !Input.GetButton("Saltar"))
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (multiplicadorSaltoBajo - 1) * Time.fixedDeltaTime;
         }
