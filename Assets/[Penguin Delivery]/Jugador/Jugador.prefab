@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e20bb227c6b094895f155fea12009a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensibilidad: 300
+  sensibilidad: 550
   playerBody: {fileID: 5380027973922860330}
 --- !u!1 &1061050649389749449
 GameObject:
@@ -211,7 +211,7 @@ MonoBehaviour:
   speed: 15
   jumpForce: 20
   estaEnSuelo: 1
-  jumpTrampolin: 40
+  jumpTrampolin: 60
   multiplicadorCaida: 10
   multiplicadorSaltoBajo: 2
 --- !u!136 &5410062417430190281

@@ -10782,7 +10782,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 80
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -10809,7 +10809,7 @@ Transform:
   m_GameObject: {fileID: 656180028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: -0.0000000016210667, w: 0}
-  m_LocalPosition: {x: 7.5, y: 2.5, z: 71.4}
+  m_LocalPosition: {x: 7.5, y: 2.5, z: 72.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20375,14 +20375,14 @@ MonoBehaviour:
   ShoulderOffset: {x: 0, y: 0.4, z: 0}
   VerticalArmLength: 0.6
   CameraSide: 1
-  CameraDistance: 4
+  CameraDistance: 5
   AvoidObstacles:
     Enabled: 1
     CollisionFilter:
       serializedVersion: 2
       m_Bits: 200
-    IgnoreTag: 
-    CameraRadius: 0.9
+    IgnoreTag: Player
+    CameraRadius: 0.2
     DampingIntoCollision: 0.2
     DampingFromCollision: 0.5
 --- !u!114 &1119757639
@@ -20409,7 +20409,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 80
+    FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -20437,7 +20437,7 @@ Transform:
   m_GameObject: {fileID: 1119757636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: -0.0000000016210667, w: 0}
-  m_LocalPosition: {x: 7.5, y: 2.5, z: 71.4}
+  m_LocalPosition: {x: 7.5, y: 2.5, z: 72.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
