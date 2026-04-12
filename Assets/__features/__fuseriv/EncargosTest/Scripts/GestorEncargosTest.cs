@@ -25,6 +25,8 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private bool iniciarAutomaticamente = true;
     [SerializeField] private int puntosPorEncargo = 100;
     [SerializeField] private float esperaEntreEncargos = 2f;
+    [SerializeField] private float esperaPrimerEncargo = 3f;
+    [SerializeField] private float tiempoMensajeRecolecta = 3f;
 
     // ====================
     // ESTADO
@@ -41,14 +43,36 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private bool sistemaIniciado = false;
 
     private bool encargoTerminado = false;
+    private bool esperandoPrimerEncargo = false;
 
     // ====================
     // INICIO
     // ====================
     private void Start()
     {
+        encargoActual = null;
+        tiempoRestante = 0f;
+
+        pecesRosasActuales = 0;
+        pecesAmarillosActuales = 0;
+        pecesVerdesActuales = 0;
+
+        sistemaIniciado = false;
+        encargoTerminado = false;
+        esperandoPrimerEncargo = false;
+
         if (uiEncargo != null)
             uiEncargo.OcultarInstantaneo();
+
+        if (uiEstado != null)
+        {
+            // No hace falta hacer nada aquí si tu script ya oculta el texto en Start
+        }
+
+        if (pecesManager != null)
+        {
+            pecesManager.ReiniciarTodosLosPeces();
+        }
 
         if (iniciarAutomaticamente)
         {
@@ -62,6 +86,9 @@ public class GestorEncargosTest : MonoBehaviour
     private void Update()
     {
         if (!sistemaIniciado)
+            return;
+
+        if (esperandoPrimerEncargo)
             return;
 
         if (encargoActual == null)
@@ -99,6 +126,24 @@ public class GestorEncargosTest : MonoBehaviour
             return;
 
         sistemaIniciado = true;
+        esperandoPrimerEncargo = true;
+
+        StartCoroutine(EsperarPrimerEncargo());
+    }
+
+    // ====================
+    // PRIMER ENCARGO
+    // ====================
+    private IEnumerator EsperarPrimerEncargo()
+    {
+        if (uiEstado != null)
+        {
+            uiEstado.MostrarRecolecta(tiempoMensajeRecolecta);
+        }
+
+        yield return new WaitForSeconds(esperaPrimerEncargo);
+
+        esperandoPrimerEncargo = false;
         IniciarNuevoEncargo();
     }
 
@@ -181,6 +226,9 @@ public class GestorEncargosTest : MonoBehaviour
     public void RegistrarPezRecogido(ColorPez color)
     {
         if (!sistemaIniciado)
+            return;
+
+        if (esperandoPrimerEncargo)
             return;
 
         if (encargoActual == null)

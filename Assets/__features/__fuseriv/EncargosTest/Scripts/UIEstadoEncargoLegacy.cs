@@ -24,12 +24,21 @@ public class UIEstadoEncargoLegacy : MonoBehaviour
     }
 
     // ====================
+    // RECOLECTA
+    // ====================
+    public void MostrarRecolecta(float duracion)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MostrarMensaje("¡Recolecta!", Color.white, duracion));
+    }
+
+    // ====================
     // COMPLETADO
     // ====================
     public void MostrarCompletado()
     {
         StopAllCoroutines();
-        StartCoroutine(MostrarMensaje("ENCARGO COMPLETADO", Color.green));
+        StartCoroutine(MostrarMensaje("ENCARGO COMPLETADO", Color.green, 2f));
     }
 
     // ====================
@@ -38,13 +47,13 @@ public class UIEstadoEncargoLegacy : MonoBehaviour
     public void MostrarFallado()
     {
         StopAllCoroutines();
-        StartCoroutine(MostrarMensaje("ENCARGO FALLIDO", Color.red));
+        StartCoroutine(MostrarMensaje("ENCARGO FALLIDO", Color.red, 2f));
     }
 
     // ====================
     // MENSAJE
     // ====================
-    private IEnumerator MostrarMensaje(string mensaje, Color color)
+    private IEnumerator MostrarMensaje(string mensaje, Color color, float duracion)
     {
         if (textoEstado == null)
             yield break;
@@ -53,7 +62,7 @@ public class UIEstadoEncargoLegacy : MonoBehaviour
         textoEstado.color = color;
         textoEstado.enabled = true;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(duracion);
 
         textoEstado.enabled = false;
     }

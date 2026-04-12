@@ -185,10 +185,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 754754247}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -205,6 +213,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 754754247}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -572,7 +584,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 29535628}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rocas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,10 +674,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 336189825}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -682,6 +702,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 336189825}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -751,10 +775,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1774054969}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -771,6 +803,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1774054969}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -845,10 +881,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1892847917}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -865,6 +909,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1892847917}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1455,10 +1503,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1965728628}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1475,6 +1531,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1965728628}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1520,6 +1580,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1973,10 +2037,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1519506589}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1993,6 +2065,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1519506589}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2175,6 +2251,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2410,6 +2490,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -3031,10 +3115,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1647884033}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3051,6 +3143,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1647884033}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3285,10 +3381,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1457844091}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3305,6 +3409,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1457844091}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3374,10 +3482,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 802709015}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3394,6 +3510,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 802709015}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3920,10 +4040,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1841510742}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3940,6 +4068,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1841510742}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4211,6 +4343,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4283,7 +4419,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 278280157}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Arboles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4894,10 +5030,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1128416869}
     m_Modifications:
-    - target: {fileID: 3534630705706327606, guid: 00b615b66c8120c4d97d888292cf4917, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 88.78996
-      objectReference: {fileID: 0}
     - target: {fileID: 3534630705706327606, guid: 00b615b66c8120c4d97d888292cf4917, type: 3}
       propertyPath: m_LocalPosition.x
       value: -68
@@ -5555,6 +5687,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6255,6 +6391,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6694,10 +6834,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1959785580}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6714,6 +6862,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1959785580}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -7241,6 +7393,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -7780,6 +7936,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8476,10 +8636,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 696876600}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -8496,6 +8664,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 696876600}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -8532,6 +8704,10 @@ PrefabInstance:
     - target: {fileID: 4490137213916234701, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
       propertyPath: m_Name
       value: Roca_Hielo_Grande
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490137213916234701, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4752984791902860404, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9014,6 +9190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Hielo_Peque (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2310253043960792939, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3554186231371596517, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -9180,10 +9360,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1920402352}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -9200,6 +9388,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1920402352}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -9217,6 +9409,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3534630705706327606, guid: 00b615b66c8120c4d97d888292cf4917, type: 3}
   m_PrefabInstance: {fileID: 1674408711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &623543799 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5997428355813975549, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+  m_PrefabInstance: {fileID: 793788623}
   m_PrefabAsset: {fileID: 0}
 --- !u!43 &624683452
 Mesh:
@@ -10448,6 +10645,176 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1826422f81faad4a9a33058186a3c00, type: 3}
+--- !u!1 &656180028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 656180033}
+  - component: {fileID: 656180032}
+  - component: {fileID: 656180031}
+  - component: {fileID: 656180030}
+  - component: {fileID: 656180029}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &656180029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656180028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowDebugText: 0
+  ShowCameraFrustum: 1
+  IgnoreTimeScale: 0
+  WorldUpOverride: {fileID: 0}
+  ChannelMask: -1
+  UpdateMethod: 2
+  BlendUpdateMethod: 1
+  LensModeOverride:
+    Enabled: 0
+    DefaultMode: 2
+  DefaultBlend:
+    Style: 1
+    Time: 2
+    CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  CustomBlends: {fileID: 0}
+--- !u!114 &656180030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656180028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+--- !u!81 &656180031
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656180028}
+  m_Enabled: 1
+--- !u!20 &656180032
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656180028}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 80
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &656180033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656180028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: -0.0000000016210667, w: 0}
+  m_LocalPosition: {x: 7.5, y: 2.9, z: 71.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &659917224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4178281349545976714, guid: c1826422f81faad4a9a33058186a3c00, type: 3}
@@ -10861,10 +11228,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 459297178}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -10881,6 +11256,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 459297178}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -11431,6 +11810,8 @@ MonoBehaviour:
   iniciarAutomaticamente: 1
   puntosPorEncargo: 100
   esperaEntreEncargos: 2
+  esperaPrimerEncargo: 2
+  tiempoMensajeRecolecta: 2
   encargoActual:
     pecesRosas: 0
     pecesAmarillos: 0
@@ -11572,10 +11953,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 651480065}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -11592,6 +11981,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 651480065}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -12138,6 +12531,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Grande (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
       value: -62.468636
@@ -12367,6 +12764,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -12851,6 +13252,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -13125,10 +13530,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 66294578}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -13145,6 +13558,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 66294578}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -13982,7 +14399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -40.9
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13990,23 +14407,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -27.48
+      value: 67.4
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14014,7 +14431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -14090,10 +14507,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 987309201}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -14110,6 +14535,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 987309201}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -14763,7 +15192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 821454827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rocas_Hielo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15074,6 +15503,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -15810,6 +16243,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -16382,6 +16819,114 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 221259708023794166, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
   m_PrefabInstance: {fileID: 1624858589}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &907395883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 907395884}
+  - component: {fileID: 907395887}
+  - component: {fileID: 907395886}
+  - component: {fileID: 907395885}
+  m_Layer: 0
+  m_Name: Capa
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &907395884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907395883}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3.2}
+  m_LocalScale: {x: 35, y: 30, z: 30}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2081107953}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &907395885
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907395883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &907395886
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907395883}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 960790ef7e4cd7440a061465b6762822, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &907395887
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907395883}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &921514069
 GameObject:
   m_ObjectHideFlags: 0
@@ -16696,10 +17241,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 597736571}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -16716,6 +17269,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 597736571}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -16778,7 +17335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxStrikes: 3
-  lobbySceneName: LobbyTemporal
+  lobbySceneName: Lobby
   strikeImages:
   - {fileID: 1660954063}
   - {fileID: 2102489229}
@@ -16873,6 +17430,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -17448,6 +18009,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -18291,10 +18856,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 742979048}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -18311,6 +18884,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 742979048}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -18356,6 +18933,7 @@ Transform:
   - {fileID: 2081107953}
   - {fileID: 661948989}
   - {fileID: 1128416869}
+  - {fileID: 2090459587}
   - {fileID: 1412200390}
   - {fileID: 1465873807}
   m_Father: {fileID: 0}
@@ -18911,10 +19489,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 648203304}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -18931,6 +19517,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 648203304}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -18967,6 +19557,10 @@ PrefabInstance:
     - target: {fileID: 4490137213916234701, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
       propertyPath: m_Name
       value: Roca_Hielo_Grande (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490137213916234701, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4752984791902860404, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19612,6 +20206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -19749,6 +20347,127 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5572913386234026311, guid: d26af36c0ee1d144887f136aeb5b2e20, type: 3}
   m_PrefabInstance: {fileID: 532454426}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1119757636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1119757640}
+  - component: {fileID: 1119757639}
+  - component: {fileID: 1119757638}
+  - component: {fileID: 1119757637}
+  m_Layer: 0
+  m_Name: Third Person Aim Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1119757637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119757636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2588cc5dedbb75e49a44aada63f7b939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AimCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: 
+  AimDistance: 200
+  NoiseCancellation: 1
+--- !u!114 &1119757638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119757636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 0, y: 0.4, z: 0}
+  VerticalArmLength: 0.6
+  CameraSide: 1
+  CameraDistance: 4
+  AvoidObstacles:
+    Enabled: 1
+    CollisionFilter:
+      serializedVersion: 2
+      m_Bits: 200
+    IgnoreTag: 
+    CameraRadius: 0.9
+    DampingIntoCollision: 0.2
+    DampingFromCollision: 0.5
+--- !u!114 &1119757639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119757636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 0
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 623543799}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 80
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!4 &1119757640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119757636}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: -0.0000000016210667, w: 0}
+  m_LocalPosition: {x: 7.5, y: 2.9, z: 71.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1122499052
 Mesh:
   m_ObjectHideFlags: 0
@@ -20451,10 +21170,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2046148012}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -20471,6 +21198,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2046148012}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -20713,6 +21444,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Grande (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
       value: -49.373215
@@ -20814,10 +21549,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 311562220}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -20834,6 +21577,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 311562220}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -20874,6 +21621,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21160,7 +21911,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: e75c99ad037c0df4cbdddd157459cc74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21438,10 +22189,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 652179869}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -21458,6 +22217,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 652179869}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -21490,6 +22253,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -21832,10 +22599,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2112186955}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -21852,6 +22627,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2112186955}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -21921,10 +22700,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1289451482}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -21941,6 +22728,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1289451482}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -22180,10 +22971,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 561634742}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -22200,6 +22999,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 561634742}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -22274,10 +23077,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2063631897}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -22294,6 +23105,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2063631897}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -23111,6 +23926,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -23577,6 +24396,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Grande (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
       value: -61.25312
@@ -23678,10 +24501,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 419507644}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -23698,6 +24529,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 419507644}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -25386,10 +26221,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 843508748}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -25406,6 +26249,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 843508748}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -26844,6 +27691,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Grande (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28.120365
@@ -27761,6 +28612,116 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1581176448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1581176449}
+  - component: {fileID: 1581176452}
+  - component: {fileID: 1581176451}
+  - component: {fileID: 1581176450}
+  m_Layer: 0
+  m_Name: Colmillo 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1581176449
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581176448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.14, y: -6.81, z: -13.39}
+  m_LocalScale: {x: 1, y: 5, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2081107953}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1581176450
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581176448}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1581176451
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581176448}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1581176452
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581176448}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1585788634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28538,6 +29499,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Grande (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.24659
@@ -28700,10 +29665,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 464951929}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -28720,6 +29693,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 464951929}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -29647,6 +30624,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Hielo_Peque
       objectReference: {fileID: 0}
+    - target: {fileID: 2310253043960792939, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3554186231371596517, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -29776,6 +30757,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -30141,10 +31126,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1887439427}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -30161,6 +31154,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1887439427}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -31017,6 +32014,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Piedra_Peque (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -31571,7 +32572,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: e75c99ad037c0df4cbdddd157459cc74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31642,6 +32643,116 @@ MonoBehaviour:
   m_EditMode: 0
   m_FlipNormals: 0
   isOnGrid: 1
+--- !u!1 &1870616550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1870616551}
+  - component: {fileID: 1870616554}
+  - component: {fileID: 1870616553}
+  - component: {fileID: 1870616552}
+  m_Layer: 0
+  m_Name: Colmillo 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1870616551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870616550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.81, y: -6.81, z: -13.39}
+  m_LocalScale: {x: 1, y: 5, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2081107953}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1870616552
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870616550}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1870616553
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870616550}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1870616554
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870616550}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!43 &1879804163
 Mesh:
   m_ObjectHideFlags: 0
@@ -32156,6 +33267,10 @@ PrefabInstance:
     - target: {fileID: 2310253043960792939, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
       propertyPath: m_Name
       value: Roca_Hielo_Peque (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310253043960792939, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3554186231371596517, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
       propertyPath: m_Mesh
@@ -32789,6 +33904,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34014,7 +35133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1970896873}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rocas_Piedra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34578,6 +35697,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -35495,7 +36618,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: c23cbd1e4fbfc4d48a27c81a458b9150, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -69512,7 +70635,10 @@ Transform:
   m_LocalPosition: {x: 0.3, y: 56.6, z: 95.23289}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 907395884}
+  - {fileID: 1870616551}
+  - {fileID: 1581176449}
   m_Father: {fileID: 1019892072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2081529811
@@ -69596,6 +70722,114 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5572913386234026311, guid: d26af36c0ee1d144887f136aeb5b2e20, type: 3}
   m_PrefabInstance: {fileID: 987173051}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2090459586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2090459587}
+  - component: {fileID: 2090459590}
+  - component: {fileID: 2090459589}
+  - component: {fileID: 2090459588}
+  m_Layer: 3
+  m_Name: Puerta
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2090459587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090459586}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8, y: 6.67, z: 76.42}
+  m_LocalScale: {x: 10, y: 15, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1019892072}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2090459588
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090459586}
+  m_Material: {fileID: 13400000, guid: 0d0b13353d0edbf4ab88c4d91a33700e, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &2090459589
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090459586}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: c369dfa16a33c444294aeb5938346603, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2090459590
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090459586}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &2092486772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69652,10 +70886,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1317138673}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -69672,6 +70914,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1317138673}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -69712,6 +70958,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -70059,10 +71309,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 650658868}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -70079,6 +71337,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 650658868}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -70183,6 +71445,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Hielo_Grande
       objectReference: {fileID: 0}
+    - target: {fileID: 4490137213916234701, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4752984791902860404, guid: 7df7893eba3e63941a6aef767fff5738, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50.5
@@ -70256,6 +71522,10 @@ PrefabInstance:
     - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Peque
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280934299291612712, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4960306770970203943, guid: d2eefe0b6ab36954a83a59e04e1cbeb9, type: 3}
       propertyPath: m_Mesh
@@ -70366,10 +71636,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arbol
       objectReference: {fileID: 0}
+    - target: {fileID: 1684543372422708953, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2943415688890228596, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 438453863}
+    - target: {fileID: 3005325179588420618, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3566401546062611102, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -70386,6 +71664,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 438453863}
+    - target: {fileID: 8205636137487466848, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598636584038626913, guid: 02611ebefffaff746b51e2bf9ab92400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -70426,6 +71708,10 @@ PrefabInstance:
     - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_Name
       value: Roca_Piedra_Grande
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863680904557664114, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9096304598183148401, guid: 6acc2775bad43ce47bbb0ed312753862, type: 3}
       propertyPath: m_LocalPosition.x
@@ -70492,6 +71778,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca_Hielo_Peque
       objectReference: {fileID: 0}
+    - target: {fileID: 2310253043960792939, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3554186231371596517, guid: a9abcecfe9d79c94f9c7da0f12624519, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -70555,6 +71845,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 626608053}
+  - {fileID: 656180033}
+  - {fileID: 1119757640}
   - {fileID: 576623167}
   - {fileID: 1153538174}
   - {fileID: 231873410}
@@ -70576,5 +71868,5 @@ SceneRoots:
   - {fileID: 1041023938}
   - {fileID: 954908537}
   - {fileID: 945138255}
-  - {fileID: 262663317}
   - {fileID: 689245429}
+  - {fileID: 262663317}
