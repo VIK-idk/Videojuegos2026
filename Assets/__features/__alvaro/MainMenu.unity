@@ -2471,7 +2471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968c2ebd9667f664a992eec5f8e39cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nombreEscena: TestEncargos
+  nombreEscena: HabilidadesTest
 --- !u!1 &1413994510
 GameObject:
   m_ObjectHideFlags: 0

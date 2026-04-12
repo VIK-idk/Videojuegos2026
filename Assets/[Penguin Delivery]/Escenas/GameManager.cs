@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
         ActualizarUI();
     }
 
+    public int GetPuntosActuales()
+    {
+        return puntos;
+    }
+
     void ActualizarUI()
     {
         if (textoPuntos != null)

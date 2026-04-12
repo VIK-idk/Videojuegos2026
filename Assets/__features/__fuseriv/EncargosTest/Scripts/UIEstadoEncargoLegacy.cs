@@ -7,14 +7,8 @@ using UnityEngine.UI;
 // ====================
 public class UIEstadoEncargoLegacy : MonoBehaviour
 {
-    // ====================
-    // REFERENCIA
-    // ====================
     [SerializeField] private Text textoEstado;
 
-    // ====================
-    // INICIO
-    // ====================
     private void Start()
     {
         if (textoEstado != null)
@@ -23,36 +17,30 @@ public class UIEstadoEncargoLegacy : MonoBehaviour
         }
     }
 
-    // ====================
-    // RECOLECTA
-    // ====================
     public void MostrarRecolecta(float duracion)
     {
         StopAllCoroutines();
-        StartCoroutine(MostrarMensaje("¡Salta sobre las morsas para recolectar los peces!", Color.white, duracion));
+        StartCoroutine(MostrarMensaje("¡Recolecta!", Color.white, duracion));
     }
 
-    // ====================
-    // COMPLETADO
-    // ====================
     public void MostrarCompletado()
     {
         StopAllCoroutines();
         StartCoroutine(MostrarMensaje("ENCARGO COMPLETADO", Color.green, 2f));
     }
 
-    // ====================
-    // FALLADO
-    // ====================
     public void MostrarFallado()
     {
         StopAllCoroutines();
         StartCoroutine(MostrarMensaje("ENCARGO FALLIDO", Color.red, 2f));
     }
 
-    // ====================
-    // MENSAJE
-    // ====================
+    public void MostrarMensajePersonalizado(string mensaje, Color color, float duracion)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MostrarMensaje(mensaje, color, duracion));
+    }
+
     private IEnumerator MostrarMensaje(string mensaje, Color color, float duracion)
     {
         if (textoEstado == null)

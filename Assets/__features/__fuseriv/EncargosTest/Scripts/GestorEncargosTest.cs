@@ -45,6 +45,8 @@ public class GestorEncargosTest : MonoBehaviour
     private bool encargoTerminado = false;
     private bool esperandoPrimerEncargo = false;
 
+    [SerializeField] private GestorProgresoJugador gestorProgresoJugador;
+
     // ====================
     // INICIO
     // ====================
@@ -64,14 +66,14 @@ public class GestorEncargosTest : MonoBehaviour
         if (uiEncargo != null)
             uiEncargo.OcultarInstantaneo();
 
-        if (uiEstado != null)
-        {
-            // No hace falta hacer nada aquí si tu script ya oculta el texto en Start
-        }
-
         if (pecesManager != null)
         {
             pecesManager.ReiniciarTodosLosPeces();
+        }
+
+        if (gestorProgresoJugador == null)
+        {
+            gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
         }
 
         if (iniciarAutomaticamente)
@@ -223,12 +225,9 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     // REGISTRAR PEZ
     // ====================
-    public void RegistrarPezRecogido(ColorPez color)
+    public void RegistrarPezRecogido(ColorPez color, int cantidad)
     {
         if (!sistemaIniciado)
-            return;
-
-        if (esperandoPrimerEncargo)
             return;
 
         if (encargoActual == null)
@@ -240,43 +239,34 @@ public class GestorEncargosTest : MonoBehaviour
         if (encargoTerminado)
             return;
 
+        if (cantidad < 1)
+            cantidad = 1;
+
         bool seCompletoUnColor = false;
 
         if (color == ColorPez.Rosa)
         {
-            if (pecesRosasActuales < encargoActual.pecesRosas)
-            {
-                pecesRosasActuales++;
+            int antes = pecesRosasActuales;
+            pecesRosasActuales = Mathf.Min(pecesRosasActuales + cantidad, encargoActual.pecesRosas);
 
-                if (pecesRosasActuales >= encargoActual.pecesRosas)
-                {
-                    seCompletoUnColor = true;
-                }
-            }
+            if (antes < encargoActual.pecesRosas && pecesRosasActuales >= encargoActual.pecesRosas)
+                seCompletoUnColor = true;
         }
         else if (color == ColorPez.Amarillo)
         {
-            if (pecesAmarillosActuales < encargoActual.pecesAmarillos)
-            {
-                pecesAmarillosActuales++;
+            int antes = pecesAmarillosActuales;
+            pecesAmarillosActuales = Mathf.Min(pecesAmarillosActuales + cantidad, encargoActual.pecesAmarillos);
 
-                if (pecesAmarillosActuales >= encargoActual.pecesAmarillos)
-                {
-                    seCompletoUnColor = true;
-                }
-            }
+            if (antes < encargoActual.pecesAmarillos && pecesAmarillosActuales >= encargoActual.pecesAmarillos)
+                seCompletoUnColor = true;
         }
         else if (color == ColorPez.Verde)
         {
-            if (pecesVerdesActuales < encargoActual.pecesVerdes)
-            {
-                pecesVerdesActuales++;
+            int antes = pecesVerdesActuales;
+            pecesVerdesActuales = Mathf.Min(pecesVerdesActuales + cantidad, encargoActual.pecesVerdes);
 
-                if (pecesVerdesActuales >= encargoActual.pecesVerdes)
-                {
-                    seCompletoUnColor = true;
-                }
-            }
+            if (antes < encargoActual.pecesVerdes && pecesVerdesActuales >= encargoActual.pecesVerdes)
+                seCompletoUnColor = true;
         }
 
         if (seCompletoUnColor)
@@ -350,6 +340,10 @@ public class GestorEncargosTest : MonoBehaviour
         {
             gameManager.SumarPuntos(puntosPorEncargo);
         }
+        if (gestorProgresoJugador != null)
+        {
+            gestorProgresoJugador.DarMonedasPorEncargo();
+        }
 
         if (uiEstado != null)
         {
@@ -380,17 +374,38 @@ public class GestorEncargosTest : MonoBehaviour
             pecesManager.ReiniciarTodosLosPeces();
         }
 
+        bool ultimoStrike = false;
+
         if (strikeManager != null)
         {
-            strikeManager.AddStrike();
+            ultimoStrike = strikeManager.GetCurrentStrikes() + 1 >= strikeManager.GetMaxStrikes();
+            strikeManager.AddStrike(false);
         }
 
         if (uiEstado != null)
         {
-            uiEstado.MostrarFallado();
+            if (ultimoStrike)
+            {
+                uiEstado.MostrarMensajePersonalizado(
+                    "ENCARGO FALLIDO\nVuelve a tu celda a descansar",
+                    Color.red,
+                    2f
+                );
+            }
+            else
+            {
+                uiEstado.MostrarFallado();
+            }
         }
 
-        StartCoroutine(EsperarYSiguiente());
+        if (ultimoStrike)
+        {
+            StartCoroutine(EsperarYVolverALobby());
+        }
+        else
+        {
+            StartCoroutine(EsperarYSiguiente());
+        }
     }
 
     // ====================
@@ -408,5 +423,20 @@ public class GestorEncargosTest : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         IniciarNuevoEncargo();
+    }
+
+    private IEnumerator EsperarYVolverALobby()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (uiEncargo != null)
+        {
+            uiEncargo.Ocultar();
+        }
+
+        if (strikeManager != null)
+        {
+            strikeManager.IrALobby();
+        }
     }
 }

@@ -6,48 +6,40 @@ using UnityEngine;
 // ====================
 public class PecesTestManager : MonoBehaviour
 {
-    // ====================
-    // SPAWN
-    // ====================
     [Header("Spawn")]
     [SerializeField] private string fishTag = "Orbe";
     [SerializeField] private int porcentajeMinimoActivos = 65;
 
-    // ====================
-    // PUNTOS
-    // ====================
     [Header("Puntos")]
-    [SerializeField] private bool sumarPuntosAlRecoger = true;
+    [SerializeField] private bool sumarPuntosAlRecoger = false;
     [SerializeField] private int puntosPorPez = 5;
 
-    // ====================
-    // COLORES ACTIVOS
-    // ====================
     [Header("Colores activos")]
     [SerializeField] private bool rosaActivo = true;
     [SerializeField] private bool amarilloActivo = false;
     [SerializeField] private bool verdeActivo = false;
 
-    // ====================
-    // VARIABLES
-    // ====================
     private Pez[] todosLosPeces;
     private GameManager gm;
     private GestorEncargosTest gestorEncargos;
+    private HabilidadesManager habilidadesManager;
 
     private bool ultimoRosaActivo;
     private bool ultimoAmarilloActivo;
     private bool ultimoVerdeActivo;
 
-    // ====================
-    // INICIO
-    // ====================
+    private float multiplicadorRecogidaActual = 1f;
+
+
+
     private void Start()
     {
         gm = FindFirstObjectByType<GameManager>();
         gestorEncargos = FindFirstObjectByType<GestorEncargosTest>();
+        habilidadesManager = FindFirstObjectByType<HabilidadesManager>();
 
         BuscarPeces();
+        SetMultiplicadorRecogida(1f);
         ActivarPecesAleatorios();
 
         ultimoRosaActivo = rosaActivo;
@@ -55,9 +47,6 @@ public class PecesTestManager : MonoBehaviour
         ultimoVerdeActivo = verdeActivo;
     }
 
-    // ====================
-    // UPDATE
-    // ====================
     private void Update()
     {
         if (rosaActivo != ultimoRosaActivo ||
@@ -72,9 +61,6 @@ public class PecesTestManager : MonoBehaviour
         }
     }
 
-    // ====================
-    // REINICIAR
-    // ====================
     public void ReiniciarTodosLosPeces()
     {
         if (todosLosPeces == null || todosLosPeces.Length == 0)
@@ -83,15 +69,10 @@ public class PecesTestManager : MonoBehaviour
         for (int i = 0; i < todosLosPeces.Length; i++)
         {
             if (todosLosPeces[i] != null)
-            {
                 todosLosPeces[i].gameObject.SetActive(false);
-            }
         }
     }
 
-    // ====================
-    // SET COLORES
-    // ====================
     public void SetColoresActivos(bool rosa, bool amarillo, bool verde)
     {
         rosaActivo = rosa;
@@ -105,9 +86,25 @@ public class PecesTestManager : MonoBehaviour
         ActualizarPecesActivos();
     }
 
-    // ====================
-    // BUSCAR
-    // ====================
+    public void SetMultiplicadorRecogida(float multiplicador)
+    {
+        multiplicadorRecogidaActual = multiplicador;
+
+        if (todosLosPeces == null || todosLosPeces.Length == 0)
+            return;
+
+        for (int i = 0; i < todosLosPeces.Length; i++)
+        {
+            if (todosLosPeces[i] == null)
+                continue;
+
+            PezPickupTest pickup = todosLosPeces[i].GetComponentInChildren<PezPickupTest>(true);
+
+            if (pickup != null)
+                pickup.SetMultiplicadorRecogida(multiplicadorRecogidaActual);
+        }
+    }
+
     private void BuscarPeces()
     {
         GameObject[] objetos = GameObject.FindGameObjectsWithTag(fishTag);
@@ -118,17 +115,12 @@ public class PecesTestManager : MonoBehaviour
             Pez pez = objetos[i].GetComponent<Pez>();
 
             if (pez != null)
-            {
                 lista.Add(pez);
-            }
         }
 
         todosLosPeces = lista.ToArray();
     }
 
-    // ====================
-    // ACTIVAR
-    // ====================
     public void ActivarPecesAleatorios()
     {
         if (todosLosPeces == null || todosLosPeces.Length == 0)
@@ -138,9 +130,7 @@ public class PecesTestManager : MonoBehaviour
         int minimoActivos = (totalPeces * porcentajeMinimoActivos) / 100;
 
         if (minimoActivos < 1)
-        {
             minimoActivos = 1;
-        }
 
         int cantidadActivos = Random.Range(minimoActivos, totalPeces + 1);
 
@@ -162,11 +152,10 @@ public class PecesTestManager : MonoBehaviour
             todosLosPeces[indicePez].ConfigurarPez(ObtenerColorAleatorio());
             todosLosPeces[indicePez].gameObject.SetActive(true);
         }
+
+        SetMultiplicadorRecogida(multiplicadorRecogidaActual);
     }
 
-    // ====================
-    // ACTUALIZAR
-    // ====================
     private void ActualizarPecesActivos()
     {
         if (todosLosPeces == null || todosLosPeces.Length == 0)
@@ -178,38 +167,36 @@ public class PecesTestManager : MonoBehaviour
                 continue;
 
             if (todosLosPeces[i].gameObject.activeSelf)
-            {
                 todosLosPeces[i].ConfigurarPez(ObtenerColorAleatorio());
-            }
         }
+
+        SetMultiplicadorRecogida(multiplicadorRecogidaActual);
     }
 
-    // ====================
-    // RECOGER
-    // ====================
     public void ProcesarRecogida(Pez pezRecogido)
     {
         if (pezRecogido == null)
             return;
 
         if (gestorEncargos == null)
-        {
             gestorEncargos = FindFirstObjectByType<GestorEncargosTest>();
-        }
+
+        if (habilidadesManager == null)
+            habilidadesManager = FindFirstObjectByType<HabilidadesManager>();
 
         ColorPez colorRecogido = pezRecogido.GetColorPez();
+        int cantidadPeces = 1;
+
+        if (habilidadesManager != null)
+            cantidadPeces = habilidadesManager.GetCantidadPecesPorRecogida();
 
         pezRecogido.gameObject.SetActive(false);
 
         if (gestorEncargos != null)
-        {
-            gestorEncargos.RegistrarPezRecogido(colorRecogido);
-        }
+            gestorEncargos.RegistrarPezRecogido(colorRecogido, cantidadPeces);
 
         if (sumarPuntosAlRecoger && gm != null)
-        {
             gm.SumarPuntos(puntosPorPez);
-        }
 
         if (gestorEncargos != null && gestorEncargos.EstaEncargoTerminado())
             return;
@@ -217,9 +204,6 @@ public class PecesTestManager : MonoBehaviour
         ReponerPezEnOtroSitio(pezRecogido);
     }
 
-    // ====================
-    // REPONER
-    // ====================
     private void ReponerPezEnOtroSitio(Pez pezRecogido)
     {
         List<Pez> pecesInactivos = new List<Pez>();
@@ -230,9 +214,7 @@ public class PecesTestManager : MonoBehaviour
                 continue;
 
             if (!todosLosPeces[i].gameObject.activeSelf && todosLosPeces[i] != pezRecogido)
-            {
                 pecesInactivos.Add(todosLosPeces[i]);
-            }
         }
 
         if (pecesInactivos.Count == 0)
@@ -243,11 +225,13 @@ public class PecesTestManager : MonoBehaviour
 
         nuevoPez.ConfigurarPez(ObtenerColorAleatorio());
         nuevoPez.gameObject.SetActive(true);
+
+        PezPickupTest pickup = nuevoPez.GetComponentInChildren<PezPickupTest>(true);
+
+        if (pickup != null)
+            pickup.SetMultiplicadorRecogida(multiplicadorRecogidaActual);
     }
 
-    // ====================
-    // COLOR RANDOM
-    // ====================
     private ColorPez ObtenerColorAleatorio()
     {
         List<ColorPez> coloresDisponibles = new List<ColorPez>();
