@@ -13579,6 +13579,13 @@ MonoBehaviour:
   tiempoRestante: 0
   sistemaIniciado: 0
   gestorProgresoJugador: {fileID: 810381031}
+  permitirDebugTiempo: 1
+  teclaTiempoRapido: 107
+  tiempoDebugForzado: 1
+  pecesMinimosTotales: 5
+  pecesMaximosTotales: 10
+  tiempoMinimoEncargo: 18
+  tiempoMaximoEncargo: 24
 --- !u!4 &689245429
 Transform:
   m_ObjectHideFlags: 0
@@ -19723,6 +19730,7 @@ MonoBehaviour:
   menuPausa: {fileID: 303025042}
   menuOpciones: {fileID: 1943216572}
   escenaPrincipal: MainMenu
+  tiendaUIController: {fileID: 0}
 --- !u!82 &955406856
 AudioSource:
   m_ObjectHideFlags: 0
@@ -23231,7 +23239,7 @@ MonoBehaviour:
   duracion: 8
   cooldown: 10
   pecesManager: {fileID: 1041023937}
-  multiplicadorRecogida: 2
+  multiplicadorRecogida: 3
 --- !u!4 &1125303503
 Transform:
   m_ObjectHideFlags: 0

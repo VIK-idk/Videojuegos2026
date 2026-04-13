@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class MenuPausa : MonoBehaviour
 {
-
     public GameObject menuPausa;
     public GameObject menuOpciones;
-    private bool isGamePaused = false;
+
     [SerializeField] private string escenaPrincipal;
+    [SerializeField] private TiendaUIController tiendaUIController;
+
+    private bool isGamePaused = false;
 
     void Update()
     {
@@ -24,23 +25,29 @@ public class MenuPausa : MonoBehaviour
         if (isGamePaused)
         {
             Time.timeScale = 0;
-
             menuPausa.SetActive(true);
 
-           
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
         else
         {
             Time.timeScale = 1;
-
             menuPausa.SetActive(false);
             menuOpciones.SetActive(false);
 
+            bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            if (tiendaAbierta)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
     }
 

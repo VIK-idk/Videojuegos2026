@@ -6,6 +6,14 @@ public class TiendaUIController : MonoBehaviour
     [SerializeField] private MonoBehaviour controladorCamara;
     [SerializeField] private MonoBehaviour controladorJugador;
 
+    public bool TiendaAbierta
+    {
+        get
+        {
+            return panelTienda != null && panelTienda.activeSelf;
+        }
+    }
+
     public void AbrirTienda()
     {
         if (panelTienda != null)

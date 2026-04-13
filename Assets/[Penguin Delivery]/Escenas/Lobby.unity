@@ -680,23 +680,23 @@ MonoBehaviour:
   colorJugador: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   bots:
   - nombre: Alvaro
-    puntuacion: 2320
+    puntuacion: 800
   - nombre: Danipa
-    puntuacion: 4230
+    puntuacion: 2026
   - nombre: Aaron
-    puntuacion: 20
+    puntuacion: 230
   - nombre: Vik
-    puntuacion: 21
+    puntuacion: 415
   - nombre: Eli
-    puntuacion: 30
+    puntuacion: 1210
   - nombre: Fabi
-    puntuacion: 3000
+    puntuacion: 1020
   - nombre: Botsito
-    puntuacion: 2430
+    puntuacion: 820
   - nombre: Messi
-    puntuacion: 1234
+    puntuacion: 672
   - nombre: Rubius
-    puntuacion: 2992
+    puntuacion: 1650
 --- !u!1 &172568185
 GameObject:
   m_ObjectHideFlags: 0
@@ -7979,6 +7979,7 @@ MonoBehaviour:
   menuPausa: {fileID: 1069382714}
   menuOpciones: {fileID: 934988996}
   escenaPrincipal: MainMenu
+  tiendaUIController: {fileID: 9700628}
 --- !u!114 &1768701601
 MonoBehaviour:
   m_ObjectHideFlags: 0

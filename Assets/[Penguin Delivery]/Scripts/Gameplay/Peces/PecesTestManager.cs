@@ -166,8 +166,13 @@ public class PecesTestManager : MonoBehaviour
             if (todosLosPeces[i] == null)
                 continue;
 
-            if (todosLosPeces[i].gameObject.activeSelf)
-                todosLosPeces[i].ConfigurarPez(ObtenerColorAleatorio());
+            if (!todosLosPeces[i].gameObject.activeSelf)
+                continue;
+
+            if (!EsColorPermitido(todosLosPeces[i].GetColorPez()))
+            {
+                todosLosPeces[i].gameObject.SetActive(false);
+            }
         }
 
         SetMultiplicadorRecogida(multiplicadorRecogidaActual);
@@ -250,5 +255,39 @@ public class PecesTestManager : MonoBehaviour
 
         int indice = Random.Range(0, coloresDisponibles.Count);
         return coloresDisponibles[indice];
+    }
+
+    private bool EsColorPermitido(ColorPez color)
+    {
+        if (color == ColorPez.Rosa)
+            return rosaActivo;
+
+        if (color == ColorPez.Amarillo)
+            return amarilloActivo;
+
+        if (color == ColorPez.Verde)
+            return verdeActivo;
+
+        return false;
+    }
+
+    public void DesactivarPecesActivosDeColor(ColorPez color)
+    {
+        if (todosLosPeces == null || todosLosPeces.Length == 0)
+            return;
+
+        for (int i = 0; i < todosLosPeces.Length; i++)
+        {
+            if (todosLosPeces[i] == null)
+                continue;
+
+            if (!todosLosPeces[i].gameObject.activeSelf)
+                continue;
+
+            if (todosLosPeces[i].GetColorPez() == color)
+            {
+                todosLosPeces[i].gameObject.SetActive(false);
+            }
+        }
     }
 }

@@ -44,9 +44,20 @@ public class GestorEncargosTest : MonoBehaviour
 
     private bool encargoTerminado = false;
     private bool esperandoPrimerEncargo = false;
-
+    // ====================
+    // Debug y dificultad (solo para pruebas)
+    // ====================
     [SerializeField] private GestorProgresoJugador gestorProgresoJugador;
+    [Header("Debug")]
+    [SerializeField] private bool permitirDebugTiempo = true;
+    [SerializeField] private KeyCode teclaTiempoRapido = KeyCode.K; // esto es unicamente para bajar el tiempo restante y probar la parte de fallo de encargos
+    [SerializeField] private float tiempoDebugForzado = 1f;
 
+    [Header("Dificultad")]
+    [SerializeField] private int pecesMinimosTotales = 5;
+    [SerializeField] private int pecesMaximosTotales = 10;
+    [SerializeField] private float tiempoMinimoEncargo = 15f;
+    [SerializeField] private float tiempoMaximoEncargo = 24f;
     // ====================
     // INICIO
     // ====================
@@ -98,6 +109,24 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (encargoTerminado)
             return;
+
+        if (permitirDebugTiempo && Input.GetKeyDown(teclaTiempoRapido))
+        {
+            if (encargoActual != null && !encargoTerminado)
+            {
+                tiempoRestante = tiempoDebugForzado;
+
+                if (uiEncargo != null)
+                {
+                    uiEncargo.ActualizarUI(
+                        encargoActual,
+                        tiempoRestante,
+                        pecesRosasActuales,
+                        pecesAmarillosActuales,
+                        pecesVerdesActuales);
+                }
+            }
+        }
 
         tiempoRestante -= Time.deltaTime;
 
@@ -208,16 +237,16 @@ public class GestorEncargosTest : MonoBehaviour
 
         int suma = 0;
 
-        while (suma < 3 || suma > 8)
+        while (suma < pecesMinimosTotales || suma > pecesMaximosTotales)
         {
-            nuevo.pecesRosas = Random.Range(0, 5);
-            nuevo.pecesAmarillos = Random.Range(0, 5);
-            nuevo.pecesVerdes = Random.Range(0, 5);
+            nuevo.pecesRosas = Random.Range(0, 6);
+            nuevo.pecesAmarillos = Random.Range(0, 6);
+            nuevo.pecesVerdes = Random.Range(0, 6);
 
             suma = nuevo.pecesRosas + nuevo.pecesAmarillos + nuevo.pecesVerdes;
         }
 
-        nuevo.tiempoLimite = Random.Range(20f, 35f);
+        nuevo.tiempoLimite = Random.Range(tiempoMinimoEncargo, tiempoMaximoEncargo);
 
         return nuevo;
     }
@@ -243,6 +272,7 @@ public class GestorEncargosTest : MonoBehaviour
             cantidad = 1;
 
         bool seCompletoUnColor = false;
+        ColorPez colorCompletado = color;
 
         if (color == ColorPez.Rosa)
         {
@@ -271,6 +301,11 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (seCompletoUnColor)
         {
+            if (pecesManager != null)
+            {
+                pecesManager.DesactivarPecesActivosDeColor(colorCompletado);
+            }
+
             ActualizarColoresPendientes();
         }
 
