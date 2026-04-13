@@ -23,8 +23,12 @@ public class StrikeManager : MonoBehaviour
     private int currentStrikes = 0;
     private int lastDebugStrikes = -1;
 
+    private GestorProgresoJugador gestorProgresoJugador;
+
     private void Start()
     {
+        gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
+
         currentStrikes = 0;
         UpdateStrikeUI();
         lastDebugStrikes = debugStrikes;
@@ -104,6 +108,14 @@ public class StrikeManager : MonoBehaviour
 
     public void IrALobby()
     {
+        if (gestorProgresoJugador == null)
+            gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
+
+        if (gestorProgresoJugador != null)
+        {
+            gestorProgresoJugador.RegistrarIntentoActual();
+        }
+
         ResetStrikes();
         SceneManager.LoadScene(lobbySceneName);
     }
@@ -135,6 +147,14 @@ public class StrikeManager : MonoBehaviour
     {
         if (currentStrikes >= maxStrikes)
         {
+            if (gestorProgresoJugador == null)
+                gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
+
+            if (gestorProgresoJugador != null)
+            {
+                gestorProgresoJugador.RegistrarIntentoActual();
+            }
+
             ResetStrikes();
             SceneManager.LoadScene(lobbySceneName);
         }

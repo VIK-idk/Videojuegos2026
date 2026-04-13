@@ -156,12 +156,6 @@ public class PanelHabilidadUI : MonoBehaviour
 
         if (botonComprar != null)
             botonComprar.gameObject.SetActive(false);
-
-        if (textoNombre != null)
-            textoNombre.text = "";
-
-        if (textoDescripcion != null)
-            textoDescripcion.text = "";
     }
 
     private void MostrarError(string mensaje)

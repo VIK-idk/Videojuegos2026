@@ -76,4 +76,11 @@ public static class ProgresoJugador
 
         return mejor;
     }
+
+    public static void ResetPuntuaciones()
+    {
+        AsegurarDatos();
+        datos.puntuacionesIntentos.Clear();
+        Guardar();
+    }
 }
