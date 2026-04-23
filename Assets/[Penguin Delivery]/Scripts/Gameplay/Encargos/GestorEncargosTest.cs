@@ -48,10 +48,21 @@ public class GestorEncargosTest : MonoBehaviour
     // Debug y dificultad (solo para pruebas)
     // ====================
     [SerializeField] private GestorProgresoJugador gestorProgresoJugador;
-    [Header("Debug")]
-    [SerializeField] private bool permitirDebugTiempo = true;
-    [SerializeField] private KeyCode teclaTiempoRapido = KeyCode.K; // esto es unicamente para bajar el tiempo restante y probar la parte de fallo de encargos
+    [Header("DEBUG / TESTING")]
+    [SerializeField] private bool permitirAtajosTesting = true;
+
+    // K = bajar el tiempo restante del encargo a 1 segundo
+    [SerializeField] private KeyCode teclaTiempoRapido = KeyCode.K;
+
+    // L = completar el encargo al instante
+    [SerializeField] private KeyCode teclaCompletarEncargo = KeyCode.L;
+
+    // N = sumar 250 puntos de golpe
+    [SerializeField] private KeyCode teclaSumarPuntos = KeyCode.N;
+
+    // Valor usado por K
     [SerializeField] private float tiempoDebugForzado = 1f;
+    // ====================
 
     [Header("Dificultad")]
     [SerializeField] private int pecesMinimosTotales = 5;
@@ -110,7 +121,7 @@ public class GestorEncargosTest : MonoBehaviour
         if (encargoTerminado)
             return;
 
-        if (permitirDebugTiempo && Input.GetKeyDown(teclaTiempoRapido))
+        if (permitirAtajosTesting && Input.GetKeyDown(teclaTiempoRapido))
         {
             if (encargoActual != null && !encargoTerminado)
             {
@@ -145,6 +156,51 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesRosasActuales,
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
+        }
+        // ====================
+        // SOLO TESTING
+        // Estos atajos son solo para pruebas durante desarrollo.
+        // Borrarlos o desactivarlos en la versión final.
+        // ====================
+        if (permitirAtajosTesting)
+        {
+            // K = deja el encargo a 1 segundo para probar fallos o cambios rápidos
+            if (Input.GetKeyDown(teclaTiempoRapido))
+            {
+                if (encargoActual != null && !encargoTerminado)
+                {
+                    tiempoRestante = tiempoDebugForzado; // SOLO TESTING
+
+                    if (uiEncargo != null)
+                    {
+                        uiEncargo.ActualizarUI(
+                            encargoActual,
+                            tiempoRestante,
+                            pecesRosasActuales,
+                            pecesAmarillosActuales,
+                            pecesVerdesActuales);
+                    }
+                }
+            }
+
+            // L = completa el encargo actual al instante
+            if (Input.GetKeyDown(teclaCompletarEncargo))
+            {
+                if (encargoActual != null && !encargoTerminado && encargoActual.enProceso)
+                {
+                    CompletarEncargo(); // SOLO TESTING
+                    return; // SOLO TESTING, evita seguir ejecutando el Update este frame
+                }
+            }
+
+            // N = suma 250 puntos de golpe
+            if (Input.GetKeyDown(teclaSumarPuntos))
+            {
+                if (gameManager != null)
+                {
+                    gameManager.SumarPuntos(250); // SOLO TESTING
+                }
+            }
         }
     }
 
