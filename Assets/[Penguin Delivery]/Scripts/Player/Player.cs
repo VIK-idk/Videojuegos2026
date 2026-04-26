@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpTrampolin = 40f;
     [SerializeField] private float multiplicadorCaida = 2.5f;
     [SerializeField] private float multiplicadorSaltoBajo = 2f;
+    private TutorialManager tutorialManager;
 
     private Rigidbody rb;
 
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        tutorialManager = FindFirstObjectByType<TutorialManager>();
     }
 
     void Update()
@@ -61,6 +63,11 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
+
+            if (tutorialManager != null)
+            {
+                tutorialManager.NotificarReboteEnMorsa();
+            }
         }
     }
 }

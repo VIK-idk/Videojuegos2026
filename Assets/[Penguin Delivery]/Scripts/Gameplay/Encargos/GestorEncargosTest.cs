@@ -69,6 +69,15 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private int pecesMaximosTotales = 10;
     [SerializeField] private float tiempoMinimoEncargo = 15f;
     [SerializeField] private float tiempoMaximoEncargo = 24f;
+
+    // ====================
+    // TUTORIAL
+    // ====================
+    [Header("Tutorial")]
+    [SerializeField] private TutorialManager tutorialManager;
+    [SerializeField] private int pecesTutorial = 3;
+
+    private bool tutorialActivo = false;
     // ====================
     // INICIO
     // ====================
@@ -86,7 +95,9 @@ public class GestorEncargosTest : MonoBehaviour
         esperandoPrimerEncargo = false;
 
         if (uiEncargo != null)
+        {
             uiEncargo.OcultarInstantaneo();
+        }
 
         if (pecesManager != null)
         {
@@ -96,6 +107,11 @@ public class GestorEncargosTest : MonoBehaviour
         if (gestorProgresoJugador == null)
         {
             gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
+        }
+
+        if (tutorialManager == null)
+        {
+            tutorialManager = FindFirstObjectByType<TutorialManager>();
         }
 
         if (iniciarAutomaticamente)
@@ -139,7 +155,17 @@ public class GestorEncargosTest : MonoBehaviour
             }
         }
 
-        tiempoRestante -= Time.deltaTime;
+        if (!tutorialActivo)
+        {
+            tiempoRestante -= Time.deltaTime;
+
+            if (tiempoRestante <= 0f)
+            {
+                tiempoRestante = 0f;
+                FallarEncargo();
+                return;
+            }
+        }
 
         if (tiempoRestante <= 0f)
         {
@@ -213,9 +239,17 @@ public class GestorEncargosTest : MonoBehaviour
             return;
 
         sistemaIniciado = true;
-        esperandoPrimerEncargo = true;
 
-        StartCoroutine(EsperarPrimerEncargo());
+        if (tutorialManager != null && tutorialManager.DebeMostrarTutorial())
+        {
+            tutorialActivo = true;
+            tutorialManager.IniciarTutorial();
+            IniciarEncargoTutorial();
+        }
+        else
+        {
+            StartCoroutine(EsperarPrimerEncargo());
+        }
     }
 
     // ====================
@@ -326,6 +360,11 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (cantidad < 1)
             cantidad = 1;
+
+        if (tutorialActivo && tutorialManager != null)
+        {
+            tutorialManager.NotificarPrimerPezRecogido();
+        }
 
         bool seCompletoUnColor = false;
         ColorPez colorCompletado = color;
@@ -441,7 +480,15 @@ public class GestorEncargosTest : MonoBehaviour
             uiEstado.MostrarCompletado();
         }
 
-        StartCoroutine(EsperarYSiguiente());
+        if (tutorialActivo)
+        {
+            tutorialActivo = false;
+            StartCoroutine(FinalizarTutorialYEmpezarJuegoNormal());
+        }
+        else
+        {
+            StartCoroutine(EsperarYSiguiente());
+        }
     }
 
     // ====================
@@ -529,5 +576,75 @@ public class GestorEncargosTest : MonoBehaviour
         {
             strikeManager.IrALobby();
         }
+    }
+
+    //=====================
+    // TUTORIAL
+    //=====================
+    private void IniciarEncargoTutorial()
+    {
+        encargoActual = new EncargoData();
+
+        encargoActual.pecesRosas = pecesTutorial;
+        encargoActual.pecesAmarillos = 0;
+        encargoActual.pecesVerdes = 0;
+
+        encargoActual.enProceso = true;
+        encargoActual.completado = false;
+        encargoActual.fallado = false;
+
+        pecesRosasActuales = 0;
+        pecesAmarillosActuales = 0;
+        pecesVerdesActuales = 0;
+
+        tiempoRestante = Mathf.Infinity;
+        encargoTerminado = false;
+
+        if (pecesManager != null)
+        {
+            pecesManager.ReiniciarTodosLosPeces();
+            pecesManager.SetColoresActivos(true, false, false);
+            pecesManager.ActivarPecesAleatorios();
+        }
+
+        if (uiEncargo != null)
+        {
+            uiEncargo.Mostrar();
+            uiEncargo.ActualizarUI(
+                encargoActual,
+                tiempoRestante,
+                pecesRosasActuales,
+                pecesAmarillosActuales,
+                pecesVerdesActuales);
+        }
+    }
+
+    public void SaltarTutorialYEmpezarJuegoNormal()
+    {
+        if (!tutorialActivo)
+            return;
+
+        tutorialActivo = false;
+
+        if (pecesManager != null)
+            pecesManager.ReiniciarTodosLosPeces();
+
+        IniciarNuevoEncargo();
+    }
+    private IEnumerator FinalizarTutorialYEmpezarJuegoNormal()
+    {
+        if (tutorialManager != null)
+        {
+            tutorialManager.OcultarIndicadoresTutorial();
+            tutorialManager.MarcarTutorialComoCompletado();
+            yield return StartCoroutine(tutorialManager.MostrarMensajeFinalTutorial());
+        }
+
+        if (uiEncargo != null)
+            uiEncargo.Ocultar();
+
+        yield return new WaitForSeconds(0.5f);
+
+        IniciarNuevoEncargo();
     }
 }
