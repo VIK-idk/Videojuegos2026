@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4c18c9a2b331f054ea4396f0fbf3ed94
+guid: 14f549529bd60a64eb455175c0950251
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,23 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material #25
-    second: {fileID: 2100000, guid: 61de5cdc1ca6483498efcaf6c50c28a0, type: 2}
+      name: nieve
+    second: {fileID: 2100000, guid: 796506bdb8b71074bafd756a8c6ae84c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material #26
-    second: {fileID: 2100000, guid: 21e527b53f9326c4ea17c0e948211845, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material #27
-    second: {fileID: 2100000, guid: b5fd2926ddf6c044cad0ebd93751f63a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material #28
-    second: {fileID: 2100000, guid: 725fa2a48eed45e4aacad25b0b5d99a5, type: 2}
+      name: piedra azul
+    second: {fileID: 2100000, guid: 956f62e2bb85e9d4c87bc9c20e32e8b3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
