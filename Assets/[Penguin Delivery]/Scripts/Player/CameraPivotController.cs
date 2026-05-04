@@ -19,6 +19,8 @@ public class CameraPivotController : MonoBehaviour
     private float yRotation = 0f;
     private bool ignorarPrimerFrame = true;
 
+    private const string CLAVE_SENSIBILIDAD = "Sensibilidad";
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,13 +44,22 @@ public class CameraPivotController : MonoBehaviour
             return;
         }
 
+        float sensibilidadActual = PlayerPrefs.GetFloat(CLAVE_SENSIBILIDAD, sensibilidadRaton);
+
+        float factorMando = 1f;
+
+        if (sensibilidadRaton != 0f)
+        {
+            factorMando = sensibilidadMando / sensibilidadRaton;
+        }
+
         // 🔹 RATÓN
-        float mouseX = Input.GetAxis("Mouse X") * sensibilidadRaton * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * sensibilidadRaton * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * sensibilidadActual * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * sensibilidadActual * Time.deltaTime;
 
         // 🔹 MANDO
-        float padX = ApplyDeadzone(Input.GetAxis("RightStickX")) * sensibilidadMando * Time.deltaTime;
-        float padY = ApplyDeadzone(Input.GetAxis("RightStickY")) * sensibilidadMando * Time.deltaTime;
+        float padX = ApplyDeadzone(Input.GetAxis("RightStickX")) * sensibilidadActual * factorMando * Time.deltaTime;
+        float padY = ApplyDeadzone(Input.GetAxis("RightStickY")) * sensibilidadActual * factorMando * Time.deltaTime;
 
         float inputX = mouseX + padX;
         float inputY = mouseY + padY;

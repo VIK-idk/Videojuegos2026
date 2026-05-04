@@ -4774,7 +4774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6255396790138077705, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: deadzoneMando
-      value: 0.01
+      value: 0.011
       objectReference: {fileID: 0}
     - target: {fileID: 6255396790138077705, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: sensibilidadMando
@@ -5761,7 +5761,7 @@ MonoBehaviour:
   sensibilidadSlider: {fileID: 586486585}
   textoValorSensibilidad: {fileID: 1150161831}
   audioMixer: {fileID: 24100000, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
-  primerBotonOpciones: {fileID: 0}
+  primerBotonOpciones: {fileID: 933375361}
 --- !u!4 &948456537
 Transform:
   m_ObjectHideFlags: 0

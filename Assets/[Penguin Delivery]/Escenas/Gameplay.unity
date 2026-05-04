@@ -13604,7 +13604,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1296831602}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetResolucionPref
         m_Mode: 0
@@ -14984,7 +14984,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1296831602}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetPantallaCompletaPref
         m_Mode: 0
@@ -21592,7 +21592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6255396790138077705, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: deadzoneMando
-      value: 0.005
+      value: 0.011
       objectReference: {fileID: 0}
     - target: {fileID: 6255396790138077705, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: sensibilidadMando
@@ -35612,7 +35612,7 @@ MonoBehaviour:
   sensibilidadSlider: {fileID: 2025943388}
   textoValorSensibilidad: {fileID: 1963211897}
   audioMixer: {fileID: 24100000, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
-  primerBotonOpciones: {fileID: 623181211}
+  primerBotonOpciones: {fileID: 1779048783}
 --- !u!4 &1296831603
 Transform:
   m_ObjectHideFlags: 0
@@ -46093,7 +46093,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1296831602}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetMasterVolumePref
         m_Mode: 0
@@ -53732,7 +53732,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1296831602}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetSensibilidadPref
         m_Mode: 0
@@ -56791,7 +56791,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1296831602}
         m_TargetAssemblyTypeName: PlayerSettings, Assembly-CSharp
         m_MethodName: SetSFXVolumePref
         m_Mode: 0

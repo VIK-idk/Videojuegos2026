@@ -1556,7 +1556,7 @@ MonoBehaviour:
   sensibilidadSlider: {fileID: 1711041760}
   textoValorSensibilidad: {fileID: 802664076}
   audioMixer: {fileID: 24100000, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
-  primerBotonOpciones: {fileID: 1789500530}
+  primerBotonOpciones: {fileID: 2022542294}
 --- !u!4 &417434190
 Transform:
   m_ObjectHideFlags: 0
@@ -3439,7 +3439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nombreEscena: Gameplay
-  primerBotonMenu: {fileID: 0}
+  primerBotonMenu: {fileID: 1789500530}
 --- !u!1 &1350943448
 GameObject:
   m_ObjectHideFlags: 0
