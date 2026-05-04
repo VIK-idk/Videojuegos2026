@@ -5252,11 +5252,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 884764199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 905d71a35d536b94ea8443ab550a582d, type: 3}
+  m_Script: {fileID: 11500000, guid: 80476255b10768648b29d5453835961b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textoInteractuar: {fileID: 2062500535}
-  tiendaUIController: {fileID: 9700628}
+  nombreEscena: Gameplay
 --- !u!1 &891497393
 GameObject:
   m_ObjectHideFlags: 0
