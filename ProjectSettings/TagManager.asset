@@ -4,20 +4,20 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Trampolin
   - Orbe
+  - Trampolin
   - Ground
-  - Amarillo
+  - AlmohadaMullidita
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Obstacle
+  - Wall
+  - Player
   - 
   - 
   - 
