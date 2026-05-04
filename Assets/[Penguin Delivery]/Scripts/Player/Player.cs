@@ -37,12 +37,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
         Vector3 velocidad = direccion * speed;
         velocidad.y = rb.linearVelocity.y;
-
         rb.linearVelocity = velocidad;
 
         if (rb.linearVelocity.y < 0)
@@ -53,8 +50,6 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (multiplicadorSaltoBajo - 1) * Time.fixedDeltaTime;
         }
-        Vector3 move = new Vector3(h, 0, v);
-        transform.Translate(move * speed * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
