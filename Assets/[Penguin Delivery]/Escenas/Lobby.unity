@@ -347,11 +347,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 9700627}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f63f98873bd1ff4fb152473d69d7fae, type: 3}
+  m_Script: {fileID: 11500000, guid: 227f278b5de520d4ba6fe47e2772837a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textoInteractuar: {fileID: 1302708107}
-  tiendaUIController: {fileID: 9700628}
+  panelTienda: {fileID: 1672399813}
+  controladorCamara: {fileID: 1418184981}
+  controladorJugador: {fileID: 325548269}
+  primerBotonTienda: {fileID: 1051688929}
 --- !u!1001 &18576783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5182,7 +5184,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 869091966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f63f98873bd1ff4fb152473d69d7fae, type: 3}
+  m_Script: {fileID: 11500000, guid: 905d71a35d536b94ea8443ab550a582d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textoInteractuar: {fileID: 1302708107}
@@ -5250,11 +5252,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 884764199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a75fb009ef698f24284df903518596d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 905d71a35d536b94ea8443ab550a582d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textoInteractuar: {fileID: 2062500535}
-  nombreEscena: Gameplay
+  tiendaUIController: {fileID: 9700628}
 --- !u!1 &891497393
 GameObject:
   m_ObjectHideFlags: 0
