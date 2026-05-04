@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
 
+
         if (Input.GetButtonDown("Saltar") && estaEnSuelo)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -39,7 +40,6 @@ public class Player : MonoBehaviour
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
         Vector3 velocidad = direccion * speed;
         velocidad.y = rb.linearVelocity.y;
-
         rb.linearVelocity = velocidad;
 
         if (rb.linearVelocity.y < 0)
