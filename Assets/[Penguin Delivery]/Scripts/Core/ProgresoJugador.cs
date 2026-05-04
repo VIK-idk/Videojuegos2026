@@ -77,10 +77,17 @@ public static class ProgresoJugador
         return mejor;
     }
 
+    // ====================
+    // SOLO TESTING
+    // Reinicia el historial de puntuaciones guardadas.
+    // Al quedarse vacío, el mejor récord vuelve a 0.
+    // ====================
+
     public static void ResetPuntuaciones()
     {
         AsegurarDatos();
         datos.puntuacionesIntentos.Clear();
         Guardar();
     }
+
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 // ====================
 // STRIKES
@@ -175,5 +176,27 @@ public class StrikeManager : MonoBehaviour
 
         UpdateStrikeUI();
         return true;
+    }
+    public IEnumerator ParpadearStrikeDemo(float duracion)
+    {
+        if (strikeImages == null || strikeImages.Length == 0)
+            yield break;
+
+        float tiempo = 0f;
+        float intervalo = 0.25f;
+        bool rojo = false;
+
+        while (tiempo < duracion)
+        {
+            rojo = !rojo;
+
+            if (strikeImages[0] != null)
+                strikeImages[0].color = rojo ? activeColor : inactiveColor;
+
+            yield return new WaitForSeconds(intervalo);
+            tiempo += intervalo;
+        }
+
+        UpdateStrikeUI();
     }
 }

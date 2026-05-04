@@ -41,7 +41,10 @@ public class UIEncargoLegacy : MonoBehaviour
 
         if (textoTiempo != null)
         {
-            textoTiempo.text = tiempo.ToString("F1") + "s";
+            if (float.IsInfinity(tiempo))
+                textoTiempo.text = "∞";
+            else
+                textoTiempo.text = tiempo.ToString("F1") + "s";
         }
 
         if (filaRosa != null)

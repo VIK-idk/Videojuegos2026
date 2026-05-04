@@ -48,16 +48,36 @@ public class GestorEncargosTest : MonoBehaviour
     // Debug y dificultad (solo para pruebas)
     // ====================
     [SerializeField] private GestorProgresoJugador gestorProgresoJugador;
-    [Header("Debug")]
-    [SerializeField] private bool permitirDebugTiempo = true;
-    [SerializeField] private KeyCode teclaTiempoRapido = KeyCode.K; // esto es unicamente para bajar el tiempo restante y probar la parte de fallo de encargos
+    [Header("DEBUG / TESTING")]
+    [SerializeField] private bool permitirAtajosTesting = true;
+
+    // K = bajar el tiempo restante del encargo a 1 segundo
+    [SerializeField] private KeyCode teclaTiempoRapido = KeyCode.K;
+
+    // L = completar el encargo al instante
+    [SerializeField] private KeyCode teclaCompletarEncargo = KeyCode.L;
+
+    // N = sumar 250 puntos de golpe
+    [SerializeField] private KeyCode teclaSumarPuntos = KeyCode.N;
+
+    // Valor usado por K
     [SerializeField] private float tiempoDebugForzado = 1f;
+    // ====================
 
     [Header("Dificultad")]
     [SerializeField] private int pecesMinimosTotales = 5;
     [SerializeField] private int pecesMaximosTotales = 10;
     [SerializeField] private float tiempoMinimoEncargo = 15f;
     [SerializeField] private float tiempoMaximoEncargo = 24f;
+
+    // ====================
+    // TUTORIAL
+    // ====================
+    [Header("Tutorial")]
+    [SerializeField] private TutorialManager tutorialManager;
+    [SerializeField] private int pecesTutorial = 3;
+
+    private bool tutorialActivo = false;
     // ====================
     // INICIO
     // ====================
@@ -75,7 +95,9 @@ public class GestorEncargosTest : MonoBehaviour
         esperandoPrimerEncargo = false;
 
         if (uiEncargo != null)
+        {
             uiEncargo.OcultarInstantaneo();
+        }
 
         if (pecesManager != null)
         {
@@ -85,6 +107,11 @@ public class GestorEncargosTest : MonoBehaviour
         if (gestorProgresoJugador == null)
         {
             gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
+        }
+
+        if (tutorialManager == null)
+        {
+            tutorialManager = FindFirstObjectByType<TutorialManager>();
         }
 
         if (iniciarAutomaticamente)
@@ -110,7 +137,7 @@ public class GestorEncargosTest : MonoBehaviour
         if (encargoTerminado)
             return;
 
-        if (permitirDebugTiempo && Input.GetKeyDown(teclaTiempoRapido))
+        if (permitirAtajosTesting && Input.GetKeyDown(teclaTiempoRapido))
         {
             if (encargoActual != null && !encargoTerminado)
             {
@@ -128,7 +155,17 @@ public class GestorEncargosTest : MonoBehaviour
             }
         }
 
-        tiempoRestante -= Time.deltaTime;
+        if (!tutorialActivo)
+        {
+            tiempoRestante -= Time.deltaTime;
+
+            if (tiempoRestante <= 0f)
+            {
+                tiempoRestante = 0f;
+                FallarEncargo();
+                return;
+            }
+        }
 
         if (tiempoRestante <= 0f)
         {
@@ -146,6 +183,51 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
         }
+        // ====================
+        // SOLO TESTING
+        // Estos atajos son solo para pruebas durante desarrollo.
+        // Borrarlos o desactivarlos en la versión final.
+        // ====================
+        if (permitirAtajosTesting)
+        {
+            // K = deja el encargo a 1 segundo para probar fallos o cambios rápidos
+            if (Input.GetKeyDown(teclaTiempoRapido))
+            {
+                if (encargoActual != null && !encargoTerminado)
+                {
+                    tiempoRestante = tiempoDebugForzado; // SOLO TESTING
+
+                    if (uiEncargo != null)
+                    {
+                        uiEncargo.ActualizarUI(
+                            encargoActual,
+                            tiempoRestante,
+                            pecesRosasActuales,
+                            pecesAmarillosActuales,
+                            pecesVerdesActuales);
+                    }
+                }
+            }
+
+            // L = completa el encargo actual al instante
+            if (Input.GetKeyDown(teclaCompletarEncargo))
+            {
+                if (encargoActual != null && !encargoTerminado && encargoActual.enProceso)
+                {
+                    CompletarEncargo(); // SOLO TESTING
+                    return; // SOLO TESTING, evita seguir ejecutando el Update este frame
+                }
+            }
+
+            // N = suma 250 puntos de golpe
+            if (Input.GetKeyDown(teclaSumarPuntos))
+            {
+                if (gameManager != null)
+                {
+                    gameManager.SumarPuntos(250); // SOLO TESTING
+                }
+            }
+        }
     }
 
     // ====================
@@ -157,9 +239,17 @@ public class GestorEncargosTest : MonoBehaviour
             return;
 
         sistemaIniciado = true;
-        esperandoPrimerEncargo = true;
 
-        StartCoroutine(EsperarPrimerEncargo());
+        if (tutorialManager != null && tutorialManager.DebeMostrarTutorial())
+        {
+            tutorialActivo = true;
+            tutorialManager.IniciarTutorial();
+            IniciarEncargoTutorial();
+        }
+        else
+        {
+            StartCoroutine(EsperarPrimerEncargo());
+        }
     }
 
     // ====================
@@ -270,6 +360,11 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (cantidad < 1)
             cantidad = 1;
+
+        if (tutorialActivo && tutorialManager != null)
+        {
+            tutorialManager.NotificarPrimerPezRecogido();
+        }
 
         bool seCompletoUnColor = false;
         ColorPez colorCompletado = color;
@@ -385,7 +480,15 @@ public class GestorEncargosTest : MonoBehaviour
             uiEstado.MostrarCompletado();
         }
 
-        StartCoroutine(EsperarYSiguiente());
+        if (tutorialActivo)
+        {
+            tutorialActivo = false;
+            StartCoroutine(FinalizarTutorialYEmpezarJuegoNormal());
+        }
+        else
+        {
+            StartCoroutine(EsperarYSiguiente());
+        }
     }
 
     // ====================
@@ -473,5 +576,75 @@ public class GestorEncargosTest : MonoBehaviour
         {
             strikeManager.IrALobby();
         }
+    }
+
+    //=====================
+    // TUTORIAL
+    //=====================
+    private void IniciarEncargoTutorial()
+    {
+        encargoActual = new EncargoData();
+
+        encargoActual.pecesRosas = pecesTutorial;
+        encargoActual.pecesAmarillos = 0;
+        encargoActual.pecesVerdes = 0;
+
+        encargoActual.enProceso = true;
+        encargoActual.completado = false;
+        encargoActual.fallado = false;
+
+        pecesRosasActuales = 0;
+        pecesAmarillosActuales = 0;
+        pecesVerdesActuales = 0;
+
+        tiempoRestante = Mathf.Infinity;
+        encargoTerminado = false;
+
+        if (pecesManager != null)
+        {
+            pecesManager.ReiniciarTodosLosPeces();
+            pecesManager.SetColoresActivos(true, false, false);
+            pecesManager.ActivarPecesAleatorios();
+        }
+
+        if (uiEncargo != null)
+        {
+            uiEncargo.Mostrar();
+            uiEncargo.ActualizarUI(
+                encargoActual,
+                tiempoRestante,
+                pecesRosasActuales,
+                pecesAmarillosActuales,
+                pecesVerdesActuales);
+        }
+    }
+
+    public void SaltarTutorialYEmpezarJuegoNormal()
+    {
+        if (!tutorialActivo)
+            return;
+
+        tutorialActivo = false;
+
+        if (pecesManager != null)
+            pecesManager.ReiniciarTodosLosPeces();
+
+        IniciarNuevoEncargo();
+    }
+    private IEnumerator FinalizarTutorialYEmpezarJuegoNormal()
+    {
+        if (tutorialManager != null)
+        {
+            tutorialManager.OcultarIndicadoresTutorial();
+            tutorialManager.MarcarTutorialComoCompletado();
+            yield return StartCoroutine(tutorialManager.MostrarMensajeFinalTutorial());
+        }
+
+        if (uiEncargo != null)
+            uiEncargo.Ocultar();
+
+        yield return new WaitForSeconds(0.5f);
+
+        IniciarNuevoEncargo();
     }
 }
