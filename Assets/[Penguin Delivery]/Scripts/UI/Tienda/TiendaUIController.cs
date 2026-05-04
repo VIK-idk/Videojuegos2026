@@ -5,7 +5,22 @@ public class TiendaUIController : MonoBehaviour
     [SerializeField] private GameObject panelTienda;
     [SerializeField] private MonoBehaviour controladorCamara;
     [SerializeField] private MonoBehaviour controladorJugador;
+    [SerializeField] private GameObject menuUI;
 
+
+
+        void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            if (menuUI.activeSelf)
+            {
+                menuUI.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
+    }
     public bool TiendaAbierta
     {
         get
