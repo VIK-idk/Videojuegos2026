@@ -1,26 +1,36 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TiendaUIController : MonoBehaviour
 {
     [SerializeField] private GameObject panelTienda;
     [SerializeField] private MonoBehaviour controladorCamara;
     [SerializeField] private MonoBehaviour controladorJugador;
-    [SerializeField] private GameObject menuUI;
 
+    [Header("UI Mando")]
+    [SerializeField] private GameObject primerBotonTienda;
 
-
-        void Update()
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton0))
         {
-            if (menuUI.activeSelf)
+            if (panelTienda != null && panelTienda.activeSelf)
             {
-                menuUI.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                CerrarTienda();
+            }
+        }
+
+
+        if (panelTienda != null && panelTienda.activeSelf)
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(primerBotonTienda);
             }
         }
     }
+
     public bool TiendaAbierta
     {
         get
@@ -42,6 +52,10 @@ public class TiendaUIController : MonoBehaviour
 
         if (controladorJugador != null)
             controladorJugador.enabled = false;
+
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(primerBotonTienda);
     }
 
     public void CerrarTienda()
@@ -57,5 +71,8 @@ public class TiendaUIController : MonoBehaviour
 
         if (controladorJugador != null)
             controladorJugador.enabled = true;
+
+        // 🔥 limpiar selección
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }
