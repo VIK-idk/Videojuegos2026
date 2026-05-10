@@ -17,6 +17,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float deadzoneAnimacion = 0.1f;
 
     //ANIMACION
+    [SerializeField] private float tiempoParaFidget = 5f;
+
+    //ANIMACION
+    private float temporizadorQuieto = 0f;
+
+    //ANIMACION
     private const string PARAM_CAMINANDO = "Caminando";
 
     //ANIMACION
@@ -27,6 +33,9 @@ public class Player : MonoBehaviour
 
     //ANIMACION
     private const string PARAM_SALTAR = "Saltar";
+
+    //ANIMACION
+    private const string PARAM_FIDGET = "Fidget";
 
     //ROTACION MODELO
     [Header("Rotacion modelo")]
@@ -79,6 +88,9 @@ public class Player : MonoBehaviour
         //ANIMACION
         ActualizarAnimacionMovimiento();
 
+        //ANIMACION
+        ActualizarAnimacionFidget();
+
         //ROTACION MODELO
         ActualizarRotacionModelo();
 
@@ -88,8 +100,12 @@ public class Player : MonoBehaviour
             estaEnSuelo = false;
 
             //ANIMACION
+            temporizadorQuieto = 0f;
+
+            //ANIMACION
             if (animator != null)
             {
+                animator.ResetTrigger(PARAM_FIDGET);
                 animator.SetBool(PARAM_EN_SUELO, false);
                 animator.SetTrigger(PARAM_SALTAR);
             }
@@ -130,6 +146,37 @@ public class Player : MonoBehaviour
         bool estaCaminando = inputMovimiento.magnitude > deadzoneAnimacion;
 
         animator.SetBool(PARAM_CAMINANDO, estaCaminando);
+    }
+
+    //ANIMACION
+    private void ActualizarAnimacionFidget()
+    {
+        if (animator == null || rb == null)
+            return;
+
+        Vector2 inputMovimiento = new Vector2(inputX, inputZ);
+
+        bool estaQuieto = inputMovimiento.magnitude <= deadzoneAnimacion &&
+                          estaEnSuelo &&
+                          Mathf.Abs(rb.linearVelocity.y) < 0.05f;
+
+        if (estaQuieto)
+        {
+            temporizadorQuieto += Time.deltaTime;
+
+            if (temporizadorQuieto >= tiempoParaFidget)
+            {
+                animator.ResetTrigger(PARAM_FIDGET);
+                animator.SetTrigger(PARAM_FIDGET);
+
+                temporizadorQuieto = 0f;
+            }
+        }
+        else
+        {
+            temporizadorQuieto = 0f;
+            animator.ResetTrigger(PARAM_FIDGET);
+        }
     }
 
     //ANIMACION
@@ -185,8 +232,12 @@ public class Player : MonoBehaviour
             estaEnSuelo = false;
 
             //ANIMACION
+            temporizadorQuieto = 0f;
+
+            //ANIMACION
             if (animator != null)
             {
+                animator.ResetTrigger(PARAM_FIDGET);
                 animator.SetBool(PARAM_EN_SUELO, false);
                 animator.SetTrigger(PARAM_SALTAR);
             }

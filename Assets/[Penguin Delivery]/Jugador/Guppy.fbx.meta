@@ -121,7 +121,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Caminar
       takeName: Take 001
-      internalID: 3060872287085348379
+      internalID: -3291206362154003629
       firstFrame: 140
       lastFrame: 156
       wrapMode: 0
@@ -150,7 +150,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Saltar
       takeName: Take 001
-      internalID: 6641085478485924818
+      internalID: -1493303027246044120
       firstFrame: 170
       lastFrame: 182
       wrapMode: 0
@@ -179,7 +179,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Ascendiendo
       takeName: Take 001
-      internalID: -5059006814000262888
+      internalID: -5665051857912407913
       firstFrame: 178
       lastFrame: 182
       wrapMode: 0
@@ -208,7 +208,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Cayendo
       takeName: Take 001
-      internalID: 6234510843852800090
+      internalID: -4912743690084142542
       firstFrame: 200
       lastFrame: 208
       wrapMode: 0
@@ -218,6 +218,35 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Fidget
+      takeName: Take 001
+      internalID: 5781074022923015010
+      firstFrame: 216
+      lastFrame: 287
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -272,13 +301,13 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
-    tangentImportMode: 3
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 2
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   humanDescription:
