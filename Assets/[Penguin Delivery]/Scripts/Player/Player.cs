@@ -19,6 +19,15 @@ public class Player : MonoBehaviour
     //ANIMACION
     private const string PARAM_CAMINANDO = "Caminando";
 
+    //ANIMACION
+    private const string PARAM_EN_SUELO = "EnSuelo";
+
+    //ANIMACION
+    private const string PARAM_VELOCIDAD_Y = "VelocidadY";
+
+    //ANIMACION
+    private const string PARAM_SALTAR = "Saltar";
+
     //ROTACION MODELO
     [Header("Rotacion modelo")]
     [SerializeField] private Transform modeloVisual;
@@ -42,6 +51,12 @@ public class Player : MonoBehaviour
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
+        }
+
+        //ANIMACION
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_EN_SUELO, estaEnSuelo);
         }
 
         //ROTACION MODELO
@@ -71,6 +86,13 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
+
+            //ANIMACION
+            if (animator != null)
+            {
+                animator.SetBool(PARAM_EN_SUELO, false);
+                animator.SetTrigger(PARAM_SALTAR);
+            }
         }
     }
 
@@ -93,6 +115,9 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (multiplicadorSaltoBajo - 1) * Time.fixedDeltaTime;
         }
+
+        //ANIMACION
+        ActualizarAnimacionAire();
     }
 
     //ANIMACION
@@ -105,6 +130,16 @@ public class Player : MonoBehaviour
         bool estaCaminando = inputMovimiento.magnitude > deadzoneAnimacion;
 
         animator.SetBool(PARAM_CAMINANDO, estaCaminando);
+    }
+
+    //ANIMACION
+    private void ActualizarAnimacionAire()
+    {
+        if (animator == null || rb == null)
+            return;
+
+        animator.SetBool(PARAM_EN_SUELO, estaEnSuelo);
+        animator.SetFloat(PARAM_VELOCIDAD_Y, rb.linearVelocity.y);
     }
 
     //ROTACION MODELO
@@ -133,12 +168,28 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             estaEnSuelo = true;
+
+            //ANIMACION
+            if (animator != null)
+            {
+                animator.SetBool(PARAM_EN_SUELO, true);
+            }
         }
 
         if (collision.gameObject.CompareTag("Trampolin"))
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
+
+            //ANIMACION
+            estaEnSuelo = false;
+
+            //ANIMACION
+            if (animator != null)
+            {
+                animator.SetBool(PARAM_EN_SUELO, false);
+                animator.SetTrigger(PARAM_SALTAR);
+            }
 
             if (tutorialManager != null)
             {
