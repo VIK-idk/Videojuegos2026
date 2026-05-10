@@ -28,7 +28,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Configuracion")]
     [SerializeField] private KeyCode teclaSaltarTutorial = KeyCode.Tab;
     [SerializeField] private float tiempoMinimoLectura = 1.5f;
-    [SerializeField] private float duracionPasoStrikes = 2.5f;
+    [SerializeField] private float duracionPasoStrikes = 4f;
     [SerializeField] private float duracionMensajeFinal = 4f;
 
     [Header("Referencias")]
@@ -261,7 +261,8 @@ public class TutorialManager : MonoBehaviour
         if (tutorialTexto != null)
         {
             tutorialTexto.text =
-                "Muy bien. Ahora recoge un pez.";
+                "Muy bien. Ahora recolecta un pez.\n\n" +
+                "Se encuentran flotando sobre las morsas.";
         }
 
         ActualizarTextoSkip(true);
