@@ -60,6 +60,7 @@ Material:
     - _BumpScale: 1
     - _DstBlend: 10
     - _DstBlendAlpha: 10
+    - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _Surface: 1
     - _ZWrite: 0
