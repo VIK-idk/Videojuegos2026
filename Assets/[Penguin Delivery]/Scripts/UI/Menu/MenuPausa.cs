@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MenuPausa : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class MenuPausa : MonoBehaviour
 
     [Header("UI Mando")]
     [SerializeField] private GameObject primerBotonPausa;
+    [SerializeField] private GameObject primerBotonOpciones;
 
     [SerializeField] private string escenaPrincipal;
     [SerializeField] private TiendaUIController tiendaUIController;
@@ -25,12 +28,18 @@ public class MenuPausa : MonoBehaviour
             PauseGame();
         }
 
+        if (!isGamePaused || EventSystem.current == null)
+            return;
 
-        if (isGamePaused && menuPausa.activeSelf)
+        if (EventSystem.current.currentSelectedGameObject == null)
         {
-            if (EventSystem.current.currentSelectedGameObject == null)
+            if (menuOpciones != null && menuOpciones.activeInHierarchy)
             {
-                EventSystem.current.SetSelectedGameObject(primerBotonPausa);
+                SeleccionarObjeto(primerBotonOpciones);
+            }
+            else if (menuPausa != null && menuPausa.activeInHierarchy)
+            {
+                SeleccionarObjeto(primerBotonPausa);
             }
         }
     }
@@ -41,21 +50,27 @@ public class MenuPausa : MonoBehaviour
         {
             Time.timeScale = 0;
 
-            menuPausa.SetActive(true);
-            menuOpciones.SetActive(false);
+            if (menuPausa != null)
+                menuPausa.SetActive(true);
+
+            if (menuOpciones != null)
+                menuOpciones.SetActive(false);
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(primerBotonPausa);
+            SeleccionarObjeto(primerBotonPausa);
+            StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
         }
         else
         {
             Time.timeScale = 1;
 
-            menuPausa.SetActive(false);
-            menuOpciones.SetActive(false);
+            if (menuPausa != null)
+                menuPausa.SetActive(false);
+
+            if (menuOpciones != null)
+                menuOpciones.SetActive(false);
 
             bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
 
@@ -65,7 +80,10 @@ public class MenuPausa : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
             }
 
-            EventSystem.current.SetSelectedGameObject(null);
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
         }
     }
 
@@ -75,9 +93,59 @@ public class MenuPausa : MonoBehaviour
         PauseGame();
     }
 
+    public void AbrirOpciones()
+    {
+        if (!isGamePaused)
+            isGamePaused = true;
+
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(true);
+
+        SeleccionarObjeto(primerBotonOpciones);
+        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonOpciones));
+    }
+
+    public void VolverMenuPausa()
+    {
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        if (menuPausa != null)
+            menuPausa.SetActive(true);
+
+        SeleccionarObjeto(primerBotonPausa);
+        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
+    }
+
     public void Salir()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(escenaPrincipal);
+    }
+
+    private void SeleccionarObjeto(GameObject objeto)
+    {
+        if (EventSystem.current == null || objeto == null)
+            return;
+
+        if (!objeto.activeInHierarchy)
+            return;
+
+        Selectable selectable = objeto.GetComponent<Selectable>();
+
+        if (selectable != null && !selectable.interactable)
+            return;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(objeto);
+    }
+
+    private IEnumerator SeleccionarAlFinalDelFrame(GameObject objeto)
+    {
+        yield return null;
+        SeleccionarObjeto(objeto);
     }
 }

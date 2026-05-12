@@ -31,21 +31,6 @@ public class PlayerSettings : MonoBehaviour
         ConfigurarSlidersAudio();
         CargarYAplicarSettings();
 
-        if (EventSystem.current != null && primerBotonOpciones != null)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(primerBotonOpciones);
-        }
-    }
-
-    private void Update()
-    {
-        if (EventSystem.current != null &&
-            EventSystem.current.currentSelectedGameObject == null &&
-            primerBotonOpciones != null)
-        {
-            EventSystem.current.SetSelectedGameObject(primerBotonOpciones);
-        }
     }
 
     private void ConfigurarDropdownResolucion()
