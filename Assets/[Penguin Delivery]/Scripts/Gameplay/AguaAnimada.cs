@@ -6,34 +6,27 @@ public class AguaAnimadaGrupo : MonoBehaviour
     [SerializeField] private Vector2 velocidadTextura = new Vector2(0.03f, 0.01f);
     [SerializeField] private Vector2 tilingTextura = Vector2.one;
 
-    [Header("Movimiento suave")]
-    [SerializeField] private bool moverArribaAbajo = true;
+    [Header("Movimiento suave del lago completo")]
+    [SerializeField] private bool moverLagoCompletoArribaAbajo = false;
     [SerializeField] private float alturaMovimiento = 0.03f;
     [SerializeField] private float velocidadMovimiento = 0.7f;
 
     private Renderer[] renderersAgua;
     private MaterialPropertyBlock propertyBlock;
-    private Vector3[] posicionesIniciales;
-
     private Vector2 offsetActual;
+    private Vector3 posicionInicialLago;
 
     private void Start()
     {
         renderersAgua = GetComponentsInChildren<Renderer>();
         propertyBlock = new MaterialPropertyBlock();
-
-        posicionesIniciales = new Vector3[renderersAgua.Length];
-
-        for (int i = 0; i < renderersAgua.Length; i++)
-        {
-            posicionesIniciales[i] = renderersAgua[i].transform.localPosition;
-        }
+        posicionInicialLago = transform.localPosition;
     }
 
     private void Update()
     {
         AnimarTextura();
-        AnimarMovimientoSuave();
+        AnimarLagoCompleto();
     }
 
     private void AnimarTextura()
@@ -69,22 +62,13 @@ public class AguaAnimadaGrupo : MonoBehaviour
         }
     }
 
-    private void AnimarMovimientoSuave()
+    private void AnimarLagoCompleto()
     {
-        if (!moverArribaAbajo)
+        if (!moverLagoCompletoArribaAbajo)
             return;
 
-        for (int i = 0; i < renderersAgua.Length; i++)
-        {
-            Renderer rendererAgua = renderersAgua[i];
+        float movimientoY = Mathf.Sin(Time.time * velocidadMovimiento) * alturaMovimiento;
 
-            if (rendererAgua == null)
-                continue;
-
-            float desfase = i * 0.35f;
-            float movimientoY = Mathf.Sin((Time.time * velocidadMovimiento) + desfase) * alturaMovimiento;
-
-            rendererAgua.transform.localPosition = posicionesIniciales[i] + new Vector3(0f, movimientoY, 0f);
-        }
+        transform.localPosition = posicionInicialLago + new Vector3(0f, movimientoY, 0f);
     }
 }

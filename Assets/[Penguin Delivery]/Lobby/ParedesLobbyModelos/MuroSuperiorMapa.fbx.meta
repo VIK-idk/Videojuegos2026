@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LadrillosMaterial
+      name: Ladrillos
     second: {fileID: 2100000, guid: a1427d0416525314d9b8cbbe0a7e99c9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Nieve
+    second: {fileID: 2100000, guid: a551714ea1c439646a987535cf56daf1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
