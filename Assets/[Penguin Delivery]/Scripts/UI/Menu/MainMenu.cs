@@ -50,7 +50,7 @@ public class MainMenu : MonoBehaviour
     public void Jugar()
     {
         SesionPartida.ReiniciarSesion();
-        SceneManager.LoadScene(nombreEscena);
+        SceneLoader.CargarEscena(nombreEscena);
     }
 
     public void AbrirOpciones()

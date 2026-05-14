@@ -123,7 +123,7 @@ public class MenuPausa : MonoBehaviour
     public void Salir()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(escenaPrincipal);
+        SceneLoader.CargarEscena(escenaPrincipal);
     }
 
     private void SeleccionarObjeto(GameObject objeto)

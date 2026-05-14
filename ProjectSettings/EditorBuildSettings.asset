@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/[Penguin Delivery]/Escenas/Gameplay.unity
     guid: 34993a1791e09e640a0d7db682ddeb65
+  - enabled: 1
+    path: Assets/[Penguin Delivery]/Escenas/PantallaCarga.unity
+    guid: 4bbc8aa4b7167b54db39cccc5fd5649a
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
