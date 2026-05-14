@@ -1588,6 +1588,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 350bce32c3abefd4bbf7ecb653e741a9, type: 3}
   - {fileID: 21300000, guid: 69ab7811ee2f38645ae966843689adf5, type: 3}
   duracionExplosion: 0.1
+  restaurarSpriteAlFinal: 1
   escalaSeleccionado: 1.08
   velocidadEscala: 12
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
@@ -5771,6 +5772,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 350bce32c3abefd4bbf7ecb653e741a9, type: 3}
   - {fileID: 21300000, guid: 69ab7811ee2f38645ae966843689adf5, type: 3}
   duracionExplosion: 0.1
+  restaurarSpriteAlFinal: 0
   escalaSeleccionado: 1.08
   velocidadEscala: 12
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
@@ -6655,6 +6657,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 350bce32c3abefd4bbf7ecb653e741a9, type: 3}
   - {fileID: 21300000, guid: 69ab7811ee2f38645ae966843689adf5, type: 3}
   duracionExplosion: 0.1
+  restaurarSpriteAlFinal: 0
   escalaSeleccionado: 1.08
   velocidadEscala: 12
   colorNormal: {r: 1, g: 1, b: 1, a: 1}

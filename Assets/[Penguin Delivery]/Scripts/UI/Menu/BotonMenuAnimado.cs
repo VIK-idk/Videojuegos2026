@@ -14,6 +14,9 @@ public class BotonMenuAnimado : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [Header("Animacion click")]
     [SerializeField] private float duracionExplosion = 0.07f;
 
+    [Header("Comportamiento al terminar")]
+    [SerializeField] private bool restaurarSpriteAlFinal = true;
+
     [Header("Hover / Selected")]
     [SerializeField] private float escalaSeleccionado = 1.08f;
     [SerializeField] private float velocidadEscala = 12f;
@@ -42,24 +45,15 @@ public class BotonMenuAnimado : MonoBehaviour, IPointerEnterHandler, IPointerExi
         escalaNormal = rectTransform.localScale;
         escalaObjetivo = escalaNormal;
 
-        ResetearVisualCompleto();
+        if (imagenBoton != null && spriteNormal != null)
+        {
+            imagenBoton.sprite = spriteNormal;
+        }
 
         if (boton != null)
         {
             boton.onClick.AddListener(ReproducirClick);
         }
-    }
-
-    private void OnEnable()
-    {
-        reproduciendoClick = false;
-        ResetearVisualCompleto();
-    }
-
-    private void OnDisable()
-    {
-        reproduciendoClick = false;
-        ResetearVisualCompleto();
     }
 
     private void Update()
@@ -107,11 +101,14 @@ public class BotonMenuAnimado : MonoBehaviour, IPointerEnterHandler, IPointerExi
             yield return new WaitForSecondsRealtime(duracionExplosion);
         }
 
-        // Se resetea ANTES de ejecutar la accion, porque la accion puede ocultar/desactivar este boton.
-        reproduciendoClick = false;
-        ResetearVisualCompleto();
+        if (restaurarSpriteAlFinal)
+        {
+            ResetearVisual();
+        }
 
         accionAlTerminar.Invoke();
+
+        reproduciendoClick = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -149,22 +146,16 @@ public class BotonMenuAnimado : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void DeseleccionarVisualmente()
     {
-        escalaObjetivo = escalaNormal;
+        if (reproduciendoClick)
+            return;
 
-        if (imagenBoton != null)
-        {
-            imagenBoton.color = colorNormal;
-        }
+        ResetearVisual();
     }
 
-    public void ResetearVisualCompleto()
+    private void ResetearVisual()
     {
         escalaObjetivo = escalaNormal;
-
-        if (rectTransform != null)
-        {
-            rectTransform.localScale = escalaNormal;
-        }
+        rectTransform.localScale = escalaNormal;
 
         if (imagenBoton != null)
         {
@@ -175,5 +166,11 @@ public class BotonMenuAnimado : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 imagenBoton.sprite = spriteNormal;
             }
         }
+    }
+
+    public void ResetearVisualCompleto()
+    {
+        reproduciendoClick = false;
+        ResetearVisual();
     }
 }
