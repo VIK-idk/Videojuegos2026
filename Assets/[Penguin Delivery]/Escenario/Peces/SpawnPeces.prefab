@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2058193621680090851}
   - component: {fileID: 6090188310738406917}
   - component: {fileID: 7244251907527870026}
+  - component: {fileID: 5798450430304292026}
   m_Layer: 0
   m_Name: PezBurbuja
   m_TagString: Untagged
@@ -83,6 +84,28 @@ MonoBehaviour:
   triggerExplotarBurbuja: Explotar
   triggerRecolectarPez: Recolectar
   duracionAntesDeRecoger: 0.4
+--- !u!95 &5798450430304292026
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222574810564137369}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7144d8fa9c83fca4caefa442b5224932, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9010143219890680525
 GameObject:
   m_ObjectHideFlags: 0
