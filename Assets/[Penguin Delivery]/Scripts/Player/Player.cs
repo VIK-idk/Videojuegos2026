@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 
     //ANIMACION
     private const string PARAM_CAMINANDO = "Caminando";
-
+   
     //ANIMACION
     private const string PARAM_EN_SUELO = "EnSuelo";
 
@@ -227,6 +227,13 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
+
+            MorsaAnimacion morsaAnimacion = collision.gameObject.GetComponentInParent<MorsaAnimacion>();
+
+            if (morsaAnimacion != null)
+            {
+                morsaAnimacion.ReproducirRebote();
+            }
 
             //ANIMACION
             estaEnSuelo = false;
