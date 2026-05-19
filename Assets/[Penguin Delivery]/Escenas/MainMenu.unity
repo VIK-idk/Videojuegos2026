@@ -4134,67 +4134,97 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.16
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.14
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalPosition.z
       value: 3.61
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.5760958
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.7793929
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.17190363
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.17637914
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -106.534
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 15.671005
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: -8679921383154817045, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 13.149002
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    - target: {fileID: 919132149155446097, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
       propertyPath: m_Name
-      value: ReyMorsaNormal
+      value: ReyMorsa
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4aadf228a927bdd4baf466e3fe4c0249, type: 3}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 977795123}
+  m_SourcePrefab: {fileID: 100100000, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
+--- !u!1 &977795122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: de9908f4c09b3604ab04b91302c07b78, type: 3}
+  m_PrefabInstance: {fileID: 977795121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &977795123
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977795122}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 449832c9c2e522144b243cd81af7acda, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &980108734
 GameObject:
   m_ObjectHideFlags: 0
