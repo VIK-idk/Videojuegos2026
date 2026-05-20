@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8926612109175855511}
-  - component: {fileID: 6024002379218417881}
   m_Layer: 0
   m_Name: Lago
   m_TagString: Untagged
@@ -33,23 +32,6 @@ Transform:
   - {fileID: 7699405732937734936}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6024002379218417881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2372785902070888951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9c289c6fb75eda439a987c03a1ccd3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocidadTextura: {x: 0.03, y: 0.01}
-  tilingTextura: {x: 1, y: 1}
-  moverLagoCompletoArribaAbajo: 0
-  alturaMovimiento: 0.03
-  velocidadMovimiento: 0.7
 --- !u!1001 &7877765268215266547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,7 +103,7 @@ PrefabInstance:
     - target: {fileID: -3887185075125053422, guid: 28de2ef3f8102614f9ff3659e64bb296, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: af08ed70d612674449664acd7cf70ac2, type: 2}
+      objectReference: {fileID: 2100000, guid: f77153cfdec710742a4b71afc224aaa4, type: 2}
     - target: {fileID: 919132149155446097, guid: 28de2ef3f8102614f9ff3659e64bb296, type: 3}
       propertyPath: m_Name
       value: AguaLago
