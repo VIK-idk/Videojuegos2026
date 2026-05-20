@@ -47349,7 +47349,7 @@ GameObject:
   - component: {fileID: 1746836472}
   - component: {fileID: 1746836471}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: ParticulasNieve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47622,7 +47622,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.8632076, g: 0.95029557, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -52182,7 +52182,7 @@ Transform:
   m_GameObject: {fileID: 1746836470}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.8, y: 24.6, z: -0}
+  m_LocalPosition: {x: 0.8, y: 23.2, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -63092,6 +63092,7 @@ SceneRoots:
   - {fileID: 1390605841}
   - {fileID: 871043105}
   - {fileID: 823773492}
+  - {fileID: 1746836473}
   - {fileID: 1167442137}
   - {fileID: 1019892072}
   - {fileID: 777215545}
@@ -63108,7 +63109,6 @@ SceneRoots:
   - {fileID: 313034911}
   - {fileID: 217213272}
   - {fileID: 1996024687}
-  - {fileID: 1746836473}
   - {fileID: 1041023938}
   - {fileID: 954908537}
   - {fileID: 945138255}
