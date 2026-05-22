@@ -2,14 +2,24 @@ using UnityEngine;
 
 public class CameraPivotController : MonoBehaviour
 {
-    [SerializeField] private float sensibilidadPorDefecto = 550f;
+    [Header("Sensibilidad")]
+    [SerializeField] private float sensibilidadRaton = 550f;
+    [SerializeField] private float sensibilidadMando = 200f;
+
+    [Header("Deadzone mando")]
+    [Range(0f, 0.5f)]
+    [SerializeField] private float deadzoneMando = 0.15f;
+
     [SerializeField] private Transform playerBody;
 
+    [Header("Limites")]
     [SerializeField] private float limiteVertical = 85f;
 
     private float xRotation = 0f;
     private float yRotation = 0f;
     private bool ignorarPrimerFrame = true;
+
+    private const string CLAVE_SENSIBILIDAD = "Sensibilidad";
 
     private void Start()
     {
@@ -23,9 +33,7 @@ public class CameraPivotController : MonoBehaviour
         xRotation = anguloInicialX;
 
         if (playerBody != null)
-        {
             yRotation = playerBody.eulerAngles.y;
-        }
     }
 
     private void Update()
@@ -36,13 +44,28 @@ public class CameraPivotController : MonoBehaviour
             return;
         }
 
-        float sensibilidadActual = PlayerPrefs.GetFloat("Sensibilidad", sensibilidadPorDefecto);
+        float sensibilidadActual = PlayerPrefs.GetFloat(CLAVE_SENSIBILIDAD, sensibilidadRaton);
 
+        float factorMando = 1f;
+
+        if (sensibilidadRaton != 0f)
+        {
+            factorMando = sensibilidadMando / sensibilidadRaton;
+        }
+
+        // 🔹 RATÓN
         float mouseX = Input.GetAxis("Mouse X") * sensibilidadActual * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * sensibilidadActual * Time.deltaTime;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+        // 🔹 MANDO
+        float padX = ApplyDeadzone(Input.GetAxis("RightStickX")) * sensibilidadActual * factorMando * Time.deltaTime;
+        float padY = ApplyDeadzone(Input.GetAxis("RightStickY")) * sensibilidadActual * factorMando * Time.deltaTime;
+
+        float inputX = mouseX + padX;
+        float inputY = mouseY + padY;
+
+        yRotation += inputX;
+        xRotation -= inputY;
 
         xRotation = Mathf.Clamp(xRotation, -limiteVertical, limiteVertical);
 
@@ -52,5 +75,14 @@ public class CameraPivotController : MonoBehaviour
         {
             playerBody.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
+    }
+
+    private float ApplyDeadzone(float value)
+    {
+        if (Mathf.Abs(value) < deadzoneMando)
+            return 0f;
+
+        // reescala para que no pierdas sensibilidad fuera de la zona muerta
+        return Mathf.Sign(value) * ((Mathf.Abs(value) - deadzoneMando) / (1f - deadzoneMando));
     }
 }

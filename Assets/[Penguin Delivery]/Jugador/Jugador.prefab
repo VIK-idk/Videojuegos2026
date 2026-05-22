@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e20bb227c6b094895f155fea12009a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensibilidadPorDefecto: 550
+  sensibilidadRaton: 550
+  sensibilidadMando: 200
+  deadzoneMando: 0.15
   playerBody: {fileID: 5380027973922860330}
+  limiteVertical: 85
 --- !u!1 &1539632212186004729
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +130,11 @@ MonoBehaviour:
   jumpTrampolin: 60
   multiplicadorCaida: 10
   multiplicadorSaltoBajo: 2
+  animator: {fileID: 4563673850262336262}
+  deadzoneAnimacion: 0.1
+  modeloVisual: {fileID: 1308211444343304868}
+  velocidadRotacionModelo: 10
+  offsetRotacionModelo: 0
 --- !u!136 &5410062417430190281
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -285,6 +293,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_DirtyAABB
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0.0026021004
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.065798044
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0.65926266
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0.7099153
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.63868624
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0.6691376
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
       propertyPath: m_Name
       value: Guppy
@@ -292,10 +328,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4563673850262336262}
   m_SourcePrefab: {fileID: 100100000, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
 --- !u!4 &6310191291881081529 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
   m_PrefabInstance: {fileID: 5771632240277106002}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6690551484547174403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a47055075bc7cd40955c9429661a693, type: 3}
+  m_PrefabInstance: {fileID: 5771632240277106002}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4563673850262336262
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6690551484547174403}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6edb21e191ecdbe4cb7e6b96968d14a2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
