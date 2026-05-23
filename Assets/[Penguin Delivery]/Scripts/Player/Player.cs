@@ -45,7 +45,8 @@ public class Player : MonoBehaviour
 
     //SUELOS VFX
     [Header("Suelos / VFX pasos")]
-    [SerializeField] private Transform puntoEfectosPasos;
+    [SerializeField] private Transform puntoPieIzquierdo;
+    [SerializeField] private Transform puntoPieDerecho;
 
     //SUELOS VFX
     private Suelo sueloActual;
@@ -54,7 +55,10 @@ public class Player : MonoBehaviour
     private TipoSuelo tipoSueloActual;
 
     //SUELOS VFX
-    private ParticleSystem efectoPasosActual;
+    private ParticleSystem efectoPasosIzquierdo;
+
+    //SUELOS VFX
+    private ParticleSystem efectoPasosDerecho;
 
     private TutorialManager tutorialManager;
 
@@ -93,9 +97,15 @@ public class Player : MonoBehaviour
         }
 
         //SUELOS VFX
-        if (puntoEfectosPasos == null)
+        if (puntoPieIzquierdo == null)
         {
-            puntoEfectosPasos = transform;
+            puntoPieIzquierdo = transform;
+        }
+
+        //SUELOS VFX
+        if (puntoPieDerecho == null)
+        {
+            puntoPieDerecho = transform;
         }
     }
 
@@ -253,10 +263,8 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (efectoPasosActual != null && !efectoPasosActual.isPlaying)
-        {
-            efectoPasosActual.Play();
-        }
+        ReproducirEfecto(efectoPasosIzquierdo);
+        ReproducirEfecto(efectoPasosDerecho);
     }
 
     //SUELOS VFX
@@ -272,51 +280,107 @@ public class Player : MonoBehaviour
 
         tipoSueloActual = nuevoSuelo.tipo;
 
-        if (efectoPasosActual != null)
-        {
-            Destroy(efectoPasosActual.gameObject);
-            efectoPasosActual = null;
-        }
+        DestruirEfectosPasos();
 
         if (tipoSueloActual.efectoVisualCaminar != null)
         {
-            GameObject nuevoObjetoEfecto = Instantiate(
-                tipoSueloActual.efectoVisualCaminar,
-                puntoEfectosPasos.position,
-                Quaternion.identity,
-                puntoEfectosPasos
-            );
-
-            nuevoObjetoEfecto.transform.localPosition = Vector3.zero;
-
-            efectoPasosActual = nuevoObjetoEfecto.GetComponent<ParticleSystem>();
-
-            if (efectoPasosActual == null)
-            {
-                efectoPasosActual = nuevoObjetoEfecto.GetComponentInChildren<ParticleSystem>();
-            }
-
-            if (efectoPasosActual != null)
-            {
-                efectoPasosActual.Stop();
-            }
+            efectoPasosIzquierdo = CrearEfectoPasos(puntoPieIzquierdo);
+            efectoPasosDerecho = CrearEfectoPasos(puntoPieDerecho);
 
             Debug.Log("Suelo actual: " + tipoSueloActual.nombre);
+        }
+    }
+
+
+    //SUELOS VFX
+    private ParticleSystem CrearEfectoPasos(Transform punto)
+    {
+        if (punto == null || tipoSueloActual == null || tipoSueloActual.efectoVisualCaminar == null)
+            return null;
+
+        GameObject nuevoObjetoEfecto = Instantiate(
+            tipoSueloActual.efectoVisualCaminar,
+            punto,
+            false
+        );
+
+        nuevoObjetoEfecto.transform.localPosition = Vector3.zero;
+
+        ParticleSystem particulas = nuevoObjetoEfecto.GetComponent<ParticleSystem>();
+
+        if (particulas == null)
+        {
+            particulas = nuevoObjetoEfecto.GetComponentInChildren<ParticleSystem>();
+        }
+
+        if (particulas != null)
+        {
+            particulas.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        return particulas;
+    }
+
+    //SUELOS VFX
+    private void DestruirEfectosPasos()
+    {
+        if (efectoPasosIzquierdo != null)
+        {
+            Destroy(efectoPasosIzquierdo.gameObject);
+            efectoPasosIzquierdo = null;
+        }
+
+        if (efectoPasosDerecho != null)
+        {
+            Destroy(efectoPasosDerecho.gameObject);
+            efectoPasosDerecho = null;
+        }
+    }
+
+    //SUELOS VFX
+    private void ReproducirEfecto(ParticleSystem efecto)
+    {
+        if (efecto != null && !efecto.isPlaying)
+        {
+            efecto.Play();
+        }
+    }
+
+    //SUELOS VFX
+    private void DetenerEfecto(ParticleSystem efecto)
+    {
+        if (efecto != null && efecto.isPlaying)
+        {
+            efecto.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 
     //SUELOS VFX
     private void DetenerEfectoPasos()
     {
-        if (efectoPasosActual != null && efectoPasosActual.isPlaying)
-        {
-            efectoPasosActual.Stop();
-        }
+        DetenerEfecto(efectoPasosIzquierdo);
+        DetenerEfecto(efectoPasosDerecho);
     }
 
     //SUELOS VFX
     private bool IntentarDetectarSuelo(Collision collision)
     {
+        bool contactoSuperior = false;
+
+        for (int i = 0; i < collision.contactCount; i++) // esto es para asegurarnos de que el contacto es por debajo del personaje, ya que a veces puede colisionar con piedras u otros objetos y no queremos que eso cuente como suelo
+        {
+            ContactPoint contacto = collision.GetContact(i); // obtenemos cada punto de contacto
+
+            if (contacto.normal.y > 0.5f)
+            {
+                contactoSuperior = true;
+                break;
+            }
+        }
+
+        if (!contactoSuperior)
+            return false;
+
         Suelo suelo = collision.gameObject.GetComponent<Suelo>();
 
         if (suelo == null) // Si no se encuentra en el objeto directamente, se busca en los padres (sobre todo por las piedras q tienen varios colliders)
@@ -338,6 +402,7 @@ public class Player : MonoBehaviour
 
         return true;
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         //SUELOS VFX

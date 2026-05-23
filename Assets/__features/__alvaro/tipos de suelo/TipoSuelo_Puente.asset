@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Puente
   efectoSonido: {fileID: 0}
-  efectoVisualCaminar: {fileID: 3383157717785543197, guid: 89f6fb6dc0583b74989b0766a8bfa1c0, type: 3}
+  efectoVisualCaminar: {fileID: 3383157717785543197, guid: 9c72e20391f13aa4899d0a549196e84f, type: 3}

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Hielo
   efectoSonido: {fileID: 0}
-  efectoVisualCaminar: {fileID: 3383157717785543197, guid: c8da88b2cdfcfa943acaad9489ff75e0, type: 3}
+  efectoVisualCaminar: {fileID: 3383157717785543197, guid: 45ae853ed6966e049834d65a12fc2e98, type: 3}
