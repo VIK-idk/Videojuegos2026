@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 
     //ANIMACION
     private const string PARAM_CAMINANDO = "Caminando";
-   
+
     //ANIMACION
     private const string PARAM_EN_SUELO = "EnSuelo";
 
@@ -42,6 +42,19 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform modeloVisual;
     [SerializeField] private float velocidadRotacionModelo = 10f;
     [SerializeField] private float offsetRotacionModelo = 0f;
+
+    //SUELOS VFX
+    [Header("Suelos / VFX pasos")]
+    [SerializeField] private Transform puntoEfectosPasos;
+
+    //SUELOS VFX
+    private Suelo sueloActual;
+
+    //SUELOS VFX
+    private TipoSuelo tipoSueloActual;
+
+    //SUELOS VFX
+    private ParticleSystem efectoPasosActual;
 
     private TutorialManager tutorialManager;
 
@@ -78,6 +91,12 @@ public class Player : MonoBehaviour
                 modeloVisual = encontrado;
             }
         }
+
+        //SUELOS VFX
+        if (puntoEfectosPasos == null)
+        {
+            puntoEfectosPasos = transform;
+        }
     }
 
     void Update()
@@ -94,10 +113,16 @@ public class Player : MonoBehaviour
         //ROTACION MODELO
         ActualizarRotacionModelo();
 
+        //SUELOS VFX
+        ActualizarEfectoPasos();
+
         if (Input.GetButtonDown("Saltar") && estaEnSuelo)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
+
+            //SUELOS VFX
+            DetenerEfectoPasos();
 
             //ANIMACION
             temporizadorQuieto = 0f;
@@ -210,18 +235,109 @@ public class Player : MonoBehaviour
         );
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //SUELOS VFX
+    private void ActualizarEfectoPasos()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (!estaEnSuelo)
+        {
+            DetenerEfectoPasos();
+            return;
+        }
+
+        Vector2 inputMovimiento = new Vector2(inputX, inputZ);
+        bool estaCaminando = inputMovimiento.magnitude > deadzoneAnimacion;
+
+        if (!estaCaminando)
+        {
+            DetenerEfectoPasos();
+            return;
+        }
+
+        if (efectoPasosActual != null && !efectoPasosActual.isPlaying)
+        {
+            efectoPasosActual.Play();
+        }
+    }
+
+    //SUELOS VFX
+    private void CambiarTipoSuelo(Suelo nuevoSuelo)
+    {
+        if (nuevoSuelo == null || nuevoSuelo.tipo == null)
+            return;
+
+        sueloActual = nuevoSuelo;
+
+        if (tipoSueloActual == nuevoSuelo.tipo)
+            return;
+
+        tipoSueloActual = nuevoSuelo.tipo;
+
+        if (efectoPasosActual != null)
+        {
+            Destroy(efectoPasosActual.gameObject);
+            efectoPasosActual = null;
+        }
+
+        if (tipoSueloActual.efectoVisualCaminar != null)
+        {
+            GameObject nuevoObjetoEfecto = Instantiate(
+                tipoSueloActual.efectoVisualCaminar,
+                puntoEfectosPasos.position,
+                Quaternion.identity,
+                puntoEfectosPasos
+            );
+
+            nuevoObjetoEfecto.transform.localPosition = Vector3.zero;
+
+            efectoPasosActual = nuevoObjetoEfecto.GetComponent<ParticleSystem>();
+
+            if (efectoPasosActual == null)
+            {
+                efectoPasosActual = nuevoObjetoEfecto.GetComponentInChildren<ParticleSystem>();
+            }
+
+            if (efectoPasosActual != null)
+            {
+                efectoPasosActual.Stop();
+            }
+
+            Debug.Log("Suelo actual: " + tipoSueloActual.nombre);
+        }
+    }
+
+    //SUELOS VFX
+    private void DetenerEfectoPasos()
+    {
+        if (efectoPasosActual != null && efectoPasosActual.isPlaying)
+        {
+            efectoPasosActual.Stop();
+        }
+    }
+
+    //SUELOS VFX
+    private bool IntentarDetectarSuelo(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Suelo suelo))
         {
             estaEnSuelo = true;
+            CambiarTipoSuelo(suelo);
 
             //ANIMACION
             if (animator != null)
             {
                 animator.SetBool(PARAM_EN_SUELO, true);
             }
+
+            return true;
         }
+
+        return false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //SUELOS VFX
+        IntentarDetectarSuelo(collision);
 
         if (collision.gameObject.CompareTag("Trampolin"))
         {
@@ -238,6 +354,9 @@ public class Player : MonoBehaviour
             //ANIMACION
             estaEnSuelo = false;
 
+            //SUELOS VFX
+            DetenerEfectoPasos();
+
             //ANIMACION
             temporizadorQuieto = 0f;
 
@@ -253,6 +372,15 @@ public class Player : MonoBehaviour
             {
                 tutorialManager.NotificarReboteEnMorsa();
             }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        //SUELOS VFX
+        if (sueloActual != null && collision.gameObject == sueloActual.gameObject)
+        {
+            sueloActual = null;
         }
     }
 }

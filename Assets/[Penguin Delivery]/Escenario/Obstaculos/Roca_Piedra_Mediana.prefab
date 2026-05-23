@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8798523551373976816}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,9 +42,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6706423435568987519}
+  - component: {fileID: 6495600530618811759}
   m_Layer: 0
   m_Name: Roca_Piedra_Mediana
-  m_TagString: Untagged
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,6 +67,19 @@ Transform:
   - {fileID: 6165096853227738170}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6495600530618811759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3280934299291612712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937851a8cc980a048950e5b8177bd856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipo: {fileID: 11400000, guid: e36f1fb8338d81c4798f957c14cd5441, type: 2}
 --- !u!1 &4051732506625104213
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,7 +93,7 @@ GameObject:
   - component: {fileID: 669134070023227360}
   m_Layer: 0
   m_Name: Cube_001
-  m_TagString: Ground
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,7 +155,7 @@ GameObject:
   - component: {fileID: 9184320434239180329}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Ground
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
