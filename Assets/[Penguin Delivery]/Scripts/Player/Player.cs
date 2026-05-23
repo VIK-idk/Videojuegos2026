@@ -317,23 +317,27 @@ public class Player : MonoBehaviour
     //SUELOS VFX
     private bool IntentarDetectarSuelo(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent(out Suelo suelo))
+        Suelo suelo = collision.gameObject.GetComponent<Suelo>();
+
+        if (suelo == null) // Si no se encuentra en el objeto directamente, se busca en los padres (sobre todo por las piedras q tienen varios colliders)
         {
-            estaEnSuelo = true;
-            CambiarTipoSuelo(suelo);
-
-            //ANIMACION
-            if (animator != null)
-            {
-                animator.SetBool(PARAM_EN_SUELO, true);
-            }
-
-            return true;
+            suelo = collision.gameObject.GetComponentInParent<Suelo>();
         }
 
-        return false;
-    }
+        if (suelo == null || suelo.tipo == null)
+            return false;
 
+        estaEnSuelo = true;
+        CambiarTipoSuelo(suelo);
+
+        //ANIMACION
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_EN_SUELO, true);
+        }
+
+        return true;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         //SUELOS VFX
@@ -378,9 +382,17 @@ public class Player : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         //SUELOS VFX
-        if (sueloActual != null && collision.gameObject == sueloActual.gameObject)
+        Suelo sueloSalida = collision.gameObject.GetComponent<Suelo>();
+
+        if (sueloSalida == null)
+        {
+            sueloSalida = collision.gameObject.GetComponentInParent<Suelo>();
+        }
+
+        if (sueloActual != null && sueloSalida == sueloActual)
         {
             sueloActual = null;
+            DetenerEfectoPasos();
         }
     }
 }
