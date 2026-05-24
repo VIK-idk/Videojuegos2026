@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 
     //ANIMACION
     private const string PARAM_CAMINANDO = "Caminando";
-   
+
     //ANIMACION
     private const string PARAM_EN_SUELO = "EnSuelo";
 
@@ -42,6 +42,23 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform modeloVisual;
     [SerializeField] private float velocidadRotacionModelo = 10f;
     [SerializeField] private float offsetRotacionModelo = 0f;
+
+    //SUELOS VFX
+    [Header("Suelos / VFX pasos")]
+    [SerializeField] private Transform puntoPieIzquierdo;
+    [SerializeField] private Transform puntoPieDerecho;
+
+    //SUELOS VFX
+    private Suelo sueloActual;
+
+    //SUELOS VFX
+    private TipoSuelo tipoSueloActual;
+
+    //SUELOS VFX
+    private ParticleSystem efectoPasosIzquierdo;
+
+    //SUELOS VFX
+    private ParticleSystem efectoPasosDerecho;
 
     private TutorialManager tutorialManager;
 
@@ -78,6 +95,18 @@ public class Player : MonoBehaviour
                 modeloVisual = encontrado;
             }
         }
+
+        //SUELOS VFX
+        if (puntoPieIzquierdo == null)
+        {
+            puntoPieIzquierdo = transform;
+        }
+
+        //SUELOS VFX
+        if (puntoPieDerecho == null)
+        {
+            puntoPieDerecho = transform;
+        }
     }
 
     void Update()
@@ -94,10 +123,16 @@ public class Player : MonoBehaviour
         //ROTACION MODELO
         ActualizarRotacionModelo();
 
+        //SUELOS VFX
+        ActualizarEfectoPasos();
+
         if (Input.GetButtonDown("Saltar") && estaEnSuelo)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
+
+            //SUELOS VFX
+            DetenerEfectoPasos();
 
             //ANIMACION
             temporizadorQuieto = 0f;
@@ -210,18 +245,168 @@ public class Player : MonoBehaviour
         );
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //SUELOS VFX
+    private void ActualizarEfectoPasos()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (!estaEnSuelo)
         {
-            estaEnSuelo = true;
+            DetenerEfectoPasos();
+            return;
+        }
 
-            //ANIMACION
-            if (animator != null)
+        Vector2 inputMovimiento = new Vector2(inputX, inputZ);
+        bool estaCaminando = inputMovimiento.magnitude > deadzoneAnimacion;
+
+        if (!estaCaminando)
+        {
+            DetenerEfectoPasos();
+            return;
+        }
+
+        ReproducirEfecto(efectoPasosIzquierdo);
+        ReproducirEfecto(efectoPasosDerecho);
+    }
+
+    //SUELOS VFX
+    private void CambiarTipoSuelo(Suelo nuevoSuelo)
+    {
+        if (nuevoSuelo == null || nuevoSuelo.tipo == null)
+            return;
+
+        sueloActual = nuevoSuelo;
+
+        if (tipoSueloActual == nuevoSuelo.tipo)
+            return;
+
+        tipoSueloActual = nuevoSuelo.tipo;
+
+        DestruirEfectosPasos();
+
+        if (tipoSueloActual.efectoVisualCaminar != null)
+        {
+            efectoPasosIzquierdo = CrearEfectoPasos(puntoPieIzquierdo);
+            efectoPasosDerecho = CrearEfectoPasos(puntoPieDerecho);
+
+            Debug.Log("Suelo actual: " + tipoSueloActual.nombre);
+        }
+    }
+
+
+    //SUELOS VFX
+    private ParticleSystem CrearEfectoPasos(Transform punto)
+    {
+        if (punto == null || tipoSueloActual == null || tipoSueloActual.efectoVisualCaminar == null)
+            return null;
+
+        GameObject nuevoObjetoEfecto = Instantiate(
+            tipoSueloActual.efectoVisualCaminar,
+            punto,
+            false
+        );
+
+        nuevoObjetoEfecto.transform.localPosition = Vector3.zero;
+
+        ParticleSystem particulas = nuevoObjetoEfecto.GetComponent<ParticleSystem>();
+
+        if (particulas == null)
+        {
+            particulas = nuevoObjetoEfecto.GetComponentInChildren<ParticleSystem>();
+        }
+
+        if (particulas != null)
+        {
+            particulas.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        return particulas;
+    }
+
+    //SUELOS VFX
+    private void DestruirEfectosPasos()
+    {
+        if (efectoPasosIzquierdo != null)
+        {
+            Destroy(efectoPasosIzquierdo.gameObject);
+            efectoPasosIzquierdo = null;
+        }
+
+        if (efectoPasosDerecho != null)
+        {
+            Destroy(efectoPasosDerecho.gameObject);
+            efectoPasosDerecho = null;
+        }
+    }
+
+    //SUELOS VFX
+    private void ReproducirEfecto(ParticleSystem efecto)
+    {
+        if (efecto != null && !efecto.isPlaying)
+        {
+            efecto.Play();
+        }
+    }
+
+    //SUELOS VFX
+    private void DetenerEfecto(ParticleSystem efecto)
+    {
+        if (efecto != null && efecto.isPlaying)
+        {
+            efecto.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
+    }
+
+    //SUELOS VFX
+    private void DetenerEfectoPasos()
+    {
+        DetenerEfecto(efectoPasosIzquierdo);
+        DetenerEfecto(efectoPasosDerecho);
+    }
+
+    //SUELOS VFX
+    private bool IntentarDetectarSuelo(Collision collision)
+    {
+        bool contactoSuperior = false;
+
+        for (int i = 0; i < collision.contactCount; i++) // esto es para asegurarnos de que el contacto es por debajo del personaje, ya que a veces puede colisionar con piedras u otros objetos y no queremos que eso cuente como suelo
+        {
+            ContactPoint contacto = collision.GetContact(i); // obtenemos cada punto de contacto
+
+            if (contacto.normal.y > 0.5f)
             {
-                animator.SetBool(PARAM_EN_SUELO, true);
+                contactoSuperior = true;
+                break;
             }
         }
+
+        if (!contactoSuperior)
+            return false;
+
+        Suelo suelo = collision.gameObject.GetComponent<Suelo>();
+
+        if (suelo == null) // Si no se encuentra en el objeto directamente, se busca en los padres (sobre todo por las piedras q tienen varios colliders)
+        {
+            suelo = collision.gameObject.GetComponentInParent<Suelo>();
+        }
+
+        if (suelo == null || suelo.tipo == null)
+            return false;
+
+        estaEnSuelo = true;
+        CambiarTipoSuelo(suelo);
+
+        //ANIMACION
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_EN_SUELO, true);
+        }
+
+        return true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //SUELOS VFX
+        IntentarDetectarSuelo(collision);
 
         if (collision.gameObject.CompareTag("Trampolin"))
         {
@@ -238,6 +423,9 @@ public class Player : MonoBehaviour
             //ANIMACION
             estaEnSuelo = false;
 
+            //SUELOS VFX
+            DetenerEfectoPasos();
+
             //ANIMACION
             temporizadorQuieto = 0f;
 
@@ -253,6 +441,23 @@ public class Player : MonoBehaviour
             {
                 tutorialManager.NotificarReboteEnMorsa();
             }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        //SUELOS VFX
+        Suelo sueloSalida = collision.gameObject.GetComponent<Suelo>();
+
+        if (sueloSalida == null)
+        {
+            sueloSalida = collision.gameObject.GetComponentInParent<Suelo>();
+        }
+
+        if (sueloActual != null && sueloSalida == sueloActual)
+        {
+            sueloActual = null;
+            DetenerEfectoPasos();
         }
     }
 }

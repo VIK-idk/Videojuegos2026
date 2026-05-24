@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1525490244199759032}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Ground
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,9 +71,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5173388424980867333}
+  - component: {fileID: 5703818234780715319}
   m_Layer: 0
   m_Name: Roca_Hielo_Peque
-  m_TagString: Untagged
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,6 +96,19 @@ Transform:
   - {fileID: 2225532483003249271}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5703818234780715319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310253043960792939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937851a8cc980a048950e5b8177bd856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipo: {fileID: 11400000, guid: e36f1fb8338d81c4798f957c14cd5441, type: 2}
 --- !u!1001 &4514752375167790795
 PrefabInstance:
   m_ObjectHideFlags: 0
