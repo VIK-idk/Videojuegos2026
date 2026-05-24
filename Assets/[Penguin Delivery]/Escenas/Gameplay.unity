@@ -11508,6 +11508,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 393a4b2b18069de429559e74939fed4d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 279789fbaa693544c93b4181c0fe30ca, type: 2}
     - target: {fileID: 919132149155446097, guid: 393a4b2b18069de429559e74939fed4d, type: 3}
       propertyPath: m_Name
       value: nieve6
@@ -13207,6 +13211,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3b58e5456d28a6e4faee9ab1280d531e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 279789fbaa693544c93b4181c0fe30ca, type: 2}
     - target: {fileID: 919132149155446097, guid: 3b58e5456d28a6e4faee9ab1280d531e, type: 3}
       propertyPath: m_Name
       value: nieve1
@@ -26142,6 +26150,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5ad8f80eefaa39e489577163bd154a04, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 279789fbaa693544c93b4181c0fe30ca, type: 2}
     - target: {fileID: 919132149155446097, guid: 5ad8f80eefaa39e489577163bd154a04, type: 3}
       propertyPath: m_Name
       value: nieve2
@@ -28539,6 +28551,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 54aca9b0b04100f43b105b6e83f3c000, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 279789fbaa693544c93b4181c0fe30ca, type: 2}
     - target: {fileID: 919132149155446097, guid: 54aca9b0b04100f43b105b6e83f3c000, type: 3}
       propertyPath: m_Name
       value: nieve3
@@ -61325,6 +61341,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e070fbb420125614ebfcecab4d66b52b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 279789fbaa693544c93b4181c0fe30ca, type: 2}
     - target: {fileID: 919132149155446097, guid: e070fbb420125614ebfcecab4d66b52b, type: 3}
       propertyPath: m_Name
       value: nieve4
