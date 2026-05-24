@@ -415,6 +415,8 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesRosasActuales,
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
+
+            uiEncargo.ResaltarPezRecogido(color);
         }
 
         ComprobarEncargo();

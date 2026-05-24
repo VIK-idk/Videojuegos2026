@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29c7435746b7854f8a83ca626432682, type: 3}
+  m_Name: TipoSuelo_Hielo
+  m_EditorClassIdentifier: 
+  nombre: Hielo
+  efectoSonido: {fileID: 0}
+  efectoVisualCaminar: {fileID: 3383157717785543197, guid: 45ae853ed6966e049834d65a12fc2e98, type: 3}
