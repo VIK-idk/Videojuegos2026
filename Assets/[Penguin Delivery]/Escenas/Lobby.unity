@@ -2562,13 +2562,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ef29e1cc9d91d4e46a7323bf61a60d13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 444673076}
   m_SourcePrefab: {fileID: 100100000, guid: ef29e1cc9d91d4e46a7323bf61a60d13, type: 3}
 --- !u!4 &444673074 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef29e1cc9d91d4e46a7323bf61a60d13, type: 3}
   m_PrefabInstance: {fileID: 444673073}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &444673075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ef29e1cc9d91d4e46a7323bf61a60d13, type: 3}
+  m_PrefabInstance: {fileID: 444673073}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &444673076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444673075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937851a8cc980a048950e5b8177bd856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipo: {fileID: 11400000, guid: 28edc3d181b501c4998616553b829da7, type: 2}
 --- !u!1 &451430548
 GameObject:
   m_ObjectHideFlags: 0
@@ -4848,9 +4869,10 @@ GameObject:
   - component: {fileID: 836362843}
   - component: {fileID: 836362842}
   - component: {fileID: 836362841}
+  - component: {fileID: 836362845}
   m_Layer: 3
   m_Name: Suelo
-  m_TagString: Ground
+  m_TagString: nieve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4945,6 +4967,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &836362845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836362840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937851a8cc980a048950e5b8177bd856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipo: {fileID: 11400000, guid: 33d94968488c59d489a5e352e73e4ec5, type: 2}
 --- !u!1 &847773326
 GameObject:
   m_ObjectHideFlags: 0
@@ -8484,6 +8519,7 @@ GameObject:
   - component: {fileID: 1515504996}
   - component: {fileID: 1515504995}
   - component: {fileID: 1515504993}
+  - component: {fileID: 1515504997}
   m_Layer: 0
   m_Name: Cama
   m_TagString: Ground
@@ -8536,6 +8572,19 @@ Transform:
   - {fileID: 444673074}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1515504997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515504992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937851a8cc980a048950e5b8177bd856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipo: {fileID: 11400000, guid: 28edc3d181b501c4998616553b829da7, type: 2}
 --- !u!1 &1529000900
 GameObject:
   m_ObjectHideFlags: 0

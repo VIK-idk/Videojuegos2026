@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NuevoTipoSuelo", menuName = "Penguin Delivery/Tipo Suelo")]
+[CreateAssetMenu(fileName = "NuevoTipoSuelo", menuName = "Tipo de Suelo/Nuevo Suelo")]
 public class TipoSuelo : ScriptableObject
 {
     [Header("Datos")]
