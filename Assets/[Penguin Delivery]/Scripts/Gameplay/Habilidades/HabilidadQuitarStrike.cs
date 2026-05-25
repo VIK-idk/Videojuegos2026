@@ -43,7 +43,10 @@ public class HabilidadQuitarStrike : HabilidadBase
         usada = true;
 
         if (manager != null)
+        {
+            manager.ReproducirVFXHabilidad(this, true);
             manager.MostrarMensaje("Has eliminado un strike");
+        }
 
         return true;
     }

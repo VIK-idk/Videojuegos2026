@@ -21596,6 +21596,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+--- !u!4 &793788624 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7613566596948125290, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+  m_PrefabInstance: {fileID: 793788623}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &796274756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55742,6 +55747,10 @@ MonoBehaviour:
   slotHabilidad3: {fileID: 2141583363}
   textoMensaje: {fileID: 1230284214}
   duracionMensaje: 2
+  puntoVFXHabilidades: {fileID: 793788624}
+  tipoVFXHabilidad1: {fileID: 11400000, guid: 550d567faea0ace48a23e7accec7ff3c, type: 2}
+  tipoVFXHabilidad2: {fileID: 11400000, guid: dc63b7438d8a2b941b5c7bf7088a5bc4, type: 2}
+  tipoVFXHabilidad3: {fileID: 11400000, guid: ebd196ba0e1ef6049ac9c8663c37b88a, type: 2}
 --- !u!4 &1892191467
 Transform:
   m_ObjectHideFlags: 0
