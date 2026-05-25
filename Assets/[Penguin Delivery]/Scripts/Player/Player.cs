@@ -60,6 +60,13 @@ public class Player : MonoBehaviour
     //SUELOS VFX
     private ParticleSystem efectoPasosDerecho;
 
+    //VFX MORSA
+    [Header("VFX impulso morsa")]
+    [SerializeField] private GameObject vfxImpulsoMorsa;
+
+    //VFX MORSA
+    [SerializeField] private float duracionVFXImpulsoMorsa = 1f;
+
     private TutorialManager tutorialManager;
 
     private Rigidbody rb;
@@ -361,7 +368,39 @@ public class Player : MonoBehaviour
         DetenerEfecto(efectoPasosIzquierdo);
         DetenerEfecto(efectoPasosDerecho);
     }
+    //VFX MORSA
+private void ReproducirVFXImpulsoMorsa()
+{
+    CrearVFXImpulsoEnPie(puntoPieIzquierdo);
+    CrearVFXImpulsoEnPie(puntoPieDerecho);
+}
 
+//VFX MORSA
+private void CrearVFXImpulsoEnPie(Transform puntoPie)
+{
+    if (vfxImpulsoMorsa == null || puntoPie == null)
+        return;
+
+    GameObject nuevoVFX = Instantiate(
+        vfxImpulsoMorsa,
+        puntoPie.position,
+        vfxImpulsoMorsa.transform.rotation
+    );
+
+    ParticleSystem particulas = nuevoVFX.GetComponent<ParticleSystem>();
+
+    if (particulas == null)
+    {
+        particulas = nuevoVFX.GetComponentInChildren<ParticleSystem>();
+    }
+
+    if (particulas != null)
+    {
+        particulas.Play();
+    }
+
+    Destroy(nuevoVFX, duracionVFXImpulsoMorsa);
+}
     //SUELOS VFX
     private bool IntentarDetectarSuelo(Collision collision)
     {
@@ -394,6 +433,9 @@ public class Player : MonoBehaviour
         estaEnSuelo = true;
         CambiarTipoSuelo(suelo);
 
+
+        
+
         //ANIMACION
         if (animator != null)
         {
@@ -412,6 +454,8 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
+            //VFX MORSA
+            ReproducirVFXImpulsoMorsa();
 
             MorsaAnimacion morsaAnimacion = collision.gameObject.GetComponentInParent<MorsaAnimacion>();
 
