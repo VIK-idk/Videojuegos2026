@@ -137,7 +137,7 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
-
+            ReproducirVFXImpulsoMorsa();
             //SUELOS VFX
             DetenerEfectoPasos();
 
