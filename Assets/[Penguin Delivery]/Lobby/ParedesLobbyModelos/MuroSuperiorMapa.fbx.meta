@@ -13,7 +13,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Nieve
-    second: {fileID: 2100000, guid: a551714ea1c439646a987535cf56daf1, type: 2}
+    second: {fileID: 2100000, guid: dce2dfe6ad0dcdc48b3b1094253e7535, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

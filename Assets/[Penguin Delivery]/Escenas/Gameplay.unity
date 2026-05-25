@@ -21543,6 +21543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jugador
       objectReference: {fileID: 0}
+    - target: {fileID: 4682517723479998279, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: vfxImpulsoMorsa
+      value: 
+      objectReference: {fileID: 3383157717785543197, guid: 91811ea38016c6d4b96ad8db9ce6584d, type: 3}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.5
