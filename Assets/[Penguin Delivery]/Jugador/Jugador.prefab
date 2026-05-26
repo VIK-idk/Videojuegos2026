@@ -170,6 +170,8 @@ MonoBehaviour:
   offsetRotacionModelo: 0
   puntoPieIzquierdo: {fileID: 959682786480756533}
   puntoPieDerecho: {fileID: 7897572287527945435}
+  vfxImpulsoMorsa: {fileID: 3383157717785543197, guid: 91811ea38016c6d4b96ad8db9ce6584d, type: 3}
+  duracionVFXImpulsoMorsa: 1
 --- !u!136 &5410062417430190281
 CapsuleCollider:
   m_ObjectHideFlags: 0

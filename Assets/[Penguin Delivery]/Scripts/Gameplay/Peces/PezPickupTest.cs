@@ -11,13 +11,16 @@ public class PezPickupTest : MonoBehaviour
     [Header("Animaciones")]
     [SerializeField] private string triggerExplotarBurbuja = "Explotar";
     [SerializeField] private string triggerRecolectarPez = "Recolectar";
-    [SerializeField] private float duracionAntesDeRecoger = 0.35f;
+    [SerializeField] private float duracionAntesDeRecoger = 0.6f;
 
     private bool recogido = false;
     private SphereCollider triggerCollider;
     private float radioBase = 0f;
 
     private PecesTestManager manager;
+
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem vfxRecogerPez;
 
     private void Awake()
     {
@@ -52,6 +55,15 @@ public class PezPickupTest : MonoBehaviour
             if (pezVisual != null)
             {
                 pezAnimator = pezVisual.GetComponent<Animator>();
+            }
+        }
+        if (vfxRecogerPez == null)
+        {
+            Transform vfxEncontrado = BuscarHijoPorNombre(transform.root, "VFX_RecogerPez");
+
+            if (vfxEncontrado != null)
+            {
+                vfxRecogerPez = vfxEncontrado.GetComponent<ParticleSystem>();
             }
         }
 
@@ -121,6 +133,8 @@ public class PezPickupTest : MonoBehaviour
             triggerCollider.enabled = false;
         }
 
+        ReproducirVFXRecogerPez();
+
         if (burbujaAnimator != null)
         {
             burbujaAnimator.ResetTrigger(triggerExplotarBurbuja);
@@ -178,5 +192,14 @@ public class PezPickupTest : MonoBehaviour
         }
 
         return null;
+    }
+    private void ReproducirVFXRecogerPez()
+    {
+        if (vfxRecogerPez == null)
+            return;
+
+        vfxRecogerPez.gameObject.SetActive(true);
+        vfxRecogerPez.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        vfxRecogerPez.Play(true);
     }
 }
