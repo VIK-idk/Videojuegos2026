@@ -7,6 +7,6 @@ public class InteractuarCambiarEscena : Interactable
 
     protected override void Interactuar()
     {
-        SceneManager.LoadScene(nombreEscena);
+        SceneLoader.CargarEscena(nombreEscena);
     }
 }

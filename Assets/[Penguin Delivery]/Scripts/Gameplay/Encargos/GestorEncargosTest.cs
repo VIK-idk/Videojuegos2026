@@ -14,6 +14,9 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private StrikeManager strikeManager;
     [SerializeField] private GameManager gameManager;
 
+    [Header("Rey Morsa")]
+    [SerializeField] private ReyMorsaAnimacion reyMorsaAnimacion;
+
     [Header("UI")]
     [SerializeField] private UIEncargoLegacy uiEncargo;
     [SerializeField] private UIEstadoEncargoLegacy uiEstado;
@@ -412,6 +415,8 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesRosasActuales,
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
+
+            uiEncargo.ResaltarPezRecogido(color);
         }
 
         ComprobarEncargo();
@@ -461,6 +466,11 @@ public class GestorEncargosTest : MonoBehaviour
         encargoActual.enProceso = false;
         encargoActual.completado = true;
 
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.Aplaudir();
+        }
+
         if (pecesManager != null)
         {
             pecesManager.ReiniciarTodosLosPeces();
@@ -507,6 +517,10 @@ public class GestorEncargosTest : MonoBehaviour
         encargoActual.enProceso = false;
         encargoActual.fallado = true;
 
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.Enojar();
+        }
         if (pecesManager != null)
         {
             pecesManager.ReiniciarTodosLosPeces();
