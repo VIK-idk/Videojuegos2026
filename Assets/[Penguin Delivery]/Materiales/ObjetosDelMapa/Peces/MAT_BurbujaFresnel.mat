@@ -110,7 +110,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FuerzaFresnel: 4.5
+    - _FuerzaFresnel: 100
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -126,14 +126,14 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _Transparencia: 0.1
+    - _Transparencia: 0.02
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorBurbuja: {r: 0.5707547, g: 0.91736305, b: 1, a: 0.3137255}
-    - _ColorFresnel: {r: 0.5707547, g: 0.66384405, b: 1, a: 0.2901961}
+    - _ColorBurbuja: {r: 1, g: 1, b: 1, a: 0.3137255}
+    - _ColorFresnel: {r: 1, g: 1, b: 1, a: 0.2901961}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

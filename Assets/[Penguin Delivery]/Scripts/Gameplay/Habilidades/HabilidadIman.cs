@@ -21,7 +21,10 @@ public class HabilidadIman : HabilidadBase
         EmpezarEfecto();
 
         if (manager != null)
+        {
+            manager.ReproducirVFXHabilidad(this, false);
             manager.MostrarMensaje("Has activado el iman");
+        }
 
         return true;
     }
@@ -33,5 +36,10 @@ public class HabilidadIman : HabilidadBase
 
         if (pecesManager != null)
             pecesManager.SetMultiplicadorRecogida(1f);
+
+        if (manager != null)
+        {
+            manager.DetenerVFXHabilidad(this);
+        }
     }
 }

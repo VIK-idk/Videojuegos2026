@@ -20,8 +20,19 @@ public class HabilidadX2Peces : HabilidadBase
         EmpezarEfecto();
 
         if (manager != null)
+        {
+            manager.ReproducirVFXHabilidad(this, false);
             manager.MostrarMensaje("Has activado x2 de peces");
+        }
 
         return true;
+    }
+
+    protected override void AlTerminarEfecto(HabilidadesManager manager)
+    {
+        if (manager != null)
+        {
+            manager.DetenerVFXHabilidad(this);
+        }
     }
 }
