@@ -13,6 +13,9 @@ public class PecesTestManager : MonoBehaviour
     [Header("Puntos")]
     [SerializeField] private bool sumarPuntosAlRecoger = false;
     [SerializeField] private int puntosPorPez = 5;
+    [Header("Tutorial")]
+    [SerializeField] private bool activarPecesAlIniciar = true;
+    [SerializeField] private bool reponerPecesAlRecoger = true;
 
     [Header("Colores activos")]
     [SerializeField] private bool rosaActivo = true;
@@ -29,8 +32,16 @@ public class PecesTestManager : MonoBehaviour
     private bool ultimoVerdeActivo;
 
     private float multiplicadorRecogidaActual = 1f;
+    private bool pecesActivadosManualmente = false;
 
+    private void Awake()
+    {
+        BuscarPeces();
 
+        ultimoRosaActivo = rosaActivo;
+        ultimoAmarilloActivo = amarilloActivo;
+        ultimoVerdeActivo = verdeActivo;
+    }
 
     private void Start()
     {
@@ -40,7 +51,15 @@ public class PecesTestManager : MonoBehaviour
 
         BuscarPeces();
         SetMultiplicadorRecogida(1f);
-        ActivarPecesAleatorios();
+
+        if (activarPecesAlIniciar)
+        {
+            ActivarPecesAleatorios();
+        }
+        else if (!pecesActivadosManualmente)
+        {
+            ReiniciarTodosLosPeces();
+        }
 
         ultimoRosaActivo = rosaActivo;
         ultimoAmarilloActivo = amarilloActivo;
@@ -107,15 +126,16 @@ public class PecesTestManager : MonoBehaviour
 
     private void BuscarPeces()
     {
-        GameObject[] objetos = GameObject.FindGameObjectsWithTag(fishTag);
+        Pez[] pecesEncontrados = FindObjectsByType<Pez>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         List<Pez> lista = new List<Pez>();
 
-        for (int i = 0; i < objetos.Length; i++)
+        for (int i = 0; i < pecesEncontrados.Length; i++)
         {
-            Pez pez = objetos[i].GetComponent<Pez>();
+            if (pecesEncontrados[i] == null)
+                continue;
 
-            if (pez != null)
-                lista.Add(pez);
+            if (pecesEncontrados[i].CompareTag(fishTag))
+                lista.Add(pecesEncontrados[i]);
         }
 
         todosLosPeces = lista.ToArray();
@@ -155,7 +175,29 @@ public class PecesTestManager : MonoBehaviour
 
         SetMultiplicadorRecogida(multiplicadorRecogidaActual);
     }
+    public void ActivarTodosLosPecesTutorial()
+    {
+        if (todosLosPeces == null || todosLosPeces.Length == 0)
+        {
+            BuscarPeces();
+        }
 
+        if (todosLosPeces == null || todosLosPeces.Length == 0)
+            return;
+
+        pecesActivadosManualmente = true;
+
+        for (int i = 0; i < todosLosPeces.Length; i++)
+        {
+            if (todosLosPeces[i] == null)
+                continue;
+
+            todosLosPeces[i].ConfigurarPez(ColorPez.Rosa);
+            todosLosPeces[i].gameObject.SetActive(true);
+        }
+
+        SetMultiplicadorRecogida(multiplicadorRecogidaActual);
+    }
     private void ActualizarPecesActivos()
     {
         if (todosLosPeces == null || todosLosPeces.Length == 0)
@@ -204,6 +246,9 @@ public class PecesTestManager : MonoBehaviour
             gm.SumarPuntos(puntosPorPez);
 
         if (gestorEncargos != null && gestorEncargos.EstaEncargoTerminado())
+            return;
+
+        if (!reponerPecesAlRecoger)
             return;
 
         ReponerPezEnOtroSitio(pezRecogido);
@@ -290,4 +335,6 @@ public class PecesTestManager : MonoBehaviour
             }
         }
     }
+
+
 }
