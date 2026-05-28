@@ -17506,6 +17506,13 @@ MonoBehaviour:
   esperaPrimerEncargo: 2
   esperarMovimientoParaPrimerEncargo: 1
   inputMinimoParaEmpezar: 0.1
+  encargosParaMaxRonda: 10
+  encargosParaMaxGlobal: 50
+  pecesMinimosAbsolutos: 3
+  pecesMaximosAbsolutos: 12
+  tiempoPorPezMaximo: 3.5
+  tiempoPorPezMinimo: 2.3
+  tiempoExtraColchon: 3
   encargoActual:
     pecesRosas: 0
     pecesAmarillos: 0
@@ -17525,10 +17532,9 @@ MonoBehaviour:
   teclaCompletarEncargo: 108
   teclaSumarPuntos: 110
   tiempoDebugForzado: 1
-  pecesMinimosTotales: 5
-  pecesMaximosTotales: 10
-  tiempoMinimoEncargo: 22
-  tiempoMaximoEncargo: 28
+  usarDificultadManual: 0
+  dificultadManual: 0
+  dificultadManualAnterior: 0
   tutorialManager: {fileID: 0}
   pecesTutorial: 5
   cargarGameplayAlCompletarTutorial: 0
