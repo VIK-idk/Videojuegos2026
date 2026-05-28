@@ -54,4 +54,13 @@ public class UIEstadoEncargoLegacy : MonoBehaviour
 
         textoEstado.enabled = false;
     }
+    public void Ocultar()
+    {
+        StopAllCoroutines();
+
+        if (textoEstado != null)
+        {
+            textoEstado.enabled = false;
+        }
+    }
 }

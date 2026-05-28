@@ -16,10 +16,29 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] private string escenaPrincipal;
     [SerializeField] private TiendaUIController tiendaUIController;
 
+    [Header("Tutorial / Testing")]
+    [SerializeField] private KeyCode teclaResetTutorial = KeyCode.Y;
+    [SerializeField] private bool cargarTutorialAlResetear = false;
+    [SerializeField] private string escenaTutorial = "Tutorial";
+
     private bool isGamePaused = false;
 
     void Update()
     {
+        //TUTORIAL / TESTING
+        if (Input.GetKeyDown(teclaResetTutorial))
+        {
+            TutorialEstado.Resetear();
+            Debug.Log("Tutorial reseteado. La próxima vez se abrirá el tutorial.");
+
+            if (cargarTutorialAlResetear)
+            {
+                Time.timeScale = 1f;
+                SceneLoader.CargarEscena(escenaTutorial);
+                return;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.JoystickButton9) ||
             Input.GetKeyDown(KeyCode.P) ||
             Input.GetKeyDown(KeyCode.Escape))
