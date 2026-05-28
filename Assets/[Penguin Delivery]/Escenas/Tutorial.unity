@@ -5908,7 +5908,7 @@ Transform:
   m_GameObject: {fileID: 656180028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: -0.0000000016210667, w: 0}
-  m_LocalPosition: {x: -0.5, y: 3, z: 25.400002}
+  m_LocalPosition: {x: 0.28, y: 2.862, z: 10.440001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6996,15 +6996,15 @@ PrefabInstance:
       objectReference: {fileID: 3383157717785543197, guid: 91811ea38016c6d4b96ad8db9ce6584d, type: 3}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.362
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20.400002
+      value: 5.44
       objectReference: {fileID: 0}
     - target: {fileID: 5380027973922860330, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10556,7 +10556,7 @@ Transform:
   m_GameObject: {fileID: 1119757636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: -0.0000000016210667, w: 0}
-  m_LocalPosition: {x: -0.5, y: 3, z: 25.400002}
+  m_LocalPosition: {x: 0.28, y: 2.862, z: 10.440001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23776,7 +23776,7 @@ MonoBehaviour:
   indicadorStrikes: {fileID: 1952131069}
   teclaSaltarTutorial: 9
   tiempoMinimoLectura: 5
-  duracionPasoStrikes: 6
+  duracionPasoStrikes: 5
   duracionMensajeFinal: 5
   strikeManager: {fileID: 945138256}
   gestorEncargos: {fileID: 689245428}
