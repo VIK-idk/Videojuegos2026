@@ -27,6 +27,9 @@ public class Pez : MonoBehaviour
     [SerializeField] private Color colorAmarillo = new Color(1f, 0.9f, 0.2f, 1f);
     [SerializeField] private Color colorVerde = new Color(0.3f, 1f, 0.4f, 1f);
 
+    [Header("Aura")]
+    [SerializeField] private AuraPezVisual auraPez;
+
     // ====================
     // PROPIEDADES
     // ====================
@@ -69,6 +72,12 @@ public class Pez : MonoBehaviour
         colorPez = nuevoColor;
         colorId = (int)nuevoColor;
         ActualizarVisual();
+
+        if (auraPez != null)
+        {
+            auraPez.ConfigurarColor(ObtenerColorActual());
+            auraPez.ReiniciarAura();
+        }
     }
 
     // ====================
@@ -138,5 +147,15 @@ public class Pez : MonoBehaviour
         }
 
         return null;
+    }
+    private Color ObtenerColorActual()
+    {
+        if (colorPez == ColorPez.Rosa)
+            return colorRosa;
+
+        if (colorPez == ColorPez.Amarillo)
+            return colorAmarillo;
+
+        return colorVerde;
     }
 }
