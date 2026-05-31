@@ -22,6 +22,7 @@ public class PezPickupTest : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private ParticleSystem vfxRecogerPez;
 
+
     private void Awake()
     {
         triggerCollider = GetComponent<SphereCollider>();
@@ -91,6 +92,15 @@ public class PezPickupTest : MonoBehaviour
 
         ReiniciarAnimator(burbujaAnimator, triggerExplotarBurbuja);
         ReiniciarAnimator(pezAnimator, triggerRecolectarPez);
+        if (pez != null)
+        {
+            AuraPezVisual aura = pez.GetComponentInChildren<AuraPezVisual>(true);
+
+            if (aura != null)
+            {
+                aura.ReiniciarAura();
+            }
+        }
     }
 
     public void SetMultiplicadorRecogida(float multiplicador)
@@ -134,6 +144,15 @@ public class PezPickupTest : MonoBehaviour
         }
 
         ReproducirVFXRecogerPez();
+        if (pez != null)
+        {
+            AuraPezVisual aura = pez.GetComponentInChildren<AuraPezVisual>(true);
+
+            if (aura != null)
+            {
+                aura.Desvanecer(duracionAntesDeRecoger);
+            }
+        }
 
         if (burbujaAnimator != null)
         {
