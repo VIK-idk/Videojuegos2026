@@ -57,12 +57,6 @@ public class AuraPezVisual : MonoBehaviour
         Color color = colorActual;
         color.a = opacidadNormal;
         AplicarColor(color);
-
-        if (animator != null)
-        {
-            animator.enabled = true;
-            animator.Play(0, 0, 0f);
-        }
     }
 
     public void Desvanecer()
