@@ -20,7 +20,8 @@ public class GestorEncargosTest : MonoBehaviour
     [Header("UI")]
     [SerializeField] private UIEncargoLegacy uiEncargo;
     [SerializeField] private UIEstadoEncargoLegacy uiEstado;
-
+    [Header("Fin de partida")]
+    [SerializeField] private GameOverRetornoController gameOverRetornoController;
     // ====================
     // AJUSTES
     // ====================
@@ -178,6 +179,10 @@ public class GestorEncargosTest : MonoBehaviour
         if (iniciarAutomaticamente)
         {
             IniciarSistema();
+        }
+        if (gameOverRetornoController == null)
+        {
+            gameOverRetornoController = FindFirstObjectByType<GameOverRetornoController>();
         }
     }
 
@@ -584,10 +589,14 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     private void FallarEncargo()
     {
-        if (encargoActual == null) return;
-        if (encargoTerminado) return;
+        if (encargoActual == null)
+            return;
+
+        if (encargoTerminado)
+            return;
 
         encargoTerminado = true;
+
         encargoActual.enProceso = false;
         encargoActual.fallado = true;
 
@@ -614,7 +623,7 @@ public class GestorEncargosTest : MonoBehaviour
             if (ultimoStrike)
             {
                 uiEstado.MostrarMensajePersonalizado(
-                    "ENCARGO FALLIDO\nVuelve a tu celda a descansar",
+                    "ENCARGO FALLIDO",
                     Color.red,
                     2f
                 );
@@ -627,7 +636,21 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (ultimoStrike)
         {
-            StartCoroutine(EsperarYVolverALobby());
+            int puntosRonda = 0;
+
+            if (gameManager != null)
+            {
+                puntosRonda = gameManager.GetPuntosActuales();
+            }
+
+            if (gameOverRetornoController != null)
+            {
+                gameOverRetornoController.IniciarSecuenciaDerrota(puntosRonda);
+            }
+            else
+            {
+                StartCoroutine(EsperarYVolverALobby());
+            }
         }
         else
         {
