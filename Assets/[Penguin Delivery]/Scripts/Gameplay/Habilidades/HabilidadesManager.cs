@@ -127,8 +127,14 @@ public class HabilidadesManager : MonoBehaviour
 
     private void ActualizarSlot(HabilidadSlotUI slot, HabilidadBase habilidad)
     {
-        if (slot == null || habilidad == null)
+        if (slot == null)
             return;
+
+        if (habilidad == null)
+        {
+            slot.MostrarVacio();
+            return;
+        }
 
         if (!habilidad.EstaAdquirida())
         {
@@ -136,23 +142,44 @@ public class HabilidadesManager : MonoBehaviour
         }
         else if (habilidad.EstaUsada())
         {
-            slot.MostrarUsada(habilidad.GetTitulo());
+            slot.MostrarUsada(
+                habilidad.GetTitulo(),
+                habilidad.GetIcono()
+            );
         }
         else if (habilidad.EstaActiva())
         {
-            slot.MostrarActiva(habilidad.GetTitulo(), habilidad.GetTextoTecla(), habilidad.GetTiempoVisible());
+            slot.MostrarActiva(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetTiempoVisible(),
+                habilidad.GetIcono()
+            );
         }
         else if (habilidad.EstaEnCooldown())
         {
-            slot.MostrarCooldown(habilidad.GetTitulo(), habilidad.GetTextoTecla(), habilidad.GetTiempoVisible());
+            slot.MostrarCooldown(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetTiempoVisible(),
+                habilidad.GetIcono()
+            );
         }
         else if (HayOtraHabilidadActiva(habilidad))
         {
-            slot.MostrarBloqueada(habilidad.GetTitulo(), habilidad.GetTextoTecla());
+            slot.MostrarBloqueada(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetIcono()
+            );
         }
         else
         {
-            slot.MostrarDisponible(habilidad.GetTitulo(), habilidad.GetTextoTecla());
+            slot.MostrarDisponible(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetIcono()
+            );
         }
     }
 

@@ -10,6 +10,7 @@ public abstract class HabilidadBase : MonoBehaviour
     [SerializeField] protected string textoTecla = "[Pulsa]";
     [SerializeField] protected bool adquirida = false;
     [SerializeField] protected string idCompra = "";
+    [SerializeField] protected Sprite icono;
 
     [Header("Tiempos")]
     [SerializeField] protected float duracion = 8f;
@@ -38,7 +39,10 @@ public abstract class HabilidadBase : MonoBehaviour
     {
         return activa;
     }
-
+    public Sprite GetIcono()
+    {
+        return icono;
+    }
     public bool EstaEnCooldown()
     {
         return tiempoCooldownRestante > 0f;
