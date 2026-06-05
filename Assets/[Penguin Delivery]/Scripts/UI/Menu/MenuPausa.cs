@@ -1,19 +1,28 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuPausa : MonoBehaviour
 {
+    [Header("Menus")]
     public GameObject menuPausa;
     public GameObject menuOpciones;
+
+    [Header("Fondo blur")]
+    [SerializeField] private GameObject fondoBlurPausa;
+
+    [Header("HUD")]
+    [SerializeField] private GameObject hudGameplay;
 
     [Header("UI Mando")]
     [SerializeField] private GameObject primerBotonPausa;
     [SerializeField] private GameObject primerBotonOpciones;
 
+    [Header("Escenas")]
     [SerializeField] private string escenaPrincipal;
+
+    [Header("Tienda")]
     [SerializeField] private TiendaUIController tiendaUIController;
 
     [Header("Tutorial / Testing")]
@@ -23,9 +32,24 @@ public class MenuPausa : MonoBehaviour
 
     private bool isGamePaused = false;
 
-    void Update()
+    private void Start()
     {
-        //TUTORIAL / TESTING
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(false);
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(true);
+    }
+
+    private void Update()
+    {
+        // TUTORIAL / TESTING
         if (Input.GetKeyDown(teclaResetTutorial))
         {
             TutorialEstado.Resetear();
@@ -67,55 +91,83 @@ public class MenuPausa : MonoBehaviour
     {
         if (isGamePaused)
         {
-            Time.timeScale = 0;
-
-            if (menuPausa != null)
-                menuPausa.SetActive(true);
-
-            if (menuOpciones != null)
-                menuOpciones.SetActive(false);
-
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-
-            SeleccionarObjeto(primerBotonPausa);
-            StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
+            ActivarPausa();
         }
         else
         {
-            Time.timeScale = 1;
+            DesactivarPausa();
+        }
+    }
 
-            if (menuPausa != null)
-                menuPausa.SetActive(false);
+    private void ActivarPausa()
+    {
+        Time.timeScale = 0f;
 
-            if (menuOpciones != null)
-                menuOpciones.SetActive(false);
+        if (hudGameplay != null)
+            hudGameplay.SetActive(false);
 
-            bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(true);
 
-            if (!tiendaAbierta)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+        if (menuPausa != null)
+            menuPausa.SetActive(true);
 
-            if (EventSystem.current != null)
-            {
-                EventSystem.current.SetSelectedGameObject(null);
-            }
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        SeleccionarObjeto(primerBotonPausa);
+        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
+    }
+
+    private void DesactivarPausa()
+    {
+        Time.timeScale = 1f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(true);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(false);
+
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
+
+        if (!tiendaAbierta)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 
     public void Continuar()
     {
         isGamePaused = false;
-        PauseGame();
+        DesactivarPausa();
     }
 
     public void AbrirOpciones()
     {
-        if (!isGamePaused)
-            isGamePaused = true;
+        isGamePaused = true;
+        Time.timeScale = 0f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(true);
 
         if (menuPausa != null)
             menuPausa.SetActive(false);
@@ -123,12 +175,24 @@ public class MenuPausa : MonoBehaviour
         if (menuOpciones != null)
             menuOpciones.SetActive(true);
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         SeleccionarObjeto(primerBotonOpciones);
         StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonOpciones));
     }
 
     public void VolverMenuPausa()
     {
+        isGamePaused = true;
+        Time.timeScale = 0f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(true);
+
         if (menuOpciones != null)
             menuOpciones.SetActive(false);
 
@@ -141,7 +205,20 @@ public class MenuPausa : MonoBehaviour
 
     public void Salir()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(true);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(false);
+
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
         SceneLoader.CargarEscena(escenaPrincipal);
     }
 
