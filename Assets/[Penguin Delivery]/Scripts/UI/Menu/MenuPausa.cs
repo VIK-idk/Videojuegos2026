@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class MenuPausa : MonoBehaviour
 {
     [Header("Menus")]
-    public GameObject menuPausa;
-    public GameObject menuOpciones;
+    [SerializeField] private GameObject menuPausa;
+    [SerializeField] private GameObject menuOpciones;
 
     [Header("Fondo blur")]
     [SerializeField] private GameObject fondoBlurPausa;
@@ -20,7 +20,7 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] private GameObject primerBotonOpciones;
 
     [Header("Escenas")]
-    [SerializeField] private string escenaPrincipal;
+    [SerializeField] private string escenaPrincipal = "MainMenu";
 
     [Header("Tienda")]
     [SerializeField] private TiendaUIController tiendaUIController;
@@ -34,6 +34,39 @@ public class MenuPausa : MonoBehaviour
 
     private void Start()
     {
+        InicializarMenu();
+    }
+
+    private void Update()
+    {
+        GestionarResetTutorial();
+
+        if (GameOverRetornoController.DerrotaActiva)
+        {
+            if (isGamePaused)
+            {
+                isGamePaused = false;
+                DesactivarPausa();
+            }
+
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton9) ||
+            Input.GetKeyDown(KeyCode.P) ||
+            Input.GetKeyDown(KeyCode.Escape))
+        {
+            AlternarPausa();
+        }
+
+        MantenerSeleccionMando();
+    }
+
+    private void InicializarMenu()
+    {
+        Time.timeScale = 1f;
+        isGamePaused = false;
+
         if (menuPausa != null)
             menuPausa.SetActive(false);
 
@@ -47,56 +80,33 @@ public class MenuPausa : MonoBehaviour
             hudGameplay.SetActive(true);
     }
 
-    private void Update()
+    private void GestionarResetTutorial()
     {
-        // TUTORIAL / TESTING
-        if (Input.GetKeyDown(teclaResetTutorial))
-        {
-            TutorialEstado.Resetear();
-            Debug.Log("Tutorial reseteado. La próxima vez se abrirá el tutorial.");
-
-            if (cargarTutorialAlResetear)
-            {
-                Time.timeScale = 1f;
-                SceneLoader.CargarEscena(escenaTutorial);
-                return;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.JoystickButton9) ||
-            Input.GetKeyDown(KeyCode.P) ||
-            Input.GetKeyDown(KeyCode.Escape))
-        {
-            isGamePaused = !isGamePaused;
-            PauseGame();
-        }
-
-        if (!isGamePaused || EventSystem.current == null)
+        if (!Input.GetKeyDown(teclaResetTutorial))
             return;
 
-        if (EventSystem.current.currentSelectedGameObject == null)
+        TutorialEstado.Resetear();
+        Debug.Log("Tutorial reseteado. La próxima vez se abrirá el tutorial.");
+
+        if (cargarTutorialAlResetear)
         {
-            if (menuOpciones != null && menuOpciones.activeInHierarchy)
-            {
-                SeleccionarObjeto(primerBotonOpciones);
-            }
-            else if (menuPausa != null && menuPausa.activeInHierarchy)
-            {
-                SeleccionarObjeto(primerBotonPausa);
-            }
+            Time.timeScale = 1f;
+            SceneLoader.CargarEscena(escenaTutorial);
         }
+    }
+
+    private void AlternarPausa()
+    {
+        isGamePaused = !isGamePaused;
+        PauseGame();
     }
 
     public void PauseGame()
     {
         if (isGamePaused)
-        {
             ActivarPausa();
-        }
         else
-        {
             DesactivarPausa();
-        }
     }
 
     private void ActivarPausa()
@@ -147,9 +157,7 @@ public class MenuPausa : MonoBehaviour
         }
 
         if (EventSystem.current != null)
-        {
             EventSystem.current.SetSelectedGameObject(null);
-        }
     }
 
     public void Continuar()
@@ -199,6 +207,9 @@ public class MenuPausa : MonoBehaviour
         if (menuPausa != null)
             menuPausa.SetActive(true);
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         SeleccionarObjeto(primerBotonPausa);
         StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
     }
@@ -220,6 +231,24 @@ public class MenuPausa : MonoBehaviour
             menuOpciones.SetActive(false);
 
         SceneLoader.CargarEscena(escenaPrincipal);
+    }
+
+    private void MantenerSeleccionMando()
+    {
+        if (!isGamePaused || EventSystem.current == null)
+            return;
+
+        if (EventSystem.current.currentSelectedGameObject != null)
+            return;
+
+        if (menuOpciones != null && menuOpciones.activeInHierarchy)
+        {
+            SeleccionarObjeto(primerBotonOpciones);
+        }
+        else if (menuPausa != null && menuPausa.activeInHierarchy)
+        {
+            SeleccionarObjeto(primerBotonPausa);
+        }
     }
 
     private void SeleccionarObjeto(GameObject objeto)

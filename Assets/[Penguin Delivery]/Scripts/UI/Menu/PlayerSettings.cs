@@ -2,21 +2,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-using UnityEngine.EventSystems;
 
 public class PlayerSettings : MonoBehaviour
 {
+    // ====================
+    // REFERENCIAS UI
+    // ====================
+    [Header("Pantalla")]
     [SerializeField] private Toggle pantallaCompleta;
-    [SerializeField] private Slider volumenMaster;
-    [SerializeField] private Slider volumenSFX;
     [SerializeField] private Dropdown resolucionDrop;
+
+    [Header("Audio")]
+    [SerializeField] private Slider volumenMaster;
+    [SerializeField] private Slider volumenMusica;
+    [SerializeField] private Slider volumenSFX;
+    [SerializeField] private AudioMixer audioMixer;
+
+    [Header("Sensibilidad")]
     [SerializeField] private Slider sensibilidadSlider;
     [SerializeField] private Text textoValorSensibilidad;
-    [SerializeField] private AudioMixer audioMixer;
 
     [Header("UI Mando")]
     [SerializeField] private GameObject primerBotonOpciones;
 
+    // ====================
+    // PARAMETROS AUDIOMIXER
+    // Tienen que llamarse exactamente igual que en Exposed Parameters
+    // ====================
+    private const string PARAM_MASTER = "VolumenMaster";
+    private const string PARAM_MUSICA = "VolumenMusica";
+    private const string PARAM_SFX = "VolumenSFX";
+
+    // ====================
+    // PLAYER PREFS
+    // ====================
+    private const string PREF_PANTALLA_COMPLETA = "PantallaCompleta";
+    private const string PREF_RESOLUCION_INDEX = "ResolucionIndex";
+    private const string PREF_SENSIBILIDAD = "Sensibilidad";
+
+    private const string PREF_VOLUMEN_MASTER = "VolumenMaster";
+    private const string PREF_VOLUMEN_MUSICA = "VolumenMusica";
+    private const string PREF_VOLUMEN_SFX = "VolumenSFX";
+
+    private const string PREF_AUDIO_VERSION = "AudioSettingsVersion";
+    private const int AUDIO_VERSION_ACTUAL = 2;
+
+    // ====================
+    // AUDIO
+    // ====================
+    private const float VOLUMEN_MINIMO_LINEAL = 0.0001f;
+    private const float DECIBELIOS_MINIMOS = -80f;
+
+    // ====================
+    // RESOLUCIONES
+    // ====================
     private readonly Vector2Int[] resoluciones = new Vector2Int[]
     {
         new Vector2Int(1280, 720),
@@ -24,15 +63,27 @@ public class PlayerSettings : MonoBehaviour
         new Vector2Int(1920, 1080)
     };
 
+    // ====================
+    // UNITY
+    // ====================
     private void Start()
     {
         ConfigurarDropdownResolucion();
         ConfigurarSliderSensibilidad();
         ConfigurarSlidersAudio();
-        CargarYAplicarSettings();
 
+        CargarYAplicarSettings();
+        RegistrarEventosSliders();
     }
 
+    private void OnDestroy()
+    {
+        QuitarEventosSliders();
+    }
+
+    // ====================
+    // CONFIGURACION INICIAL
+    // ====================
     private void ConfigurarDropdownResolucion()
     {
         if (resolucionDrop == null)
@@ -62,47 +113,96 @@ public class PlayerSettings : MonoBehaviour
 
     private void ConfigurarSlidersAudio()
     {
-        if (volumenMaster != null)
-        {
-            volumenMaster.minValue = -80f;
-            volumenMaster.maxValue = 0f;
-            volumenMaster.wholeNumbers = false;
-        }
-
-        if (volumenSFX != null)
-        {
-            volumenSFX.minValue = -80f;
-            volumenSFX.maxValue = 0f;
-            volumenSFX.wholeNumbers = false;
-        }
+        ConfigurarSliderAudio(volumenMaster);
+        ConfigurarSliderAudio(volumenMusica);
+        ConfigurarSliderAudio(volumenSFX);
     }
 
+    private void ConfigurarSliderAudio(Slider slider)
+    {
+        if (slider == null)
+            return;
+
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+        slider.wholeNumbers = false;
+    }
+
+    private void RegistrarEventosSliders()
+    {
+        if (volumenMaster != null)
+            volumenMaster.onValueChanged.AddListener(SetMasterVolumePref);
+
+        if (volumenMusica != null)
+            volumenMusica.onValueChanged.AddListener(SetMusicaVolumePref);
+
+        if (volumenSFX != null)
+            volumenSFX.onValueChanged.AddListener(SetSFXVolumePref);
+
+        if (pantallaCompleta != null)
+            pantallaCompleta.onValueChanged.AddListener(SetPantallaCompletaPref);
+
+        if (resolucionDrop != null)
+            resolucionDrop.onValueChanged.AddListener(SetResolucionPref);
+
+        if (sensibilidadSlider != null)
+            sensibilidadSlider.onValueChanged.AddListener(SetSensibilidadPref);
+    }
+
+    private void QuitarEventosSliders()
+    {
+        if (volumenMaster != null)
+            volumenMaster.onValueChanged.RemoveListener(SetMasterVolumePref);
+
+        if (volumenMusica != null)
+            volumenMusica.onValueChanged.RemoveListener(SetMusicaVolumePref);
+
+        if (volumenSFX != null)
+            volumenSFX.onValueChanged.RemoveListener(SetSFXVolumePref);
+
+        if (pantallaCompleta != null)
+            pantallaCompleta.onValueChanged.RemoveListener(SetPantallaCompletaPref);
+
+        if (resolucionDrop != null)
+            resolucionDrop.onValueChanged.RemoveListener(SetResolucionPref);
+
+        if (sensibilidadSlider != null)
+            sensibilidadSlider.onValueChanged.RemoveListener(SetSensibilidadPref);
+    }
+
+    // ====================
+    // CARGAR SETTINGS
+    // ====================
     private void CargarYAplicarSettings()
     {
-        bool pantallaCompletaGuardada = PlayerPrefs.GetInt("PantallaCompleta", Screen.fullScreen ? 1 : 0) == 1;
-        float volumenMasterGuardado = PlayerPrefs.GetFloat("VolumenMaster", 0f);
-        float volumenSFXGuardado = PlayerPrefs.GetFloat("VolumenSFX", 0f);
-        float sensibilidadGuardada = PlayerPrefs.GetFloat("Sensibilidad", 550f);
+        bool pantallaCompletaGuardada = PlayerPrefs.GetInt(
+            PREF_PANTALLA_COMPLETA,
+            Screen.fullScreen ? 1 : 0
+        ) == 1;
 
-        int resolucionIndexGuardado = PlayerPrefs.GetInt("ResolucionIndex", BuscarIndiceResolucionActual());
+        int resolucionIndexGuardado = PlayerPrefs.GetInt(
+            PREF_RESOLUCION_INDEX,
+            BuscarIndiceResolucionActual()
+        );
+
         resolucionIndexGuardado = Mathf.Clamp(resolucionIndexGuardado, 0, resoluciones.Length - 1);
+
+        float sensibilidadGuardada = PlayerPrefs.GetFloat(PREF_SENSIBILIDAD, 550f);
+
+        bool necesitaMigrarAudio = PlayerPrefs.GetInt(PREF_AUDIO_VERSION, 1) < AUDIO_VERSION_ACTUAL;
+
+        float volumenMasterGuardado = CargarVolumenLineal(PREF_VOLUMEN_MASTER, necesitaMigrarAudio);
+        float volumenMusicaGuardado = CargarVolumenLineal(PREF_VOLUMEN_MUSICA, necesitaMigrarAudio);
+        float volumenSFXGuardado = CargarVolumenLineal(PREF_VOLUMEN_SFX, necesitaMigrarAudio);
 
         AplicarResolucion(resolucionIndexGuardado, pantallaCompletaGuardada);
 
-        if (audioMixer != null)
-        {
-            audioMixer.SetFloat("VolumenMaster", volumenMasterGuardado);
-            audioMixer.SetFloat("VolumenSFX", volumenSFXGuardado);
-        }
+        AplicarVolumenAudioMixer(PARAM_MASTER, volumenMasterGuardado);
+        AplicarVolumenAudioMixer(PARAM_MUSICA, volumenMusicaGuardado);
+        AplicarVolumenAudioMixer(PARAM_SFX, volumenSFXGuardado);
 
         if (pantallaCompleta != null)
             pantallaCompleta.SetIsOnWithoutNotify(pantallaCompletaGuardada);
-
-        if (volumenMaster != null)
-            volumenMaster.SetValueWithoutNotify(volumenMasterGuardado);
-
-        if (volumenSFX != null)
-            volumenSFX.SetValueWithoutNotify(volumenSFXGuardado);
 
         if (resolucionDrop != null)
         {
@@ -113,7 +213,145 @@ public class PlayerSettings : MonoBehaviour
         if (sensibilidadSlider != null)
             sensibilidadSlider.SetValueWithoutNotify(sensibilidadGuardada);
 
+        if (volumenMaster != null)
+            volumenMaster.SetValueWithoutNotify(volumenMasterGuardado);
+
+        if (volumenMusica != null)
+            volumenMusica.SetValueWithoutNotify(volumenMusicaGuardado);
+
+        if (volumenSFX != null)
+            volumenSFX.SetValueWithoutNotify(volumenSFXGuardado);
+
         ActualizarTextoSensibilidad(sensibilidadGuardada);
+
+        if (necesitaMigrarAudio)
+        {
+            GuardarVolumenesAudio(
+                volumenMasterGuardado,
+                volumenMusicaGuardado,
+                volumenSFXGuardado
+            );
+        }
+    }
+
+    private float CargarVolumenLineal(string prefKey, bool necesitaMigrarAudio)
+    {
+        if (necesitaMigrarAudio)
+        {
+            // Antes se guardaban decibelios entre -80 y 0.
+            // 0 dB equivale a volumen 1.
+            // -6 dB equivale aprox. a volumen 0.5.
+            float valorAntiguoEnDecibelios = PlayerPrefs.GetFloat(prefKey, 0f);
+            return DecibeliosALineal(valorAntiguoEnDecibelios);
+        }
+
+        float valorLineal = PlayerPrefs.GetFloat(prefKey, 1f);
+        return Mathf.Clamp01(valorLineal);
+    }
+
+    private void GuardarVolumenesAudio(float master, float musica, float sfx)
+    {
+        PlayerPrefs.SetFloat(PREF_VOLUMEN_MASTER, Mathf.Clamp01(master));
+        PlayerPrefs.SetFloat(PREF_VOLUMEN_MUSICA, Mathf.Clamp01(musica));
+        PlayerPrefs.SetFloat(PREF_VOLUMEN_SFX, Mathf.Clamp01(sfx));
+        PlayerPrefs.SetInt(PREF_AUDIO_VERSION, AUDIO_VERSION_ACTUAL);
+        PlayerPrefs.Save();
+    }
+
+    // ====================
+    // AUDIO
+    // ====================
+    public void SetMasterVolumePref(float valor)
+    {
+        valor = Mathf.Clamp01(valor);
+
+        AplicarVolumenAudioMixer(PARAM_MASTER, valor);
+
+        PlayerPrefs.SetFloat(PREF_VOLUMEN_MASTER, valor);
+        PlayerPrefs.SetInt(PREF_AUDIO_VERSION, AUDIO_VERSION_ACTUAL);
+        PlayerPrefs.Save();
+    }
+
+    public void SetMusicaVolumePref(float valor)
+    {
+        valor = Mathf.Clamp01(valor);
+
+        AplicarVolumenAudioMixer(PARAM_MUSICA, valor);
+
+        PlayerPrefs.SetFloat(PREF_VOLUMEN_MUSICA, valor);
+        PlayerPrefs.SetInt(PREF_AUDIO_VERSION, AUDIO_VERSION_ACTUAL);
+        PlayerPrefs.Save();
+    }
+
+    public void SetSFXVolumePref(float valor)
+    {
+        valor = Mathf.Clamp01(valor);
+
+        AplicarVolumenAudioMixer(PARAM_SFX, valor);
+
+        PlayerPrefs.SetFloat(PREF_VOLUMEN_SFX, valor);
+        PlayerPrefs.SetInt(PREF_AUDIO_VERSION, AUDIO_VERSION_ACTUAL);
+        PlayerPrefs.Save();
+    }
+
+    private void AplicarVolumenAudioMixer(string parametro, float valorLineal)
+    {
+        if (audioMixer == null)
+            return;
+
+        float decibelios = LinealADecibelios(valorLineal);
+        audioMixer.SetFloat(parametro, decibelios);
+    }
+
+    private float LinealADecibelios(float valorLineal)
+    {
+        valorLineal = Mathf.Clamp01(valorLineal);
+
+        if (valorLineal <= VOLUMEN_MINIMO_LINEAL)
+            return DECIBELIOS_MINIMOS;
+
+        return Mathf.Log10(valorLineal) * 20f;
+    }
+
+    private float DecibeliosALineal(float decibelios)
+    {
+        if (decibelios <= DECIBELIOS_MINIMOS)
+            return 0f;
+
+        return Mathf.Clamp01(Mathf.Pow(10f, decibelios / 20f));
+    }
+
+    // ====================
+    // PANTALLA
+    // ====================
+    public void SetPantallaCompletaPref(bool valor)
+    {
+        int indiceActual = PlayerPrefs.GetInt(
+            PREF_RESOLUCION_INDEX,
+            BuscarIndiceResolucionActual()
+        );
+
+        indiceActual = Mathf.Clamp(indiceActual, 0, resoluciones.Length - 1);
+
+        AplicarResolucion(indiceActual, valor);
+
+        PlayerPrefs.SetInt(PREF_PANTALLA_COMPLETA, valor ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void SetResolucionPref(int index)
+    {
+        index = Mathf.Clamp(index, 0, resoluciones.Length - 1);
+
+        bool fullscreenActual = PlayerPrefs.GetInt(
+            PREF_PANTALLA_COMPLETA,
+            Screen.fullScreen ? 1 : 0
+        ) == 1;
+
+        AplicarResolucion(index, fullscreenActual);
+
+        PlayerPrefs.SetInt(PREF_RESOLUCION_INDEX, index);
+        PlayerPrefs.Save();
     }
 
     private int BuscarIndiceResolucionActual()
@@ -132,60 +370,27 @@ public class PlayerSettings : MonoBehaviour
         if (index < 0 || index >= resoluciones.Length)
             return;
 
-        Screen.SetResolution(resoluciones[index].x, resoluciones[index].y, fullscreen);
+        Screen.SetResolution(
+            resoluciones[index].x,
+            resoluciones[index].y,
+            fullscreen
+        );
+    }
+
+    // ====================
+    // SENSIBILIDAD
+    // ====================
+    public void SetSensibilidadPref(float valor)
+    {
+        PlayerPrefs.SetFloat(PREF_SENSIBILIDAD, valor);
+        PlayerPrefs.Save();
+
+        ActualizarTextoSensibilidad(valor);
     }
 
     private void ActualizarTextoSensibilidad(float valor)
     {
         if (textoValorSensibilidad != null)
             textoValorSensibilidad.text = Mathf.RoundToInt(valor).ToString();
-    }
-
-    public void SetPantallaCompletaPref(bool valor)
-    {
-        int indiceActual = PlayerPrefs.GetInt("ResolucionIndex", BuscarIndiceResolucionActual());
-        indiceActual = Mathf.Clamp(indiceActual, 0, resoluciones.Length - 1);
-
-        AplicarResolucion(indiceActual, valor);
-
-        PlayerPrefs.SetInt("PantallaCompleta", valor ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    public void SetMasterVolumePref(float valor)
-    {
-        if (audioMixer != null)
-            audioMixer.SetFloat("VolumenMaster", valor);
-
-        PlayerPrefs.SetFloat("VolumenMaster", valor);
-        PlayerPrefs.Save();
-    }
-
-    public void SetSFXVolumePref(float valor)
-    {
-        if (audioMixer != null)
-            audioMixer.SetFloat("VolumenSFX", valor);
-
-        PlayerPrefs.SetFloat("VolumenSFX", valor);
-        PlayerPrefs.Save();
-    }
-
-    public void SetResolucionPref(int index)
-    {
-        index = Mathf.Clamp(index, 0, resoluciones.Length - 1);
-
-        bool fullscreenActual = PlayerPrefs.GetInt("PantallaCompleta", Screen.fullScreen ? 1 : 0) == 1;
-        AplicarResolucion(index, fullscreenActual);
-
-        PlayerPrefs.SetInt("ResolucionIndex", index);
-        PlayerPrefs.Save();
-    }
-
-    public void SetSensibilidadPref(float valor)
-    {
-        PlayerPrefs.SetFloat("Sensibilidad", valor);
-        PlayerPrefs.Save();
-
-        ActualizarTextoSensibilidad(valor);
     }
 }

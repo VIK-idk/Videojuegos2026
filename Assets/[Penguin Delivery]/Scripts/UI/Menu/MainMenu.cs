@@ -1,53 +1,73 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    // ====================
+    // ESCENAS
+    // ====================
+    [Header("Escenas")]
     [SerializeField] private string nombreEscena = "Gameplay";
     [SerializeField] private string nombreEscenaTutorial = "Tutorial";
 
+    // ====================
+    // PANELES
+    // ====================
     [Header("Paneles")]
     [SerializeField] private GameObject panelMenuPrincipal;
     [SerializeField] private GameObject panelOpciones;
 
+    [Header("Fondo blur")]
+    [SerializeField] private GameObject fondoBlurMenu;
+
+    // ====================
+    // UI MANDO
+    // ====================
     [Header("UI Mando")]
     [SerializeField] private GameObject primerBotonMenu;
     [SerializeField] private GameObject primerBotonOpciones;
 
-    void Start()
+    // ====================
+    // UNITY
+    // ====================
+    private void Start()
     {
+        InicializarMenu();
+    }
+
+    private void Update()
+    {
+        MantenerSeleccionMando();
+    }
+
+    // ====================
+    // INICIALIZAR
+    // ====================
+    private void InicializarMenu()
+    {
+        Time.timeScale = 1f;
+
         if (panelMenuPrincipal != null)
             panelMenuPrincipal.SetActive(true);
 
         if (panelOpciones != null)
             panelOpciones.SetActive(false);
 
+        if (fondoBlurMenu != null)
+            fondoBlurMenu.SetActive(false);
+
         ResetearVisuales(panelMenuPrincipal);
         ResetearVisuales(panelOpciones);
+
         SeleccionarObjeto(primerBotonMenu);
+        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonMenu));
     }
 
-    void Update()
-    {
-        if (EventSystem.current == null)
-            return;
-
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            if (panelOpciones != null && panelOpciones.activeInHierarchy)
-            {
-                SeleccionarObjeto(primerBotonOpciones);
-            }
-            else if (panelMenuPrincipal != null && panelMenuPrincipal.activeInHierarchy)
-            {
-                SeleccionarObjeto(primerBotonMenu);
-            }
-        }
-    }
-
+    // ====================
+    // BOTONES
+    // ====================
     public void Jugar()
     {
         SesionPartida.ReiniciarSesion();
@@ -70,6 +90,9 @@ public class MainMenu : MonoBehaviour
         if (panelMenuPrincipal != null)
             panelMenuPrincipal.SetActive(false);
 
+        if (fondoBlurMenu != null)
+            fondoBlurMenu.SetActive(true);
+
         if (panelOpciones != null)
             panelOpciones.SetActive(true);
 
@@ -85,6 +108,9 @@ public class MainMenu : MonoBehaviour
         if (panelOpciones != null)
             panelOpciones.SetActive(false);
 
+        if (fondoBlurMenu != null)
+            fondoBlurMenu.SetActive(false);
+
         if (panelMenuPrincipal != null)
             panelMenuPrincipal.SetActive(true);
 
@@ -96,6 +122,27 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Salir...");
         Application.Quit();
+    }
+
+    // ====================
+    // SELECCION MANDO
+    // ====================
+    private void MantenerSeleccionMando()
+    {
+        if (EventSystem.current == null)
+            return;
+
+        if (EventSystem.current.currentSelectedGameObject != null)
+            return;
+
+        if (panelOpciones != null && panelOpciones.activeInHierarchy)
+        {
+            SeleccionarObjeto(primerBotonOpciones);
+        }
+        else if (panelMenuPrincipal != null && panelMenuPrincipal.activeInHierarchy)
+        {
+            SeleccionarObjeto(primerBotonMenu);
+        }
     }
 
     private void SeleccionarObjeto(GameObject objeto)
@@ -121,6 +168,9 @@ public class MainMenu : MonoBehaviour
         SeleccionarObjeto(objeto);
     }
 
+    // ====================
+    // VISUALES
+    // ====================
     private void ResetearVisuales(GameObject panel)
     {
         if (panel == null)
