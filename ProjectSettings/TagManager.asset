@@ -8,6 +8,10 @@ TagManager:
   - Trampolin
   - Ground
   - AlmohadaMullidita
+  - agua
+  - cesped
+  - nieve
+  - hielo
   layers:
   - Default
   - TransparentFX

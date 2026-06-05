@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
 // ====================
@@ -14,8 +13,12 @@ public class StrikeManager : MonoBehaviour
 
     [Header("UI de strikes")]
     [SerializeField] private Image[] strikeImages;
-    [SerializeField] private Color inactiveColor = new Color(0.5f, 0.5f, 0.5f, 0.3f);
-    [SerializeField] private Color activeColor = new Color(1f, 0f, 0f, 1f);
+    [SerializeField] private Sprite spriteStrikeActivado;
+    [SerializeField] private Sprite spriteStrikeDesactivado;
+
+    [Header("Opacidad")]
+    [SerializeField] private float opacidadStrikeActivado = 1f;
+    [SerializeField] private float opacidadStrikeDesactivado = 0.35f;
 
     [Header("Debug / Pruebas")]
     [SerializeField] private bool useDebugStrikes = true;
@@ -31,7 +34,7 @@ public class StrikeManager : MonoBehaviour
         gestorProgresoJugador = FindFirstObjectByType<GestorProgresoJugador>();
 
         currentStrikes = 0;
-        UpdateStrikeUI();
+        ActualizarStrikeUI();
         lastDebugStrikes = debugStrikes;
 
         if (useDebugStrikes)
@@ -60,7 +63,17 @@ public class StrikeManager : MonoBehaviour
     public void AddStrike(bool cargarLobbySiPierde = true)
     {
         currentStrikes++;
-        UpdateStrikeUI();
+
+        if (currentStrikes > maxStrikes)
+            currentStrikes = maxStrikes;
+
+        if (useDebugStrikes)
+        {
+            debugStrikes = currentStrikes;
+            lastDebugStrikes = currentStrikes;
+        }
+
+        ActualizarStrikeUI();
 
         if (cargarLobbySiPierde)
         {
@@ -74,7 +87,14 @@ public class StrikeManager : MonoBehaviour
     public void SetStrikes(int amount)
     {
         currentStrikes = Mathf.Clamp(amount, 0, maxStrikes);
-        UpdateStrikeUI();
+
+        if (useDebugStrikes)
+        {
+            debugStrikes = currentStrikes;
+            lastDebugStrikes = currentStrikes;
+        }
+
+        ActualizarStrikeUI();
         CheckGameOver();
     }
 
@@ -91,7 +111,27 @@ public class StrikeManager : MonoBehaviour
             lastDebugStrikes = 0;
         }
 
-        UpdateStrikeUI();
+        ActualizarStrikeUI();
+    }
+
+    // ====================
+    // QUITAR STRIKE
+    // ====================
+    public bool RemoveStrike()
+    {
+        if (currentStrikes <= 0)
+            return false;
+
+        currentStrikes--;
+
+        if (useDebugStrikes)
+        {
+            debugStrikes = currentStrikes;
+            lastDebugStrikes = currentStrikes;
+        }
+
+        ActualizarStrikeUI();
+        return true;
     }
 
     // ====================
@@ -118,13 +158,13 @@ public class StrikeManager : MonoBehaviour
         }
 
         ResetStrikes();
-        SceneManager.LoadScene(lobbySceneName);
+        SceneLoader.CargarEscena(lobbySceneName);
     }
 
     // ====================
     // UI
     // ====================
-    private void UpdateStrikeUI()
+    private void ActualizarStrikeUI()
     {
         if (strikeImages == null || strikeImages.Length == 0)
             return;
@@ -134,11 +174,36 @@ public class StrikeManager : MonoBehaviour
             if (strikeImages[i] == null)
                 continue;
 
-            if (i < currentStrikes)
-                strikeImages[i].color = activeColor;
+            bool strikeActivo = i < currentStrikes;
+
+            if (strikeActivo)
+            {
+                if (spriteStrikeActivado != null)
+                    strikeImages[i].sprite = spriteStrikeActivado;
+
+                AplicarOpacidad(strikeImages[i], opacidadStrikeActivado);
+            }
             else
-                strikeImages[i].color = inactiveColor;
+            {
+                if (spriteStrikeDesactivado != null)
+                    strikeImages[i].sprite = spriteStrikeDesactivado;
+
+                AplicarOpacidad(strikeImages[i], opacidadStrikeDesactivado);
+            }
         }
+    }
+
+    private void AplicarOpacidad(Image imagen, float opacidad)
+    {
+        if (imagen == null)
+            return;
+
+        Color color = imagen.color;
+        color.r = 1f;
+        color.g = 1f;
+        color.b = 1f;
+        color.a = opacidad;
+        imagen.color = color;
     }
 
     // ====================
@@ -157,46 +222,50 @@ public class StrikeManager : MonoBehaviour
             }
 
             ResetStrikes();
-            SceneManager.LoadScene(lobbySceneName);
+            SceneLoader.CargarEscena(lobbySceneName);
         }
     }
 
-    public bool RemoveStrike()
-    {
-        if (currentStrikes <= 0)
-            return false;
-
-        currentStrikes--;
-
-        if (useDebugStrikes)
-        {
-            debugStrikes = currentStrikes;
-            lastDebugStrikes = currentStrikes;
-        }
-
-        UpdateStrikeUI();
-        return true;
-    }
+    // ====================
+    // DEMO TUTORIAL
+    // ====================
     public IEnumerator ParpadearStrikeDemo(float duracion)
     {
         if (strikeImages == null || strikeImages.Length == 0)
             yield break;
 
+        Image imagenDemo = strikeImages[0];
+
+        if (imagenDemo == null)
+            yield break;
+
         float tiempo = 0f;
         float intervalo = 0.25f;
-        bool rojo = false;
+        bool activo = false;
 
         while (tiempo < duracion)
         {
-            rojo = !rojo;
+            activo = !activo;
 
-            if (strikeImages[0] != null)
-                strikeImages[0].color = rojo ? activeColor : inactiveColor;
+            if (activo)
+            {
+                if (spriteStrikeActivado != null)
+                    imagenDemo.sprite = spriteStrikeActivado;
+
+                AplicarOpacidad(imagenDemo, opacidadStrikeActivado);
+            }
+            else
+            {
+                if (spriteStrikeDesactivado != null)
+                    imagenDemo.sprite = spriteStrikeDesactivado;
+
+                AplicarOpacidad(imagenDemo, opacidadStrikeDesactivado);
+            }
 
             yield return new WaitForSeconds(intervalo);
             tiempo += intervalo;
         }
 
-        UpdateStrikeUI();
+        ActualizarStrikeUI();
     }
 }

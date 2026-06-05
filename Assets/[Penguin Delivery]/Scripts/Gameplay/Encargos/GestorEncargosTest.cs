@@ -14,19 +14,50 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private StrikeManager strikeManager;
     [SerializeField] private GameManager gameManager;
 
+    [Header("Rey Morsa")]
+    [SerializeField] private ReyMorsaAnimacion reyMorsaAnimacion;
+
     [Header("UI")]
     [SerializeField] private UIEncargoLegacy uiEncargo;
     [SerializeField] private UIEstadoEncargoLegacy uiEstado;
-
+    [Header("Fin de partida")]
+    [SerializeField] private GameOverRetornoController gameOverRetornoController;
     // ====================
     // AJUSTES
     // ====================
     [Header("Configuracion")]
     [SerializeField] private bool iniciarAutomaticamente = true;
+    [SerializeField] private bool guardarRecompensas = true;
     [SerializeField] private int puntosPorEncargo = 100;
     [SerializeField] private float esperaEntreEncargos = 2f;
     [SerializeField] private float esperaPrimerEncargo = 3f;
-    [SerializeField] private float tiempoMensajeRecolecta = 3f;
+
+    [Header("Inicio primer encargo")]
+    [SerializeField] private bool esperarMovimientoParaPrimerEncargo = true;
+    [SerializeField] private float inputMinimoParaEmpezar = 0.1f;
+
+    // ====================
+    // PROGRESIÓN Y DIFICULTAD DINÁMICA
+    // ====================
+    [Header("Progresión: Configuración de Escalado")]
+    [Tooltip("Cuántos encargos completados en la ronda actual se necesitan para alcanzar la dificultad máxima de esta sesión.")]
+    [SerializeField] private int encargosParaMaxRonda = 10;
+    
+    [Tooltip("Cuántos encargos completados históricos (totales) se necesitan para que el juego empiece directamente en la dificultad máxima.")]
+    [SerializeField] private int encargosParaMaxGlobal = 50;
+
+    [Header("Dificultad: Límites de Peces")]
+    [SerializeField] private int pecesMinimosAbsolutos = 3;
+    [SerializeField] private int pecesMaximosAbsolutos = 12;
+
+    [Header("Dificultad: Límites de Tiempo (Por Pez)")]
+    [Tooltip("Segundos asignados por cada pez requerido cuando el juego está en lo más fácil.")]
+    [SerializeField] private float tiempoPorPezMaximo = 5f; 
+    [Tooltip("Segundos asignados por cada pez requerido cuando el juego está en lo más difícil (más bajo = más difícil).")]
+    [SerializeField] private float tiempoPorPezMinimo = 2.5f;
+
+    [Tooltip("Margen de tiempo extra fijo que se le suma al encargo para que nunca sea un tiempo matemáticamente imposible.")]
+    [SerializeField] private float tiempoExtraColchon = 3f;
 
     // ====================
     // ESTADO
@@ -39,45 +70,73 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private int pecesVerdesActuales = 0;
 
     [SerializeField] private float tiempoRestante = 0f;
-
     [SerializeField] private bool sistemaIniciado = false;
 
     private bool encargoTerminado = false;
     private bool esperandoPrimerEncargo = false;
+
+    // Contadores de progresión
+    private int encargosCompletadosEstaRonda = 0;
+    private int encargosCompletadosTotalesPartida = 0;
+
     // ====================
-    // Debug y dificultad (solo para pruebas)
+    // DEBUG Y TESTING
     // ====================
+    [Header("DEBUG / TESTING: Atajos")]
     [SerializeField] private GestorProgresoJugador gestorProgresoJugador;
-    [Header("DEBUG / TESTING")]
     [SerializeField] private bool permitirAtajosTesting = true;
-
-    // K = bajar el tiempo restante del encargo a 1 segundo
     [SerializeField] private KeyCode teclaTiempoRapido = KeyCode.K;
-
-    // L = completar el encargo al instante
     [SerializeField] private KeyCode teclaCompletarEncargo = KeyCode.L;
-
-    // N = sumar 250 puntos de golpe
     [SerializeField] private KeyCode teclaSumarPuntos = KeyCode.N;
-
-    // Valor usado por K
     [SerializeField] private float tiempoDebugForzado = 1f;
-    // ====================
 
-    [Header("Dificultad")]
-    [SerializeField] private int pecesMinimosTotales = 5;
-    [SerializeField] private int pecesMaximosTotales = 10;
-    [SerializeField] private float tiempoMinimoEncargo = 15f;
-    [SerializeField] private float tiempoMaximoEncargo = 24f;
+    [Header("DEBUG / TESTING: Dificultad Manual")]
+    [Tooltip("Si está activado, el juego ignorará la progresión y usará el valor del slider de abajo.")]
+    [SerializeField] private bool usarDificultadManual = false;
+    
+    [Tooltip("0.0 = Súper fácil (mínimo de peces y máximo de tiempo). 1.0 = Máxima dificultad.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float dificultadManual = 0f;
+
+    
+    [HideInInspector]
+    [SerializeField] private float dificultadManualAnterior = 0f;
 
     // ====================
     // TUTORIAL
     // ====================
     [Header("Tutorial")]
     [SerializeField] private TutorialManager tutorialManager;
-    [SerializeField] private int pecesTutorial = 3;
+    [SerializeField] private int pecesTutorial = 5;
+
+    [SerializeField] private bool cargarGameplayAlCompletarTutorial = false;
+    [SerializeField] private string escenaGameplayDespuesTutorial = "Gameplay";
 
     private bool tutorialActivo = false;
+
+    // ====================
+    // VALIDACIÓN DEL INSPECTOR
+    // ====================
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        
+        if (!usarDificultadManual)
+        {
+            if (dificultadManual != dificultadManualAnterior)
+            {
+                dificultadManual = dificultadManualAnterior;
+                Debug.LogWarning("<b>[Gestor Encargos]</b> Para modificar el slider, primero activa la casilla 'Usar Dificultad Manual'.");
+            }
+        }
+        else
+        {
+            
+            dificultadManualAnterior = dificultadManual;
+        }
+    }
+#endif
+
     // ====================
     // INICIO
     // ====================
@@ -93,6 +152,9 @@ public class GestorEncargosTest : MonoBehaviour
         sistemaIniciado = false;
         encargoTerminado = false;
         esperandoPrimerEncargo = false;
+
+        encargosCompletadosEstaRonda = 0;
+        encargosCompletadosTotalesPartida = PlayerPrefs.GetInt("EncargosTotalesHistoricos", 0);
 
         if (uiEncargo != null)
         {
@@ -118,6 +180,10 @@ public class GestorEncargosTest : MonoBehaviour
         {
             IniciarSistema();
         }
+        if (gameOverRetornoController == null)
+        {
+            gameOverRetornoController = FindFirstObjectByType<GameOverRetornoController>();
+        }
     }
 
     // ====================
@@ -125,21 +191,17 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     private void Update()
     {
-        if (!sistemaIniciado)
-            return;
+        if (!sistemaIniciado) return;
+        if (esperandoPrimerEncargo) return;
+        if (encargoActual == null) return;
+        if (encargoTerminado) return;
 
-        if (esperandoPrimerEncargo)
-            return;
-
-        if (encargoActual == null)
-            return;
-
-        if (encargoTerminado)
-            return;
-
-        if (permitirAtajosTesting && Input.GetKeyDown(teclaTiempoRapido))
+        // ====================
+        // SOLO TESTING
+        // ====================
+        if (permitirAtajosTesting)
         {
-            if (encargoActual != null && !encargoTerminado)
+            if (Input.GetKeyDown(teclaTiempoRapido))
             {
                 tiempoRestante = tiempoDebugForzado;
 
@@ -153,7 +215,25 @@ public class GestorEncargosTest : MonoBehaviour
                         pecesVerdesActuales);
                 }
             }
+
+            if (Input.GetKeyDown(teclaCompletarEncargo))
+            {
+                if (encargoActual.enProceso)
+                {
+                    CompletarEncargo();
+                    return;
+                }
+            }
+
+            if (Input.GetKeyDown(teclaSumarPuntos))
+            {
+                if (gameManager != null)
+                {
+                    gameManager.SumarPuntos(250);
+                }
+            }
         }
+
 
         if (!tutorialActivo)
         {
@@ -167,13 +247,6 @@ public class GestorEncargosTest : MonoBehaviour
             }
         }
 
-        if (tiempoRestante <= 0f)
-        {
-            tiempoRestante = 0f;
-            FallarEncargo();
-            return;
-        }
-
         if (uiEncargo != null)
         {
             uiEncargo.ActualizarUI(
@@ -182,51 +255,6 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesRosasActuales,
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
-        }
-        // ====================
-        // SOLO TESTING
-        // Estos atajos son solo para pruebas durante desarrollo.
-        // Borrarlos o desactivarlos en la versión final.
-        // ====================
-        if (permitirAtajosTesting)
-        {
-            // K = deja el encargo a 1 segundo para probar fallos o cambios rápidos
-            if (Input.GetKeyDown(teclaTiempoRapido))
-            {
-                if (encargoActual != null && !encargoTerminado)
-                {
-                    tiempoRestante = tiempoDebugForzado; // SOLO TESTING
-
-                    if (uiEncargo != null)
-                    {
-                        uiEncargo.ActualizarUI(
-                            encargoActual,
-                            tiempoRestante,
-                            pecesRosasActuales,
-                            pecesAmarillosActuales,
-                            pecesVerdesActuales);
-                    }
-                }
-            }
-
-            // L = completa el encargo actual al instante
-            if (Input.GetKeyDown(teclaCompletarEncargo))
-            {
-                if (encargoActual != null && !encargoTerminado && encargoActual.enProceso)
-                {
-                    CompletarEncargo(); // SOLO TESTING
-                    return; // SOLO TESTING, evita seguir ejecutando el Update este frame
-                }
-            }
-
-            // N = suma 250 puntos de golpe
-            if (Input.GetKeyDown(teclaSumarPuntos))
-            {
-                if (gameManager != null)
-                {
-                    gameManager.SumarPuntos(250); // SOLO TESTING
-                }
-            }
         }
     }
 
@@ -257,15 +285,43 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     private IEnumerator EsperarPrimerEncargo()
     {
+        esperandoPrimerEncargo = true;
+
         if (uiEstado != null)
         {
-            uiEstado.MostrarRecolecta(tiempoMensajeRecolecta);
+            uiEstado.MostrarRecolecta(999f);
+        }
+
+        if (esperarMovimientoParaPrimerEncargo)
+        {
+            while (!JugadorHaEmpezadoAMoverse())
+            {
+                yield return null;
+            }
         }
 
         yield return new WaitForSeconds(esperaPrimerEncargo);
 
+        if (uiEstado != null)
+        {
+            uiEstado.Ocultar();
+        }
+
         esperandoPrimerEncargo = false;
         IniciarNuevoEncargo();
+    }
+
+    private bool JugadorHaEmpezadoAMoverse()
+    {
+        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputZ = Input.GetAxisRaw("Vertical");
+
+        Vector2 inputMovimiento = new Vector2(inputX, inputZ);
+
+        bool seMovio = inputMovimiento.magnitude > inputMinimoParaEmpezar;
+        bool salto = Input.GetButtonDown("Saltar");
+
+        return seMovio || salto;
     }
 
     // ====================
@@ -281,7 +337,7 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     private void IniciarNuevoEncargo()
     {
-        encargoActual = GenerarEncargoAleatorio();
+        encargoActual = GenerarEncargoDinamico();
 
         encargoActual.enProceso = true;
         encargoActual.completado = false;
@@ -319,24 +375,54 @@ public class GestorEncargosTest : MonoBehaviour
     }
 
     // ====================
-    // GENERAR
+    // GENERAR ENCARGO DINÁMICO
     // ====================
-    private EncargoData GenerarEncargoAleatorio()
+    private EncargoData GenerarEncargoDinamico() 
     {
         EncargoData nuevo = new EncargoData();
 
-        int suma = 0;
+        float dificultadActual;
 
-        while (suma < pecesMinimosTotales || suma > pecesMaximosTotales)
+        if (usarDificultadManual)
         {
-            nuevo.pecesRosas = Random.Range(0, 6);
-            nuevo.pecesAmarillos = Random.Range(0, 6);
-            nuevo.pecesVerdes = Random.Range(0, 6);
-
-            suma = nuevo.pecesRosas + nuevo.pecesAmarillos + nuevo.pecesVerdes;
+            dificultadActual = dificultadManual;
+        }
+        else
+        {
+            float factorGlobal = Mathf.Clamp01((float)encargosCompletadosTotalesPartida / encargosParaMaxGlobal);
+            float factorRonda = Mathf.Clamp01((float)encargosCompletadosEstaRonda / encargosParaMaxRonda);
+            dificultadActual = Mathf.Max(factorGlobal, factorRonda);
         }
 
-        nuevo.tiempoLimite = Random.Range(tiempoMinimoEncargo, tiempoMaximoEncargo);
+        int minPecesActual = Mathf.RoundToInt(Mathf.Lerp(pecesMinimosAbsolutos, pecesMaximosAbsolutos - 3, dificultadActual));
+        int maxPecesActual = Mathf.RoundToInt(Mathf.Lerp(pecesMinimosAbsolutos + 2, pecesMaximosAbsolutos, dificultadActual));
+        
+        minPecesActual = Mathf.Max(pecesMinimosAbsolutos, minPecesActual);
+        maxPecesActual = Mathf.Clamp(maxPecesActual, minPecesActual, pecesMaximosAbsolutos);
+
+        int sumaTotalPeces = 0;
+        int intentosBucle = 0;
+
+        while ((sumaTotalPeces < minPecesActual || sumaTotalPeces > maxPecesActual) && intentosBucle < 20)
+        {
+            intentosBucle++;
+            int maxPorColor = Mathf.RoundToInt(Mathf.Lerp(3, 6, dificultadActual));
+
+            nuevo.pecesRosas = Random.Range(0, maxPorColor + 1);
+            nuevo.pecesAmarillos = Random.Range(0, maxPorColor + 1);
+            nuevo.pecesVerdes = Random.Range(0, maxPorColor + 1);
+
+            sumaTotalPeces = nuevo.pecesRosas + nuevo.pecesAmarillos + nuevo.pecesVerdes;
+        }
+
+        if (sumaTotalPeces < minPecesActual)
+        {
+            nuevo.pecesRosas = minPecesActual;
+            sumaTotalPeces = minPecesActual;
+        }
+
+        float tiempoAsignadoPorPez = Mathf.Lerp(tiempoPorPezMaximo, tiempoPorPezMinimo, dificultadActual);
+        nuevo.tiempoLimite = (sumaTotalPeces * tiempoAsignadoPorPez) + tiempoExtraColchon;
 
         return nuevo;
     }
@@ -346,20 +432,12 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     public void RegistrarPezRecogido(ColorPez color, int cantidad)
     {
-        if (!sistemaIniciado)
-            return;
+        if (!sistemaIniciado) return;
+        if (encargoActual == null) return;
+        if (!encargoActual.enProceso) return;
+        if (encargoTerminado) return;
 
-        if (encargoActual == null)
-            return;
-
-        if (!encargoActual.enProceso)
-            return;
-
-        if (encargoTerminado)
-            return;
-
-        if (cantidad < 1)
-            cantidad = 1;
+        if (cantidad < 1) cantidad = 1;
 
         if (tutorialActivo && tutorialManager != null)
         {
@@ -452,29 +530,42 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     private void CompletarEncargo()
     {
-        if (encargoActual == null)
-            return;
-
-        if (encargoTerminado)
-            return;
+        if (encargoActual == null) return;
+        if (encargoTerminado) return;
 
         encargoTerminado = true;
-
         encargoActual.enProceso = false;
         encargoActual.completado = true;
+
+        if (!tutorialActivo)
+        {
+            encargosCompletadosEstaRonda++;
+            encargosCompletadosTotalesPartida++;
+            PlayerPrefs.SetInt("EncargosTotalesHistoricos", encargosCompletadosTotalesPartida);
+            PlayerPrefs.Save();
+        }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.Aplaudir();
+        }
 
         if (pecesManager != null)
         {
             pecesManager.ReiniciarTodosLosPeces();
         }
 
-        if (gameManager != null)
+        if (guardarRecompensas)
         {
-            gameManager.SumarPuntos(puntosPorEncargo);
-        }
-        if (gestorProgresoJugador != null)
-        {
-            gestorProgresoJugador.DarMonedasPorEncargo();
+            if (gameManager != null)
+            {
+                gameManager.SumarPuntos(puntosPorEncargo);
+            }
+
+            if (gestorProgresoJugador != null)
+            {
+                gestorProgresoJugador.DarMonedasPorEncargo();
+            }
         }
 
         if (uiEstado != null)
@@ -509,6 +600,11 @@ public class GestorEncargosTest : MonoBehaviour
         encargoActual.enProceso = false;
         encargoActual.fallado = true;
 
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.Enojar();
+        }
+
         if (pecesManager != null)
         {
             pecesManager.ReiniciarTodosLosPeces();
@@ -527,7 +623,7 @@ public class GestorEncargosTest : MonoBehaviour
             if (ultimoStrike)
             {
                 uiEstado.MostrarMensajePersonalizado(
-                    "ENCARGO FALLIDO\nVuelve a tu celda a descansar",
+                    "ENCARGO FALLIDO",
                     Color.red,
                     2f
                 );
@@ -540,7 +636,21 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (ultimoStrike)
         {
-            StartCoroutine(EsperarYVolverALobby());
+            int puntosRonda = 0;
+
+            if (gameManager != null)
+            {
+                puntosRonda = gameManager.GetPuntosActuales();
+            }
+
+            if (gameOverRetornoController != null)
+            {
+                gameOverRetornoController.IniciarSecuenciaDerrota(puntosRonda);
+            }
+            else
+            {
+                StartCoroutine(EsperarYVolverALobby());
+            }
         }
         else
         {
@@ -580,9 +690,9 @@ public class GestorEncargosTest : MonoBehaviour
         }
     }
 
-    //=====================
+    // ====================
     // TUTORIAL
-    //=====================
+    // ====================
     private void IniciarEncargoTutorial()
     {
         encargoActual = new EncargoData();
@@ -606,7 +716,7 @@ public class GestorEncargosTest : MonoBehaviour
         {
             pecesManager.ReiniciarTodosLosPeces();
             pecesManager.SetColoresActivos(true, false, false);
-            pecesManager.ActivarPecesAleatorios();
+            pecesManager.ActivarTodosLosPecesTutorial();
         }
 
         if (uiEncargo != null)
@@ -623,16 +733,20 @@ public class GestorEncargosTest : MonoBehaviour
 
     public void SaltarTutorialYEmpezarJuegoNormal()
     {
-        if (!tutorialActivo)
-            return;
-
         tutorialActivo = false;
 
         if (pecesManager != null)
             pecesManager.ReiniciarTodosLosPeces();
 
+        if (cargarGameplayAlCompletarTutorial)
+        {
+            SceneLoader.CargarEscena(escenaGameplayDespuesTutorial);
+            return;
+        }
+
         IniciarNuevoEncargo();
     }
+
     private IEnumerator FinalizarTutorialYEmpezarJuegoNormal()
     {
         if (tutorialManager != null)
@@ -647,6 +761,36 @@ public class GestorEncargosTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        if (cargarGameplayAlCompletarTutorial)
+        {
+            SceneLoader.CargarEscena(escenaGameplayDespuesTutorial);
+            yield break;
+        }
+
         IniciarNuevoEncargo();
+    }
+
+    public void ActivarPecesTutorial()
+    {
+        if (!tutorialActivo)
+            return;
+
+        if (pecesManager != null)
+        {
+            pecesManager.ReiniciarTodosLosPeces();
+            pecesManager.SetColoresActivos(true, false, false);
+            pecesManager.ActivarTodosLosPecesTutorial();
+        }
+
+        if (uiEncargo != null)
+        {
+            uiEncargo.Mostrar();
+            uiEncargo.ActualizarUI(
+                encargoActual,
+                tiempoRestante,
+                pecesRosasActuales,
+                pecesAmarillosActuales,
+                pecesVerdesActuales);
+        }
     }
 }

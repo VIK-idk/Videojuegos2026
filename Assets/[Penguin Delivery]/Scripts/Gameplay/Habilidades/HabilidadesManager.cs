@@ -21,6 +21,16 @@ public class HabilidadesManager : MonoBehaviour
     [SerializeField] private Text textoMensaje;
     [SerializeField] private float duracionMensaje = 2f;
 
+    [Header("VFX Habilidades")]
+    [SerializeField] private Transform puntoVFXHabilidades;
+    [SerializeField] private TipoHabilidadVFX tipoVFXHabilidad1;
+    [SerializeField] private TipoHabilidadVFX tipoVFXHabilidad2;
+    [SerializeField] private TipoHabilidadVFX tipoVFXHabilidad3;
+
+    private GameObject vfxActivoHabilidad1;
+    private GameObject vfxActivoHabilidad2;
+    private GameObject vfxActivoHabilidad3;
+
     private Coroutine rutinaMensaje;
 
     private void Start()
@@ -117,8 +127,14 @@ public class HabilidadesManager : MonoBehaviour
 
     private void ActualizarSlot(HabilidadSlotUI slot, HabilidadBase habilidad)
     {
-        if (slot == null || habilidad == null)
+        if (slot == null)
             return;
+
+        if (habilidad == null)
+        {
+            slot.MostrarVacio();
+            return;
+        }
 
         if (!habilidad.EstaAdquirida())
         {
@@ -126,23 +142,171 @@ public class HabilidadesManager : MonoBehaviour
         }
         else if (habilidad.EstaUsada())
         {
-            slot.MostrarUsada(habilidad.GetTitulo());
+            slot.MostrarUsada(
+                habilidad.GetTitulo(),
+                habilidad.GetIcono()
+            );
         }
         else if (habilidad.EstaActiva())
         {
-            slot.MostrarActiva(habilidad.GetTitulo(), habilidad.GetTextoTecla(), habilidad.GetTiempoVisible());
+            slot.MostrarActiva(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetTiempoVisible(),
+                habilidad.GetIcono()
+            );
         }
         else if (habilidad.EstaEnCooldown())
         {
-            slot.MostrarCooldown(habilidad.GetTitulo(), habilidad.GetTextoTecla(), habilidad.GetTiempoVisible());
+            slot.MostrarCooldown(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetTiempoVisible(),
+                habilidad.GetIcono()
+            );
         }
         else if (HayOtraHabilidadActiva(habilidad))
         {
-            slot.MostrarBloqueada(habilidad.GetTitulo(), habilidad.GetTextoTecla());
+            slot.MostrarBloqueada(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetIcono()
+            );
         }
         else
         {
-            slot.MostrarDisponible(habilidad.GetTitulo(), habilidad.GetTextoTecla());
+            slot.MostrarDisponible(
+                habilidad.GetTitulo(),
+                habilidad.GetTextoTecla(),
+                habilidad.GetIcono()
+            );
+        }
+    }
+
+    //VFX HABILIDADES
+    public void ReproducirVFXHabilidad(HabilidadBase habilidad, bool esPulso)
+    {
+        TipoHabilidadVFX tipoVFX = ObtenerTipoVFX(habilidad);
+
+        if (tipoVFX == null || tipoVFX.efectoVisual == null)
+            return;
+
+        GameObject nuevoVFX = CrearVFX(tipoVFX);
+
+        if (nuevoVFX == null)
+            return;
+
+        if (esPulso)
+        {
+            StartCoroutine(DestruirVFXDespues(nuevoVFX, tipoVFX.duracionPulso));
+        }
+        else
+        {
+            GuardarVFXActivo(habilidad, nuevoVFX);
+        }
+    }
+
+    //VFX HABILIDADES
+    public void DetenerVFXHabilidad(HabilidadBase habilidad)
+    {
+        GameObject vfx = ObtenerVFXActivo(habilidad);
+
+        if (vfx != null)
+        {
+            Destroy(vfx);
+        }
+
+        GuardarVFXActivo(habilidad, null);
+    }
+
+    //VFX HABILIDADES
+    private TipoHabilidadVFX ObtenerTipoVFX(HabilidadBase habilidad)
+    {
+        if (habilidad == habilidad1)
+            return tipoVFXHabilidad1;
+
+        if (habilidad == habilidad2)
+            return tipoVFXHabilidad2;
+
+        if (habilidad == habilidad3)
+            return tipoVFXHabilidad3;
+
+        return null;
+    }
+
+    //VFX HABILIDADES
+    private GameObject CrearVFX(TipoHabilidadVFX tipoVFX)
+    {
+        Transform punto = puntoVFXHabilidades != null ? puntoVFXHabilidades : transform;
+
+        GameObject nuevoVFX = Instantiate(
+            tipoVFX.efectoVisual,
+            punto.position,
+            punto.rotation,
+            punto
+        );
+
+        nuevoVFX.transform.localPosition = Vector3.zero;
+        nuevoVFX.transform.localRotation = Quaternion.identity;
+
+        ParticleSystem[] particulas = nuevoVFX.GetComponentsInChildren<ParticleSystem>();
+
+        for (int i = 0; i < particulas.Length; i++)
+        {
+            particulas[i].Play();
+        }
+
+        return nuevoVFX;
+    }
+
+    //VFX HABILIDADES
+    private IEnumerator DestruirVFXDespues(GameObject vfx, float duracion)
+    {
+        if (duracion <= 0f)
+            duracion = 0.6f;
+
+        yield return new WaitForSeconds(duracion);
+
+        if (vfx != null)
+        {
+            Destroy(vfx);
+        }
+    }
+
+    //VFX HABILIDADES
+    private GameObject ObtenerVFXActivo(HabilidadBase habilidad)
+    {
+        if (habilidad == habilidad1)
+            return vfxActivoHabilidad1;
+
+        if (habilidad == habilidad2)
+            return vfxActivoHabilidad2;
+
+        if (habilidad == habilidad3)
+            return vfxActivoHabilidad3;
+
+        return null;
+    }
+
+    //VFX HABILIDADES
+    private void GuardarVFXActivo(HabilidadBase habilidad, GameObject vfx)
+    {
+        if (habilidad == habilidad1)
+        {
+            vfxActivoHabilidad1 = vfx;
+            return;
+        }
+
+        if (habilidad == habilidad2)
+        {
+            vfxActivoHabilidad2 = vfx;
+            return;
+        }
+
+        if (habilidad == habilidad3)
+        {
+            vfxActivoHabilidad3 = vfx;
+            return;
         }
     }
 }

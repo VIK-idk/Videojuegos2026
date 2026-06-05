@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
         return puntos;
     }
 
+
+
     // ====================
     // SOLO TESTING
     // Reinicia los puntos a 0 para pruebas rápidas

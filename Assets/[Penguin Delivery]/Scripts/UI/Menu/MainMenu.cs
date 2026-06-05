@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private string nombreEscena = "Gameplay";
+    [SerializeField] private string nombreEscenaTutorial = "Tutorial";
 
     [Header("Paneles")]
     [SerializeField] private GameObject panelMenuPrincipal;
@@ -50,7 +51,15 @@ public class MainMenu : MonoBehaviour
     public void Jugar()
     {
         SesionPartida.ReiniciarSesion();
-        SceneLoader.CargarEscena(nombreEscena);
+
+        if (TutorialEstado.EstaCompletado())
+        {
+            SceneLoader.CargarEscena(nombreEscena);
+        }
+        else
+        {
+            SceneLoader.CargarEscena(nombreEscenaTutorial);
+        }
     }
 
     public void AbrirOpciones()
