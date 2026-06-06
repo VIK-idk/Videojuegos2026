@@ -1,19 +1,28 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuPausa : MonoBehaviour
 {
-    public GameObject menuPausa;
-    public GameObject menuOpciones;
+    [Header("Menus")]
+    [SerializeField] private GameObject menuPausa;
+    [SerializeField] private GameObject menuOpciones;
+
+    [Header("Fondo blur")]
+    [SerializeField] private GameObject fondoBlurPausa;
+
+    [Header("HUD")]
+    [SerializeField] private GameObject hudGameplay;
 
     [Header("UI Mando")]
     [SerializeField] private GameObject primerBotonPausa;
     [SerializeField] private GameObject primerBotonOpciones;
 
-    [SerializeField] private string escenaPrincipal;
+    [Header("Escenas")]
+    [SerializeField] private string escenaPrincipal = "MainMenu";
+
+    [Header("Tienda")]
     [SerializeField] private TiendaUIController tiendaUIController;
 
     [Header("Tutorial / Testing")]
@@ -23,99 +32,150 @@ public class MenuPausa : MonoBehaviour
 
     private bool isGamePaused = false;
 
-    void Update()
+    private void Start()
     {
-        //TUTORIAL / TESTING
-        if (Input.GetKeyDown(teclaResetTutorial))
-        {
-            TutorialEstado.Resetear();
-            Debug.Log("Tutorial reseteado. La próxima vez se abrirá el tutorial.");
+        InicializarMenu();
+    }
 
-            if (cargarTutorialAlResetear)
+    private void Update()
+    {
+        GestionarResetTutorial();
+
+        if (GameOverRetornoController.DerrotaActiva)
+        {
+            if (isGamePaused)
             {
-                Time.timeScale = 1f;
-                SceneLoader.CargarEscena(escenaTutorial);
-                return;
+                isGamePaused = false;
+                DesactivarPausa();
             }
+
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.JoystickButton9) ||
             Input.GetKeyDown(KeyCode.P) ||
             Input.GetKeyDown(KeyCode.Escape))
         {
-            isGamePaused = !isGamePaused;
-            PauseGame();
+            AlternarPausa();
         }
 
-        if (!isGamePaused || EventSystem.current == null)
+        MantenerSeleccionMando();
+    }
+
+    private void InicializarMenu()
+    {
+        Time.timeScale = 1f;
+        isGamePaused = false;
+
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(false);
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(true);
+    }
+
+    private void GestionarResetTutorial()
+    {
+        if (!Input.GetKeyDown(teclaResetTutorial))
             return;
 
-        if (EventSystem.current.currentSelectedGameObject == null)
+        TutorialEstado.Resetear();
+        Debug.Log("Tutorial reseteado. La próxima vez se abrirá el tutorial.");
+
+        if (cargarTutorialAlResetear)
         {
-            if (menuOpciones != null && menuOpciones.activeInHierarchy)
-            {
-                SeleccionarObjeto(primerBotonOpciones);
-            }
-            else if (menuPausa != null && menuPausa.activeInHierarchy)
-            {
-                SeleccionarObjeto(primerBotonPausa);
-            }
+            Time.timeScale = 1f;
+            SceneLoader.CargarEscena(escenaTutorial);
         }
+    }
+
+    private void AlternarPausa()
+    {
+        isGamePaused = !isGamePaused;
+        PauseGame();
     }
 
     public void PauseGame()
     {
         if (isGamePaused)
-        {
-            Time.timeScale = 0;
-
-            if (menuPausa != null)
-                menuPausa.SetActive(true);
-
-            if (menuOpciones != null)
-                menuOpciones.SetActive(false);
-
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-
-            SeleccionarObjeto(primerBotonPausa);
-            StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
-        }
+            ActivarPausa();
         else
+            DesactivarPausa();
+    }
+
+    private void ActivarPausa()
+    {
+        Time.timeScale = 0f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(true);
+
+        if (menuPausa != null)
+            menuPausa.SetActive(true);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        SeleccionarObjeto(primerBotonPausa);
+        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
+    }
+
+    private void DesactivarPausa()
+    {
+        Time.timeScale = 1f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(true);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(false);
+
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
+        bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
+
+        if (!tiendaAbierta)
         {
-            Time.timeScale = 1;
-
-            if (menuPausa != null)
-                menuPausa.SetActive(false);
-
-            if (menuOpciones != null)
-                menuOpciones.SetActive(false);
-
-            bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
-
-            if (!tiendaAbierta)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-
-            if (EventSystem.current != null)
-            {
-                EventSystem.current.SetSelectedGameObject(null);
-            }
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
+
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void Continuar()
     {
         isGamePaused = false;
-        PauseGame();
+        DesactivarPausa();
     }
 
     public void AbrirOpciones()
     {
-        if (!isGamePaused)
-            isGamePaused = true;
+        isGamePaused = true;
+        Time.timeScale = 0f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(true);
 
         if (menuPausa != null)
             menuPausa.SetActive(false);
@@ -123,17 +183,32 @@ public class MenuPausa : MonoBehaviour
         if (menuOpciones != null)
             menuOpciones.SetActive(true);
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         SeleccionarObjeto(primerBotonOpciones);
         StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonOpciones));
     }
 
     public void VolverMenuPausa()
     {
+        isGamePaused = true;
+        Time.timeScale = 0f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(false);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(true);
+
         if (menuOpciones != null)
             menuOpciones.SetActive(false);
 
         if (menuPausa != null)
             menuPausa.SetActive(true);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         SeleccionarObjeto(primerBotonPausa);
         StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
@@ -141,8 +216,39 @@ public class MenuPausa : MonoBehaviour
 
     public void Salir()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
+
+        if (hudGameplay != null)
+            hudGameplay.SetActive(true);
+
+        if (fondoBlurPausa != null)
+            fondoBlurPausa.SetActive(false);
+
+        if (menuPausa != null)
+            menuPausa.SetActive(false);
+
+        if (menuOpciones != null)
+            menuOpciones.SetActive(false);
+
         SceneLoader.CargarEscena(escenaPrincipal);
+    }
+
+    private void MantenerSeleccionMando()
+    {
+        if (!isGamePaused || EventSystem.current == null)
+            return;
+
+        if (EventSystem.current.currentSelectedGameObject != null)
+            return;
+
+        if (menuOpciones != null && menuOpciones.activeInHierarchy)
+        {
+            SeleccionarObjeto(primerBotonOpciones);
+        }
+        else if (menuPausa != null && menuPausa.activeInHierarchy)
+        {
+            SeleccionarObjeto(primerBotonPausa);
+        }
     }
 
     private void SeleccionarObjeto(GameObject objeto)

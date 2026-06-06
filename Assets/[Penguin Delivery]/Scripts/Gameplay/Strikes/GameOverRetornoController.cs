@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class GameOverRetornoController : MonoBehaviour
 {
+    public static bool DerrotaActiva { get; private set; } = false;
+
     [Header("Camaras")]
     [SerializeField] private Camera camaraJugador;
     [SerializeField] private Camera camaraDerrota;
@@ -23,12 +25,12 @@ public class GameOverRetornoController : MonoBehaviour
     [Header("Tiempos")]
     [SerializeField] private float esperaAntesCamara = 1f;
     [SerializeField] private float duracionMovimientoCamara = 2f;
+    [SerializeField] private float esperaAntesFadeNegro = 2f;
     [SerializeField] private float duracionFadeNegro = 1.5f;
     [SerializeField] private float esperaTextoMensaje = 0.5f;
     [SerializeField] private float esperaTextoPuntos = 1f;
     [SerializeField] private float duracionFadeTextoContinuar = 1f;
     [SerializeField] private float velocidadParpadeoTexto = 3f;
-    [SerializeField] private float esperaAntesFadeNegro = 2f;
 
     [Header("Escena")]
     [SerializeField] private StrikeManager strikeManager;
@@ -39,8 +41,14 @@ public class GameOverRetornoController : MonoBehaviour
 
     private void Awake()
     {
-        BuscarReferencias();
+        DerrotaActiva = false;
 
+        BuscarReferencias();
+        PrepararEstadoInicial();
+    }
+
+    private void PrepararEstadoInicial()
+    {
         if (camaraDerrota != null)
         {
             camaraDerrota.gameObject.SetActive(true);
@@ -49,10 +57,10 @@ public class GameOverRetornoController : MonoBehaviour
 
         if (panelNegro != null)
         {
-            panelNegro.gameObject.SetActive(true);
             panelNegro.alpha = 0f;
             panelNegro.blocksRaycasts = false;
             panelNegro.interactable = false;
+            panelNegro.gameObject.SetActive(false);
         }
 
         OcultarElementosDerrota();
@@ -62,6 +70,9 @@ public class GameOverRetornoController : MonoBehaviour
     {
         if (secuenciaActiva)
             return;
+
+        DerrotaActiva = true;
+        Time.timeScale = 1f;
 
         StartCoroutine(SecuenciaDerrota(puntosRonda));
     }
@@ -75,13 +86,12 @@ public class GameOverRetornoController : MonoBehaviour
 
         if (panelNegro != null)
         {
+            panelNegro.gameObject.SetActive(true);
             panelNegro.alpha = 0f;
             panelNegro.blocksRaycasts = true;
             panelNegro.interactable = true;
-            panelNegro.gameObject.SetActive(true);
         }
 
-        // Primero dejamos que se vea "ENCARGO FALLIDO"
         yield return new WaitForSeconds(esperaAntesCamara);
 
         PrepararCamaraDerrota();
@@ -103,9 +113,7 @@ public class GameOverRetornoController : MonoBehaviour
         yield return new WaitForSeconds(esperaTextoMensaje);
 
         if (imagenPinguinoTriste != null)
-        {
             imagenPinguinoTriste.gameObject.SetActive(true);
-        }
 
         if (textoMensaje != null)
         {
@@ -142,12 +150,9 @@ public class GameOverRetornoController : MonoBehaviour
             yield return null;
         }
 
-        if (rutinaEnojo != null)
-        {
-            StopCoroutine(rutinaEnojo);
-            rutinaEnojo = null;
-        }
+        FinalizarRutinas();
 
+        DerrotaActiva = false;
         secuenciaActiva = false;
 
         if (strikeManager != null)
@@ -252,9 +257,7 @@ public class GameOverRetornoController : MonoBehaviour
         while (secuenciaActiva)
         {
             if (reyMorsaAnimacion != null)
-            {
                 reyMorsaAnimacion.Enojar();
-            }
 
             yield return new WaitForSeconds(intervaloEnojoReyMorsa);
         }
@@ -296,6 +299,15 @@ public class GameOverRetornoController : MonoBehaviour
 
         if (imagenPinguinoTriste != null)
             imagenPinguinoTriste.gameObject.SetActive(false);
+    }
+
+    private void FinalizarRutinas()
+    {
+        if (rutinaEnojo != null)
+        {
+            StopCoroutine(rutinaEnojo);
+            rutinaEnojo = null;
+        }
     }
 
     private void BuscarReferencias()
