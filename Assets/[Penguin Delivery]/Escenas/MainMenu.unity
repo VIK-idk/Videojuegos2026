@@ -657,7 +657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &126074214
 RectTransform:
   m_ObjectHideFlags: 0
@@ -724,8 +724,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1703,7 +1703,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8a2461e0ff23c8e47a9f0862f54094fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d8b3ce0bb46f46d41a6c54e29ba6c09b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1734,11 +1734,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagenBoton: {fileID: 324813982}
-  spriteNormal: {fileID: 21300000, guid: 4df9a6456cbbfe342ab358aaeaab757f, type: 3}
+  spriteNormal: {fileID: 21300000, guid: d8b3ce0bb46f46d41a6c54e29ba6c09b, type: 3}
   spritesExplosion:
-  - {fileID: 21300000, guid: 00cae3cdbd8bcd246b9f03df8fa789be, type: 3}
-  - {fileID: 21300000, guid: 350bce32c3abefd4bbf7ecb653e741a9, type: 3}
-  - {fileID: 21300000, guid: 69ab7811ee2f38645ae966843689adf5, type: 3}
+  - {fileID: 21300000, guid: b2535cfdd49513f4d80367299c0e28ee, type: 3}
   duracionExplosion: 0.1
   restaurarSpriteAlFinal: 1
   escalaSeleccionado: 1.08
@@ -4692,7 +4690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &962264810
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4759,8 +4757,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6857,7 +6855,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8a2461e0ff23c8e47a9f0862f54094fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d8b3ce0bb46f46d41a6c54e29ba6c09b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -6888,11 +6886,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagenBoton: {fileID: 1446477332}
-  spriteNormal: {fileID: 21300000, guid: dbc1bb3d6ad3e9a4981d0e06b39d981e, type: 3}
+  spriteNormal: {fileID: 21300000, guid: d8b3ce0bb46f46d41a6c54e29ba6c09b, type: 3}
   spritesExplosion:
-  - {fileID: 21300000, guid: 00cae3cdbd8bcd246b9f03df8fa789be, type: 3}
-  - {fileID: 21300000, guid: 350bce32c3abefd4bbf7ecb653e741a9, type: 3}
-  - {fileID: 21300000, guid: 69ab7811ee2f38645ae966843689adf5, type: 3}
+  - {fileID: 21300000, guid: b2535cfdd49513f4d80367299c0e28ee, type: 3}
   duracionExplosion: 0.1
   restaurarSpriteAlFinal: 0
   escalaSeleccionado: 1.08
@@ -7233,7 +7229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1619953846
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7300,8 +7296,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -13482,7 +13478,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6207d05b4aab775468d5588c9a95c533, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 703f88cdfeb92cf4493d918e369cbf1b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -13513,11 +13509,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagenBoton: {fileID: 1789500533}
-  spriteNormal: {fileID: 21300000, guid: c768ce1aef4886845b43809ad4564df2, type: 3}
+  spriteNormal: {fileID: 21300000, guid: 703f88cdfeb92cf4493d918e369cbf1b, type: 3}
   spritesExplosion:
-  - {fileID: 21300000, guid: 00cae3cdbd8bcd246b9f03df8fa789be, type: 3}
-  - {fileID: 21300000, guid: 350bce32c3abefd4bbf7ecb653e741a9, type: 3}
-  - {fileID: 21300000, guid: 69ab7811ee2f38645ae966843689adf5, type: 3}
+  - {fileID: 21300000, guid: 3421bd810df3e354b944247f8daeca15, type: 3}
   duracionExplosion: 0.1
   restaurarSpriteAlFinal: 0
   escalaSeleccionado: 1.08
