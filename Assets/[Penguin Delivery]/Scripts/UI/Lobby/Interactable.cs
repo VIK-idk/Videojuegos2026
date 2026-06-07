@@ -8,7 +8,21 @@ public class Interactable : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (jugadorDentro && Input.GetButtonDown("Interactuar"))
+        if (!jugadorDentro)
+            return;
+
+        if (TiendaUIController.HayTiendaAbierta)
+        {
+            if (textoInteractuar != null)
+                textoInteractuar.SetActive(false);
+
+            return;
+        }
+
+        if (textoInteractuar != null)
+            textoInteractuar.SetActive(true);
+
+        if (Input.GetButtonDown("Interactuar"))
         {
             Interactuar();
         }
@@ -25,7 +39,7 @@ public class Interactable : MonoBehaviour
         {
             jugadorDentro = true;
 
-            if (textoInteractuar != null)
+            if (textoInteractuar != null && !TiendaUIController.HayTiendaAbierta)
                 textoInteractuar.SetActive(true);
         }
     }
