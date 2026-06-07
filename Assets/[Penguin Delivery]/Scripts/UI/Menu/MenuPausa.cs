@@ -31,6 +31,7 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] private string escenaTutorial = "Tutorial";
 
     private bool isGamePaused = false;
+    private bool tiendaEstabaAbiertaAntesDePausar = false;
 
     private void Start()
     {
@@ -66,6 +67,7 @@ public class MenuPausa : MonoBehaviour
     {
         Time.timeScale = 1f;
         isGamePaused = false;
+        tiendaEstabaAbiertaAntesDePausar = false;
 
         if (menuPausa != null)
             menuPausa.SetActive(false);
@@ -113,6 +115,12 @@ public class MenuPausa : MonoBehaviour
     {
         Time.timeScale = 0f;
 
+        tiendaEstabaAbiertaAntesDePausar =
+            tiendaUIController != null && tiendaUIController.TiendaAbierta;
+
+        if (tiendaEstabaAbiertaAntesDePausar)
+            tiendaUIController.OcultarInterfazPorPausa();
+
         if (hudGameplay != null)
             hudGameplay.SetActive(false);
 
@@ -148,13 +156,21 @@ public class MenuPausa : MonoBehaviour
         if (menuOpciones != null)
             menuOpciones.SetActive(false);
 
-        bool tiendaAbierta = tiendaUIController != null && tiendaUIController.TiendaAbierta;
+        if (tiendaEstabaAbiertaAntesDePausar && tiendaUIController != null)
+        {
+            tiendaUIController.RestaurarInterfazTrasPausa();
+        }
 
-        if (!tiendaAbierta)
+        bool tiendaAbiertaAhora =
+            tiendaUIController != null && tiendaUIController.TiendaAbierta;
+
+        if (!tiendaAbiertaAhora)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+
+        tiendaEstabaAbiertaAntesDePausar = false;
 
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
@@ -217,6 +233,7 @@ public class MenuPausa : MonoBehaviour
     public void Salir()
     {
         Time.timeScale = 1f;
+        tiendaEstabaAbiertaAntesDePausar = false;
 
         if (hudGameplay != null)
             hudGameplay.SetActive(true);
