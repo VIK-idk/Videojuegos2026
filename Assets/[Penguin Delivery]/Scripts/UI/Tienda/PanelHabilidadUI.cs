@@ -29,7 +29,6 @@ public class PanelHabilidadUI : MonoBehaviour
     public Text textoErrorCompra;
 
     [Header("Visual")]
-    public Color colorComprado = Color.gray;
     public float duracionTextoError = 2f;
 
     [Header("UI Mando")]
@@ -109,7 +108,7 @@ public class PanelHabilidadUI : MonoBehaviour
         {
             iconoHabilidad.gameObject.SetActive(true);
             iconoHabilidad.sprite = habilidadActual.Icono;
-            iconoHabilidad.color = comprada ? colorComprado : Color.white;
+            iconoHabilidad.color = Color.white;
         }
 
         if (textoNombre != null)

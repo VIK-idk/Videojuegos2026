@@ -29,7 +29,8 @@ public class GestorEncargosTest : MonoBehaviour
     [SerializeField] private bool iniciarAutomaticamente = true;
     [SerializeField] private bool guardarRecompensas = true;
     [SerializeField] private int puntosPorEncargo = 100;
-    [SerializeField] private float esperaEntreEncargos = 2f;
+    [SerializeField] private float esperaAntesDeOcultarEncargo = 1f;
+    [SerializeField] private float esperaEntreEncargos = 2.5f;
     [SerializeField] private float esperaPrimerEncargo = 3f;
 
     [Header("Inicio primer encargo")]
@@ -663,14 +664,17 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     private IEnumerator EsperarYSiguiente()
     {
-        yield return new WaitForSeconds(esperaEntreEncargos);
+        // Deja visible el encargo un momento después de completarlo/fallarlo.
+        yield return new WaitForSeconds(esperaAntesDeOcultarEncargo);
 
+        // Ahora sí lo quitamos de pantalla.
         if (uiEncargo != null)
         {
             uiEncargo.Ocultar();
         }
 
-        yield return new WaitForSeconds(0.5f);
+        // Espera con el encargo ya oculto antes de crear el siguiente.
+        yield return new WaitForSeconds(esperaEntreEncargos);
 
         IniciarNuevoEncargo();
     }
@@ -759,7 +763,8 @@ public class GestorEncargosTest : MonoBehaviour
         if (uiEncargo != null)
             uiEncargo.Ocultar();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(esperaEntreEncargos);
 
         if (cargarGameplayAlCompletarTutorial)
         {

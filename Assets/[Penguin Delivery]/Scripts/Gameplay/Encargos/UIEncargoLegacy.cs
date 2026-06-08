@@ -65,16 +65,25 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     [Header("Panel")]
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private RectTransform panelRect;
+
+    [Header("Animacion entrada/salida")]
+    [SerializeField] private float duracionMovimientoPanel = 0.35f;
+    [SerializeField] private float distanciaEntradaIzquierda = 900f;
+    [SerializeField] private AnimationCurve curvaMovimiento = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     // ====================
     // EFECTO RECOGIDA
     // ====================
     [Header("Efecto recogida")]
     [SerializeField] private float escalaResalte = 1.35f;
-    [SerializeField] private float tiempoResaltado = 0.35f;
-    [SerializeField] private float duracionAnimacionResalte = 0.12f;
+    [SerializeField] private float tiempoResaltado = 0.2f;
+    [SerializeField] private float duracionAnimacionResalte = 0.08f;
 
     private Coroutine rutinaFade;
+
+    private Vector2 posicionOriginalPanel;
+    private Vector2 posicionOcultaIzquierda;
 
     private Coroutine rutinaRosa;
     private Coroutine rutinaAmarilla;
@@ -91,6 +100,15 @@ public class UIEncargoLegacy : MonoBehaviour
     {
         if (canvasGroup == null)
             canvasGroup = GetComponent<CanvasGroup>();
+
+        if (panelRect == null)
+            panelRect = GetComponent<RectTransform>();
+
+        if (panelRect != null)
+        {
+            posicionOriginalPanel = panelRect.anchoredPosition;
+            posicionOcultaIzquierda = posicionOriginalPanel + Vector2.left * distanciaEntradaIzquierda;
+        }
 
         GuardarEscalasOriginales(plantilla1Tipo);
         GuardarEscalasOriginales(plantilla2Tipos);
@@ -229,7 +247,6 @@ public class UIEncargoLegacy : MonoBehaviour
             {
                 fila.iconoPez.sprite = ObtenerSpritePez(datos[i].color);
                 fila.iconoPez.enabled = fila.iconoPez.sprite != null;
-                fila.iconoPez.transform.localScale = fila.escalaOriginal;
             }
 
             if (fila.textoCantidad != null)
@@ -319,37 +336,48 @@ public class UIEncargoLegacy : MonoBehaviour
 
     private IEnumerator AnimarResalte(Image icono, Vector3 escalaOriginal)
     {
+        if (icono == null)
+            yield break;
+
+        Transform iconoTransform = icono.transform;
+
         Vector3 escalaGrande = escalaOriginal * escalaResalte;
+
+        // Aseguramos que empieza desde su tamaño normal.
+        iconoTransform.localScale = escalaOriginal;
 
         float tiempo = 0f;
 
+        // Subir una sola vez.
         while (tiempo < duracionAnimacionResalte)
         {
             tiempo += Time.deltaTime;
 
-            float t = tiempo / duracionAnimacionResalte;
-            icono.transform.localScale = Vector3.Lerp(escalaOriginal, escalaGrande, t);
+            float t = Mathf.Clamp01(tiempo / duracionAnimacionResalte);
+            iconoTransform.localScale = Vector3.Lerp(escalaOriginal, escalaGrande, t);
 
             yield return null;
         }
 
-        icono.transform.localScale = escalaGrande;
+        iconoTransform.localScale = escalaGrande;
 
+        // Se queda arriba un momento.
         yield return new WaitForSeconds(tiempoResaltado);
 
         tiempo = 0f;
 
+        // Volver a tamaño normal.
         while (tiempo < duracionAnimacionResalte)
         {
             tiempo += Time.deltaTime;
 
-            float t = tiempo / duracionAnimacionResalte;
-            icono.transform.localScale = Vector3.Lerp(escalaGrande, escalaOriginal, t);
+            float t = Mathf.Clamp01(tiempo / duracionAnimacionResalte);
+            iconoTransform.localScale = Vector3.Lerp(escalaGrande, escalaOriginal, t);
 
             yield return null;
         }
 
-        icono.transform.localScale = escalaOriginal;
+        iconoTransform.localScale = escalaOriginal;
     }
 
     // ====================
@@ -378,7 +406,12 @@ public class UIEncargoLegacy : MonoBehaviour
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
-        rutinaFade = StartCoroutine(Fade(0f, 1f));
+        rutinaFade = StartCoroutine(MoverPanel(
+            posicionOcultaIzquierda,
+            posicionOriginalPanel,
+            0f,
+            1f
+        ));
     }
 
     // ====================
@@ -389,7 +422,12 @@ public class UIEncargoLegacy : MonoBehaviour
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
-        rutinaFade = StartCoroutine(Fade(1f, 0f));
+        rutinaFade = StartCoroutine(MoverPanel(
+            posicionOriginalPanel,
+            posicionOcultaIzquierda,
+            1f,
+            0f
+        ));
     }
 
     // ====================
@@ -402,26 +440,42 @@ public class UIEncargoLegacy : MonoBehaviour
 
         if (canvasGroup != null)
             canvasGroup.alpha = 0f;
+
+        if (panelRect != null)
+            panelRect.anchoredPosition = posicionOcultaIzquierda;
     }
 
     // ====================
-    // FADE
+    // MOVER PANEL
     // ====================
-    private IEnumerator Fade(float inicio, float fin)
+    private IEnumerator MoverPanel(
+    Vector2 posicionInicio,
+    Vector2 posicionFinal,
+    float alphaInicio,
+    float alphaFinal)
     {
-        if (canvasGroup == null)
+        if (canvasGroup == null || panelRect == null)
             yield break;
 
         float tiempo = 0f;
-        float duracion = 0.25f;
 
-        while (tiempo < duracion)
+        canvasGroup.alpha = alphaInicio;
+        panelRect.anchoredPosition = posicionInicio;
+
+        while (tiempo < duracionMovimientoPanel)
         {
             tiempo += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(inicio, fin, tiempo / duracion);
+
+            float t = Mathf.Clamp01(tiempo / duracionMovimientoPanel);
+            float curva = curvaMovimiento != null ? curvaMovimiento.Evaluate(t) : t;
+
+            panelRect.anchoredPosition = Vector2.Lerp(posicionInicio, posicionFinal, curva);
+            canvasGroup.alpha = Mathf.Lerp(alphaInicio, alphaFinal, t);
+
             yield return null;
         }
 
-        canvasGroup.alpha = fin;
+        panelRect.anchoredPosition = posicionFinal;
+        canvasGroup.alpha = alphaFinal;
     }
 }
