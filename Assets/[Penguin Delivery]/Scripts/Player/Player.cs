@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Player : MonoBehaviour
 {
@@ -67,6 +68,18 @@ public class Player : MonoBehaviour
     //VFX MORSA
     [SerializeField] private float duracionVFXImpulsoMorsa = 1f;
 
+    [Header("Audio - Player 2D")]
+    [SerializeField] private AudioSource audioSourcePlayer;
+    [SerializeField] private AudioMixerGroup grupoMixerPlayer;
+
+    [Header("Clips Player")]
+    [SerializeField] private AudioClip[] sonidosSalto;
+    [SerializeField, Range(0f, 1f)] private float volumenSalto = 1f;
+    [SerializeField] private bool evitarRepetirMismoSalto = true;
+    [SerializeField] private bool reproducirSaltoTambienEnReboteMorsa = false;
+
+    private int ultimoIndiceSalto = -1;
+
     private TutorialManager tutorialManager;
 
     private Rigidbody rb;
@@ -79,6 +92,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         tutorialManager = FindFirstObjectByType<TutorialManager>();
+
+        ConfigurarAudioSourcePlayer();
 
         //ANIMACION
         if (animator == null)
@@ -138,6 +153,7 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             estaEnSuelo = false;
             ReproducirVFXImpulsoMorsa();
+            ReproducirSonidoSalto();
             //SUELOS VFX
             DetenerEfectoPasos();
 
@@ -369,38 +385,97 @@ public class Player : MonoBehaviour
         DetenerEfecto(efectoPasosDerecho);
     }
     //VFX MORSA
-private void ReproducirVFXImpulsoMorsa()
-{
-    CrearVFXImpulsoEnPie(puntoPieIzquierdo);
-    CrearVFXImpulsoEnPie(puntoPieDerecho);
-}
-
-//VFX MORSA
-private void CrearVFXImpulsoEnPie(Transform puntoPie)
-{
-    if (vfxImpulsoMorsa == null || puntoPie == null)
-        return;
-
-    GameObject nuevoVFX = Instantiate(
-        vfxImpulsoMorsa,
-        puntoPie.position,
-        vfxImpulsoMorsa.transform.rotation
-    );
-
-    ParticleSystem particulas = nuevoVFX.GetComponent<ParticleSystem>();
-
-    if (particulas == null)
+    private void ReproducirVFXImpulsoMorsa()
     {
-        particulas = nuevoVFX.GetComponentInChildren<ParticleSystem>();
+        CrearVFXImpulsoEnPie(puntoPieIzquierdo);
+        CrearVFXImpulsoEnPie(puntoPieDerecho);
     }
 
-    if (particulas != null)
+    //VFX MORSA
+    private void CrearVFXImpulsoEnPie(Transform puntoPie)
     {
-        particulas.Play();
+        if (vfxImpulsoMorsa == null || puntoPie == null)
+            return;
+
+        GameObject nuevoVFX = Instantiate(
+            vfxImpulsoMorsa,
+            puntoPie.position,
+            vfxImpulsoMorsa.transform.rotation
+        );
+
+        ParticleSystem particulas = nuevoVFX.GetComponent<ParticleSystem>();
+
+        if (particulas == null)
+        {
+            particulas = nuevoVFX.GetComponentInChildren<ParticleSystem>();
+        }
+
+        if (particulas != null)
+        {
+            particulas.Play();
+        }
+
+        Destroy(nuevoVFX, duracionVFXImpulsoMorsa);
+    }
+    private void ConfigurarAudioSourcePlayer()
+    {
+        if (audioSourcePlayer == null)
+        {
+            audioSourcePlayer = GetComponent<AudioSource>();
+        }
+
+        if (audioSourcePlayer == null)
+        {
+            audioSourcePlayer = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSourcePlayer.playOnAwake = false;
+        audioSourcePlayer.loop = false;
+        audioSourcePlayer.spatialBlend = 0f; // 2D, porque el player siempre está a distancia similar de la cámara.
+        audioSourcePlayer.outputAudioMixerGroup = grupoMixerPlayer;
     }
 
-    Destroy(nuevoVFX, duracionVFXImpulsoMorsa);
-}
+    private void ReproducirSonidoSalto()
+    {
+        if (sonidosSalto == null || sonidosSalto.Length == 0 || audioSourcePlayer == null)
+            return;
+
+        AudioClip clip = ObtenerSonidoSaltoAleatorio();
+
+        if (clip == null)
+            return;
+
+        audioSourcePlayer.PlayOneShot(clip, volumenSalto);
+    }
+
+    private AudioClip ObtenerSonidoSaltoAleatorio()
+    {
+        if (sonidosSalto == null || sonidosSalto.Length == 0)
+            return null;
+
+        if (sonidosSalto.Length == 1)
+        {
+            ultimoIndiceSalto = 0;
+            return sonidosSalto[0];
+        }
+
+        int indice = Random.Range(0, sonidosSalto.Length);
+
+        if (evitarRepetirMismoSalto)
+        {
+            int intentos = 0;
+
+            while (indice == ultimoIndiceSalto && intentos < 10)
+            {
+                indice = Random.Range(0, sonidosSalto.Length);
+                intentos++;
+            }
+        }
+
+        ultimoIndiceSalto = indice;
+        return sonidosSalto[indice];
+    }
+
     //SUELOS VFX
     private bool IntentarDetectarSuelo(Collision collision)
     {
@@ -434,7 +509,7 @@ private void CrearVFXImpulsoEnPie(Transform puntoPie)
         CambiarTipoSuelo(suelo);
 
 
-        
+
 
         //ANIMACION
         if (animator != null)
@@ -456,6 +531,11 @@ private void CrearVFXImpulsoEnPie(Transform puntoPie)
             rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
             //VFX MORSA
             ReproducirVFXImpulsoMorsa();
+
+            if (reproducirSaltoTambienEnReboteMorsa)
+            {
+                ReproducirSonidoSalto();
+            }
 
             MorsaAnimacion morsaAnimacion = collision.gameObject.GetComponentInParent<MorsaAnimacion>();
 

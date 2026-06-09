@@ -1709,7 +1709,7 @@ MonoBehaviour:
   grupoMixerMusica: {fileID: 1972981172953347240, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
   musicasPorEscena:
   - nombreEscena: MainMenu
-    musicaNormal: {fileID: 8300000, guid: e2089faf3fc17144aa042b9cba38de3b, type: 3}
+    musicaNormal: {fileID: 8300000, guid: cfc06a0805cee93428d64480c31078f2, type: 3}
     usarIntroYLoop: 0
     intro: {fileID: 0}
     loop: {fileID: 0}

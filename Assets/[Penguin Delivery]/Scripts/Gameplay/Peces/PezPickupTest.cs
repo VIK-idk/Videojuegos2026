@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PezPickupTest : MonoBehaviour
 {
@@ -13,15 +14,29 @@ public class PezPickupTest : MonoBehaviour
     [SerializeField] private string triggerRecolectarPez = "Recolectar";
     [SerializeField] private float duracionAntesDeRecoger = 0.6f;
 
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem vfxRecogerPez;
+
+    [Header("Audio - Recogida Burbuja 3D")]
+    [SerializeField] private AudioSource audioSourceRecogida;
+    [SerializeField] private AudioMixerGroup grupoMixerPlayer;
+    [SerializeField] private AudioClip[] sonidosRecogidaBurbuja;
+    [SerializeField, Range(0f, 1f)] private float volumenRecogidaBurbuja = 1f;
+    [SerializeField] private bool evitarRepetirMismoSonido = true;
+
+    [Header("Configuracion Audio 3D")]
+    [SerializeField] private bool usarSonidoTemporalParaNoCortar = true;
+    [SerializeField, Range(0f, 1f)] private float spatialBlend = 1f;
+    [SerializeField] private float minDistance = 2f;
+    [SerializeField] private float maxDistance = 18f;
+    [SerializeField] private AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
+
     private bool recogido = false;
     private SphereCollider triggerCollider;
     private float radioBase = 0f;
 
     private PecesTestManager manager;
-
-    [Header("VFX")]
-    [SerializeField] private ParticleSystem vfxRecogerPez;
-
+    private int ultimoIndiceSonido = -1;
 
     private void Awake()
     {
@@ -58,6 +73,7 @@ public class PezPickupTest : MonoBehaviour
                 pezAnimator = pezVisual.GetComponent<Animator>();
             }
         }
+
         if (vfxRecogerPez == null)
         {
             Transform vfxEncontrado = BuscarHijoPorNombre(transform.root, "VFX_RecogerPez");
@@ -67,6 +83,8 @@ public class PezPickupTest : MonoBehaviour
                 vfxRecogerPez = vfxEncontrado.GetComponent<ParticleSystem>();
             }
         }
+
+        ConfigurarAudioSourceRecogida();
 
         manager = FindFirstObjectByType<PecesTestManager>();
     }
@@ -92,6 +110,7 @@ public class PezPickupTest : MonoBehaviour
 
         ReiniciarAnimator(burbujaAnimator, triggerExplotarBurbuja);
         ReiniciarAnimator(pezAnimator, triggerRecolectarPez);
+
         if (pez != null)
         {
             AuraPezVisual aura = pez.GetComponentInChildren<AuraPezVisual>(true);
@@ -101,6 +120,8 @@ public class PezPickupTest : MonoBehaviour
                 aura.ReiniciarAura();
             }
         }
+
+        ConfigurarAudioSourceRecogida();
     }
 
     public void SetMultiplicadorRecogida(float multiplicador)
@@ -143,7 +164,9 @@ public class PezPickupTest : MonoBehaviour
             triggerCollider.enabled = false;
         }
 
+        ReproducirSonidoRecogidaBurbuja();
         ReproducirVFXRecogerPez();
+
         if (pez != null)
         {
             AuraPezVisual aura = pez.GetComponentInChildren<AuraPezVisual>(true);
@@ -184,6 +207,107 @@ public class PezPickupTest : MonoBehaviour
         }
     }
 
+    private void ConfigurarAudioSourceRecogida()
+    {
+        if (audioSourceRecogida == null)
+        {
+            audioSourceRecogida = GetComponentInParent<AudioSource>();
+        }
+
+        if (audioSourceRecogida == null)
+            return;
+
+        audioSourceRecogida.playOnAwake = false;
+        audioSourceRecogida.loop = false;
+        audioSourceRecogida.spatialBlend = spatialBlend;
+        audioSourceRecogida.minDistance = minDistance;
+        audioSourceRecogida.maxDistance = maxDistance;
+        audioSourceRecogida.rolloffMode = rolloffMode;
+        audioSourceRecogida.dopplerLevel = 0f;
+
+        if (grupoMixerPlayer != null)
+        {
+            audioSourceRecogida.outputAudioMixerGroup = grupoMixerPlayer;
+        }
+    }
+
+    private void ReproducirSonidoRecogidaBurbuja()
+    {
+        if (sonidosRecogidaBurbuja == null || sonidosRecogidaBurbuja.Length == 0)
+            return;
+
+        AudioClip clip = ObtenerClipAleatorioRecogida();
+
+        if (clip == null)
+            return;
+
+        if (usarSonidoTemporalParaNoCortar)
+        {
+            ReproducirClipTemporal3D(clip);
+            return;
+        }
+
+        if (audioSourceRecogida == null)
+            return;
+
+        ConfigurarAudioSourceRecogida();
+        audioSourceRecogida.PlayOneShot(clip, volumenRecogidaBurbuja);
+    }
+
+    private AudioClip ObtenerClipAleatorioRecogida()
+    {
+        if (sonidosRecogidaBurbuja == null || sonidosRecogidaBurbuja.Length == 0)
+            return null;
+
+        int indice = Random.Range(0, sonidosRecogidaBurbuja.Length);
+
+        if (evitarRepetirMismoSonido && sonidosRecogidaBurbuja.Length > 1)
+        {
+            int intentos = 0;
+
+            while (indice == ultimoIndiceSonido && intentos < 10)
+            {
+                indice = Random.Range(0, sonidosRecogidaBurbuja.Length);
+                intentos++;
+            }
+        }
+
+        ultimoIndiceSonido = indice;
+        return sonidosRecogidaBurbuja[indice];
+    }
+
+    private void ReproducirClipTemporal3D(AudioClip clip)
+    {
+        GameObject sonidoTemporal = new GameObject("SFX_RecogidaBurbuja_3D");
+        sonidoTemporal.transform.position = transform.position;
+
+        AudioSource source = sonidoTemporal.AddComponent<AudioSource>();
+
+        source.clip = clip;
+        source.volume = volumenRecogidaBurbuja;
+        source.playOnAwake = false;
+        source.loop = false;
+        source.spatialBlend = spatialBlend;
+        source.minDistance = minDistance;
+        source.maxDistance = maxDistance;
+        source.rolloffMode = rolloffMode;
+        source.dopplerLevel = 0f;
+
+        if (grupoMixerPlayer != null)
+        {
+            source.outputAudioMixerGroup = grupoMixerPlayer;
+        }
+        else if (audioSourceRecogida != null && audioSourceRecogida.outputAudioMixerGroup != null)
+        {
+            source.outputAudioMixerGroup = audioSourceRecogida.outputAudioMixerGroup;
+        }
+
+        source.Play();
+
+        float duracion = clip.length + 0.15f;
+        Destroy(sonidoTemporal, duracion);
+    }
+
     private void ReiniciarAnimator(Animator animator, string trigger)
     {
         if (animator == null)
@@ -212,6 +336,7 @@ public class PezPickupTest : MonoBehaviour
 
         return null;
     }
+
     private void ReproducirVFXRecogerPez()
     {
         if (vfxRecogerPez == null)

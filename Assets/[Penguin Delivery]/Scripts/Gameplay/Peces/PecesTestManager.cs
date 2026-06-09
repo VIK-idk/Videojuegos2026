@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 // ====================
 // MANAGER PECES TEST
@@ -13,6 +14,16 @@ public class PecesTestManager : MonoBehaviour
     [Header("Puntos")]
     [SerializeField] private bool sumarPuntosAlRecoger = false;
     [SerializeField] private int puntosPorPez = 5;
+
+    [Header("Audio - Recogida Burbuja 2D")]
+    [SerializeField] private AudioSource audioSourceRecogidaBurbuja;
+    [SerializeField] private AudioMixerGroup grupoMixerPlayer;
+
+    [Header("Clips - Recogida Burbuja")]
+    [SerializeField] private AudioClip[] sonidosRecogidaBurbuja;
+    [SerializeField, Range(0f, 1f)] private float volumenRecogidaBurbuja = 1f;
+    [SerializeField] private bool evitarRepetirMismoSonidoBurbuja = true;
+
     [Header("Tutorial")]
     [SerializeField] private bool activarPecesAlIniciar = true;
     [SerializeField] private bool reponerPecesAlRecoger = true;
@@ -33,10 +44,12 @@ public class PecesTestManager : MonoBehaviour
 
     private float multiplicadorRecogidaActual = 1f;
     private bool pecesActivadosManualmente = false;
+    private int ultimoIndiceSonidoBurbuja = -1;
 
     private void Awake()
     {
         BuscarPeces();
+        PrepararAudioRecogidaBurbuja();
 
         ultimoRosaActivo = rosaActivo;
         ultimoAmarilloActivo = amarilloActivo;
@@ -49,6 +62,7 @@ public class PecesTestManager : MonoBehaviour
         gestorEncargos = FindFirstObjectByType<GestorEncargosTest>();
         habilidadesManager = FindFirstObjectByType<HabilidadesManager>();
 
+        PrepararAudioRecogidaBurbuja();
         BuscarPeces();
         SetMultiplicadorRecogida(1f);
 
@@ -218,6 +232,74 @@ public class PecesTestManager : MonoBehaviour
         }
 
         SetMultiplicadorRecogida(multiplicadorRecogidaActual);
+    }
+
+    public void ReproducirSonidoRecogidaBurbuja()
+    {
+        if (sonidosRecogidaBurbuja == null || sonidosRecogidaBurbuja.Length == 0)
+            return;
+
+        PrepararAudioRecogidaBurbuja();
+
+        if (audioSourceRecogidaBurbuja == null)
+            return;
+
+        AudioClip clip = ObtenerSonidoRecogidaBurbujaAleatorio();
+
+        if (clip == null)
+            return;
+
+        audioSourceRecogidaBurbuja.PlayOneShot(clip, volumenRecogidaBurbuja);
+    }
+
+    private void PrepararAudioRecogidaBurbuja()
+    {
+        if (audioSourceRecogidaBurbuja == null)
+        {
+            audioSourceRecogidaBurbuja = GetComponent<AudioSource>();
+        }
+
+        if (audioSourceRecogidaBurbuja == null)
+        {
+            audioSourceRecogidaBurbuja = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSourceRecogidaBurbuja.playOnAwake = false;
+        audioSourceRecogidaBurbuja.loop = false;
+        audioSourceRecogidaBurbuja.spatialBlend = 0f;
+
+        if (grupoMixerPlayer != null)
+        {
+            audioSourceRecogidaBurbuja.outputAudioMixerGroup = grupoMixerPlayer;
+        }
+    }
+
+    private AudioClip ObtenerSonidoRecogidaBurbujaAleatorio()
+    {
+        if (sonidosRecogidaBurbuja == null || sonidosRecogidaBurbuja.Length == 0)
+            return null;
+
+        if (sonidosRecogidaBurbuja.Length == 1)
+        {
+            ultimoIndiceSonidoBurbuja = 0;
+            return sonidosRecogidaBurbuja[0];
+        }
+
+        int indice = Random.Range(0, sonidosRecogidaBurbuja.Length);
+
+        if (evitarRepetirMismoSonidoBurbuja)
+        {
+            int intentos = 0;
+
+            while (indice == ultimoIndiceSonidoBurbuja && intentos < 10)
+            {
+                indice = Random.Range(0, sonidosRecogidaBurbuja.Length);
+                intentos++;
+            }
+        }
+
+        ultimoIndiceSonidoBurbuja = indice;
+        return sonidosRecogidaBurbuja[indice];
     }
 
     public void ProcesarRecogida(Pez pezRecogido)
