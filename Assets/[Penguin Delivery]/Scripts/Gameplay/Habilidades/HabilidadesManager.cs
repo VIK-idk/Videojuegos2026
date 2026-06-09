@@ -19,7 +19,15 @@ public class HabilidadesManager : MonoBehaviour
 
     [Header("Mensaje")]
     [SerializeField] private Text textoMensaje;
+    [SerializeField] private RectTransform textoMensajeRect;
     [SerializeField] private float duracionMensaje = 2f;
+
+    [Header("Animacion mensaje")]
+    [SerializeField] private float duracionEntradaMensaje = 0.18f;
+    [SerializeField] private float duracionSalidaMensaje = 0.18f;
+    [SerializeField] private float escalaInicialMensaje = 0.65f;
+    [SerializeField] private float escalaVisibleMensaje = 1.15f;
+    [SerializeField] private float escalaFinalMensaje = 0.65f;
 
     [Header("VFX Habilidades")]
     [SerializeField] private Transform puntoVFXHabilidades;
@@ -32,12 +40,20 @@ public class HabilidadesManager : MonoBehaviour
     private GameObject vfxActivoHabilidad3;
 
     private Coroutine rutinaMensaje;
+    private Vector3 escalaOriginalMensaje = Vector3.one;
+
+    private void Awake()
+    {
+        if (textoMensajeRect == null && textoMensaje != null)
+            textoMensajeRect = textoMensaje.GetComponent<RectTransform>();
+
+        if (textoMensajeRect != null)
+            escalaOriginalMensaje = textoMensajeRect.localScale;
+    }
 
     private void Start()
     {
-        if (textoMensaje != null)
-            textoMensaje.enabled = false;
-
+        OcultarMensajeInstantaneo();
         ActualizarUI();
     }
 
@@ -112,10 +128,97 @@ public class HabilidadesManager : MonoBehaviour
         textoMensaje.text = mensaje;
         textoMensaje.enabled = true;
 
+        Color colorBase = textoMensaje.color;
+        colorBase.a = 1f;
+
+        Color colorInicial = colorBase;
+        colorInicial.a = 0f;
+        textoMensaje.color = colorInicial;
+
+        if (textoMensajeRect != null)
+            textoMensajeRect.localScale = escalaOriginalMensaje * escalaInicialMensaje;
+
+        yield return StartCoroutine(AnimarMensaje(
+            0f,
+            1f,
+            escalaInicialMensaje,
+            escalaVisibleMensaje,
+            duracionEntradaMensaje,
+            colorBase
+        ));
+
         yield return new WaitForSeconds(duracionMensaje);
 
+        yield return StartCoroutine(AnimarMensaje(
+            1f,
+            0f,
+            escalaVisibleMensaje,
+            escalaFinalMensaje,
+            duracionSalidaMensaje,
+            colorBase
+        ));
+
         textoMensaje.enabled = false;
+
+        if (textoMensajeRect != null)
+            textoMensajeRect.localScale = escalaOriginalMensaje;
+
         rutinaMensaje = null;
+    }
+
+    private IEnumerator AnimarMensaje(
+        float alphaInicial,
+        float alphaFinal,
+        float escalaInicial,
+        float escalaFinal,
+        float duracion,
+        Color colorBase)
+    {
+        if (textoMensaje == null)
+            yield break;
+
+        float tiempo = 0f;
+
+        while (tiempo < duracion)
+        {
+            tiempo += Time.deltaTime;
+
+            float t = Mathf.Clamp01(tiempo / duracion);
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            Color color = colorBase;
+            color.a = Mathf.Lerp(alphaInicial, alphaFinal, t);
+            textoMensaje.color = color;
+
+            if (textoMensajeRect != null)
+            {
+                float escala = Mathf.Lerp(escalaInicial, escalaFinal, t);
+                textoMensajeRect.localScale = escalaOriginalMensaje * escala;
+            }
+
+            yield return null;
+        }
+
+        Color colorFinal = colorBase;
+        colorFinal.a = alphaFinal;
+        textoMensaje.color = colorFinal;
+
+        if (textoMensajeRect != null)
+            textoMensajeRect.localScale = escalaOriginalMensaje * escalaFinal;
+    }
+
+    private void OcultarMensajeInstantaneo()
+    {
+        if (textoMensaje != null)
+        {
+            Color color = textoMensaje.color;
+            color.a = 0f;
+            textoMensaje.color = color;
+            textoMensaje.enabled = false;
+        }
+
+        if (textoMensajeRect != null)
+            textoMensajeRect.localScale = escalaOriginalMensaje;
     }
 
     private void ActualizarUI()
@@ -183,7 +286,10 @@ public class HabilidadesManager : MonoBehaviour
         }
     }
 
-    //VFX HABILIDADES
+    // ====================
+    // VFX HABILIDADES
+    // ====================
+
     public void ReproducirVFXHabilidad(HabilidadBase habilidad, bool esPulso)
     {
         TipoHabilidadVFX tipoVFX = ObtenerTipoVFX(habilidad);
@@ -206,7 +312,6 @@ public class HabilidadesManager : MonoBehaviour
         }
     }
 
-    //VFX HABILIDADES
     public void DetenerVFXHabilidad(HabilidadBase habilidad)
     {
         GameObject vfx = ObtenerVFXActivo(habilidad);
@@ -219,7 +324,6 @@ public class HabilidadesManager : MonoBehaviour
         GuardarVFXActivo(habilidad, null);
     }
 
-    //VFX HABILIDADES
     private TipoHabilidadVFX ObtenerTipoVFX(HabilidadBase habilidad)
     {
         if (habilidad == habilidad1)
@@ -234,7 +338,6 @@ public class HabilidadesManager : MonoBehaviour
         return null;
     }
 
-    //VFX HABILIDADES
     private GameObject CrearVFX(TipoHabilidadVFX tipoVFX)
     {
         Transform punto = puntoVFXHabilidades != null ? puntoVFXHabilidades : transform;
@@ -259,7 +362,6 @@ public class HabilidadesManager : MonoBehaviour
         return nuevoVFX;
     }
 
-    //VFX HABILIDADES
     private IEnumerator DestruirVFXDespues(GameObject vfx, float duracion)
     {
         if (duracion <= 0f)
@@ -273,7 +375,6 @@ public class HabilidadesManager : MonoBehaviour
         }
     }
 
-    //VFX HABILIDADES
     private GameObject ObtenerVFXActivo(HabilidadBase habilidad)
     {
         if (habilidad == habilidad1)
@@ -288,7 +389,6 @@ public class HabilidadesManager : MonoBehaviour
         return null;
     }
 
-    //VFX HABILIDADES
     private void GuardarVFXActivo(HabilidadBase habilidad, GameObject vfx)
     {
         if (habilidad == habilidad1)
