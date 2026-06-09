@@ -1713,7 +1713,7 @@ MonoBehaviour:
     usarIntroYLoop: 0
     intro: {fileID: 0}
     loop: {fileID: 0}
-    volumen: 1
+    volumen: 0.85
     fadeEntrada: 1
     fadeSalida: 1
   - nombreEscena: Lobby
