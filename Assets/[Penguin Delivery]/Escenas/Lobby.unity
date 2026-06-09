@@ -1167,6 +1167,7 @@ GameObject:
   - component: {fileID: 169691408}
   - component: {fileID: 169691410}
   - component: {fileID: 169691411}
+  - component: {fileID: 169691412}
   m_Layer: 5
   m_Name: Mercader
   m_TagString: Untagged
@@ -1268,6 +1269,113 @@ MonoBehaviour:
   animator: {fileID: 169691410}
   duracionDespedida: 0.7
   duracionEnojado: 1.5
+  audioSourceDialogos: {fileID: 169691412}
+  grupoMixerDialogos: {fileID: 6737534053852732637, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenDialogos: 1
+  sonidoSaludoTienda: {fileID: 8300000, guid: cc49bace50efd454abc0c9fa0a7206f9, type: 3}
+  sonidoCompraAlegre: {fileID: 8300000, guid: b50098bb0e3c02a428bb28ecda209d55, type: 3}
+  sonidoDespedida: {fileID: 8300000, guid: cc49bace50efd454abc0c9fa0a7206f9, type: 3}
+  sonidosCompraSinDinero:
+  - {fileID: 8300000, guid: cce6f0cfa8313ed439618f857fad3d9d, type: 3}
+  - {fileID: 8300000, guid: 09359fcf1cee391429c4447a12951264, type: 3}
+  - {fileID: 8300000, guid: 7c7b7bff0555ea841a000580d1498e7f, type: 3}
+--- !u!82 &169691412
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169691406}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 6737534053852732637, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &179340769
 GameObject:
   m_ObjectHideFlags: 0
@@ -4400,6 +4508,9 @@ MonoBehaviour:
   textoDescripcion: {fileID: 1969781982}
   textoPrecio: {fileID: 1594245230}
   botonComprar: {fileID: 1256409624}
+  usarTextoInicialDelInspector: 1
+  nombreInicialTienda: 
+  descripcionInicialTienda: 
   grupoPrecio: {fileID: 364274383}
   iconoMonedaPrecio: {fileID: 2088586590}
   imagenComprado: {fileID: 1309214246}

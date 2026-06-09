@@ -12,6 +12,11 @@ public class PanelHabilidadUI : MonoBehaviour
     public Text textoPrecio;
     public Button botonComprar;
 
+    [Header("Texto inicial tienda")]
+    [SerializeField] private bool usarTextoInicialDelInspector = true;
+    [SerializeField] private string nombreInicialTienda = "";
+    [SerializeField, TextArea(2, 5)] private string descripcionInicialTienda = "";
+
     [Header("Precio")]
     [SerializeField] private GameObject grupoPrecio;
     [SerializeField] private Image iconoMonedaPrecio;
@@ -37,9 +42,12 @@ public class PanelHabilidadUI : MonoBehaviour
     private Habilidad habilidadActual;
     private BotonHabilidadUI botonActual;
     private Coroutine rutinaError;
+    private bool textosInicialesPreparados = false;
 
     private void Awake()
     {
+        PrepararTextosInicialesTienda();
+
         if (botonComprar != null)
         {
             botonComprar.onClick.RemoveListener(Comprar);
@@ -62,6 +70,7 @@ public class PanelHabilidadUI : MonoBehaviour
 
     private void OnEnable()
     {
+        PrepararTextosInicialesTienda();
         BuscarReferencias();
 
         if (textoErrorCompra != null)
@@ -77,6 +86,23 @@ public class PanelHabilidadUI : MonoBehaviour
     {
         if (botonComprar != null)
             botonComprar.onClick.RemoveListener(Comprar);
+    }
+
+    private void PrepararTextosInicialesTienda()
+    {
+        if (textosInicialesPreparados)
+            return;
+
+        if (usarTextoInicialDelInspector)
+        {
+            if (textoNombre != null)
+                nombreInicialTienda = textoNombre.text;
+
+            if (textoDescripcion != null)
+                descripcionInicialTienda = textoDescripcion.text;
+        }
+
+        textosInicialesPreparados = true;
     }
 
     private void BuscarReferencias()
@@ -228,6 +254,8 @@ public class PanelHabilidadUI : MonoBehaviour
         habilidadActual = null;
         botonActual = null;
 
+        RestaurarTextoInicialTienda();
+
         if (iconoHabilidad != null)
             iconoHabilidad.gameObject.SetActive(false);
 
@@ -246,8 +274,23 @@ public class PanelHabilidadUI : MonoBehaviour
         if (imagenComprado != null)
             imagenComprado.SetActive(false);
 
+        if (rutinaError != null)
+        {
+            StopCoroutine(rutinaError);
+            rutinaError = null;
+        }
+
         if (textoErrorCompra != null)
             textoErrorCompra.enabled = false;
+    }
+
+    private void RestaurarTextoInicialTienda()
+    {
+        if (textoNombre != null)
+            textoNombre.text = nombreInicialTienda;
+
+        if (textoDescripcion != null)
+            textoDescripcion.text = descripcionInicialTienda;
     }
 
     private void MostrarError(string mensaje)
