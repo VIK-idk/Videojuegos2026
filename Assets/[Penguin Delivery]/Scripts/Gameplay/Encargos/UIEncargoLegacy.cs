@@ -202,10 +202,20 @@ public class UIEncargoLegacy : MonoBehaviour
 
     private void ActivarSoloPlantilla(PlantillaEncargoUI plantillaActiva)
     {
-        DesactivarTodasLasPlantillas();
+        // No desactivamos y reactivamos la misma plantilla cada frame.
+        // En el tutorial eso puede verse como un parpadeo justo después de entrar deslizándose.
+        ActivarPlantillaSiHaceFalta(plantilla1Tipo, plantillaActiva == plantilla1Tipo);
+        ActivarPlantillaSiHaceFalta(plantilla2Tipos, plantillaActiva == plantilla2Tipos);
+        ActivarPlantillaSiHaceFalta(plantilla3Tipos, plantillaActiva == plantilla3Tipos);
+    }
 
-        if (plantillaActiva != null && plantillaActiva.raiz != null)
-            plantillaActiva.raiz.SetActive(true);
+    private void ActivarPlantillaSiHaceFalta(PlantillaEncargoUI plantilla, bool activa)
+    {
+        if (plantilla == null || plantilla.raiz == null)
+            return;
+
+        if (plantilla.raiz.activeSelf != activa)
+            plantilla.raiz.SetActive(activa);
     }
 
     private void DesactivarTodasLasPlantillas()
@@ -227,8 +237,13 @@ public class UIEncargoLegacy : MonoBehaviour
 
         for (int i = 0; i < plantilla.filas.Length; i++)
         {
-            if (plantilla.filas[i] != null && plantilla.filas[i].raiz != null)
-                plantilla.filas[i].raiz.SetActive(false);
+            bool debeEstarActiva = i < datos.Count;
+
+            if (plantilla.filas[i] != null && plantilla.filas[i].raiz != null &&
+                plantilla.filas[i].raiz.activeSelf != debeEstarActiva)
+            {
+                plantilla.filas[i].raiz.SetActive(debeEstarActiva);
+            }
         }
 
         for (int i = 0; i < datos.Count && i < plantilla.filas.Length; i++)
@@ -239,9 +254,6 @@ public class UIEncargoLegacy : MonoBehaviour
                 continue;
 
             fila.color = datos[i].color;
-
-            if (fila.raiz != null)
-                fila.raiz.SetActive(true);
 
             if (fila.iconoPez != null)
             {

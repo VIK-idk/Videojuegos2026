@@ -43,7 +43,7 @@ public class GestorEncargosTest : MonoBehaviour
     [Header("Progresión: Configuración de Escalado")]
     [Tooltip("Cuántos encargos completados en la ronda actual se necesitan para alcanzar la dificultad máxima de esta sesión.")]
     [SerializeField] private int encargosParaMaxRonda = 10;
-    
+
     [Tooltip("Cuántos encargos completados históricos (totales) se necesitan para que el juego empiece directamente en la dificultad máxima.")]
     [SerializeField] private int encargosParaMaxGlobal = 50;
 
@@ -53,7 +53,7 @@ public class GestorEncargosTest : MonoBehaviour
 
     [Header("Dificultad: Límites de Tiempo (Por Pez)")]
     [Tooltip("Segundos asignados por cada pez requerido cuando el juego está en lo más fácil.")]
-    [SerializeField] private float tiempoPorPezMaximo = 5f; 
+    [SerializeField] private float tiempoPorPezMaximo = 5f;
     [Tooltip("Segundos asignados por cada pez requerido cuando el juego está en lo más difícil (más bajo = más difícil).")]
     [SerializeField] private float tiempoPorPezMinimo = 2.5f;
 
@@ -94,12 +94,12 @@ public class GestorEncargosTest : MonoBehaviour
     [Header("DEBUG / TESTING: Dificultad Manual")]
     [Tooltip("Si está activado, el juego ignorará la progresión y usará el valor del slider de abajo.")]
     [SerializeField] private bool usarDificultadManual = false;
-    
+
     [Tooltip("0.0 = Súper fácil (mínimo de peces y máximo de tiempo). 1.0 = Máxima dificultad.")]
     [Range(0f, 1f)]
     [SerializeField] private float dificultadManual = 0f;
 
-    
+
     [HideInInspector]
     [SerializeField] private float dificultadManualAnterior = 0f;
 
@@ -121,7 +121,7 @@ public class GestorEncargosTest : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        
+
         if (!usarDificultadManual)
         {
             if (dificultadManual != dificultadManualAnterior)
@@ -132,7 +132,7 @@ public class GestorEncargosTest : MonoBehaviour
         }
         else
         {
-            
+
             dificultadManualAnterior = dificultadManual;
         }
     }
@@ -273,7 +273,7 @@ public class GestorEncargosTest : MonoBehaviour
         {
             tutorialActivo = true;
             tutorialManager.IniciarTutorial();
-            IniciarEncargoTutorial();
+
         }
         else
         {
@@ -378,7 +378,7 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     // GENERAR ENCARGO DINÁMICO
     // ====================
-    private EncargoData GenerarEncargoDinamico() 
+    private EncargoData GenerarEncargoDinamico()
     {
         EncargoData nuevo = new EncargoData();
 
@@ -397,7 +397,7 @@ public class GestorEncargosTest : MonoBehaviour
 
         int minPecesActual = Mathf.RoundToInt(Mathf.Lerp(pecesMinimosAbsolutos, pecesMaximosAbsolutos - 3, dificultadActual));
         int maxPecesActual = Mathf.RoundToInt(Mathf.Lerp(pecesMinimosAbsolutos + 2, pecesMaximosAbsolutos, dificultadActual));
-        
+
         minPecesActual = Mathf.Max(pecesMinimosAbsolutos, minPecesActual);
         maxPecesActual = Mathf.Clamp(maxPecesActual, minPecesActual, pecesMaximosAbsolutos);
 
@@ -697,7 +697,7 @@ public class GestorEncargosTest : MonoBehaviour
     // ====================
     // TUTORIAL
     // ====================
-    private void IniciarEncargoTutorial()
+    public void IniciarEncargoTutorial()
     {
         encargoActual = new EncargoData();
 
@@ -725,13 +725,16 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (uiEncargo != null)
         {
-            uiEncargo.Mostrar();
+            // Primero rellenamos el encargo mientras está oculto y después lo deslizamos.
+            // Así entra una sola vez desde la izquierda sin apagarse al milisegundo.
             uiEncargo.ActualizarUI(
                 encargoActual,
                 tiempoRestante,
                 pecesRosasActuales,
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
+
+            uiEncargo.Mostrar();
         }
     }
 
@@ -763,14 +766,14 @@ public class GestorEncargosTest : MonoBehaviour
         if (uiEncargo != null)
             uiEncargo.Ocultar();
 
-        yield return new WaitForSeconds(0.35f);
-        yield return new WaitForSeconds(esperaEntreEncargos);
-
         if (cargarGameplayAlCompletarTutorial)
         {
             SceneLoader.CargarEscena(escenaGameplayDespuesTutorial);
             yield break;
         }
+
+        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(esperaEntreEncargos);
 
         IniciarNuevoEncargo();
     }
@@ -789,13 +792,16 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (uiEncargo != null)
         {
-            uiEncargo.Mostrar();
+            // Primero rellenamos el encargo mientras está oculto y después lo deslizamos.
+            // Esto evita que aparezca vacío, se apague un instante y vuelva a aparecer.
             uiEncargo.ActualizarUI(
                 encargoActual,
                 tiempoRestante,
                 pecesRosasActuales,
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
+
+            uiEncargo.Mostrar();
         }
     }
 }
