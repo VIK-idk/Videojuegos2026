@@ -10,104 +10,116 @@ public class Player : MonoBehaviour
     [SerializeField] private float multiplicadorCaida = 2.5f;
     [SerializeField] private float multiplicadorSaltoBajo = 2f;
 
-    //ANIMACION
     [Header("Animaciones")]
     [SerializeField] private Animator animator;
-
-    //ANIMACION
     [SerializeField] private float deadzoneAnimacion = 0.1f;
-
-    //ANIMACION
     [SerializeField] private float tiempoParaFidget = 5f;
 
-    //ANIMACION
     private float temporizadorQuieto = 0f;
 
-    //ANIMACION
     private const string PARAM_CAMINANDO = "Caminando";
-
-    //ANIMACION
     private const string PARAM_EN_SUELO = "EnSuelo";
-
-    //ANIMACION
     private const string PARAM_VELOCIDAD_Y = "VelocidadY";
-
-    //ANIMACION
     private const string PARAM_SALTAR = "Saltar";
-
-    //ANIMACION
     private const string PARAM_FIDGET = "Fidget";
 
-    //ROTACION MODELO
     [Header("Rotacion modelo")]
     [SerializeField] private Transform modeloVisual;
     [SerializeField] private float velocidadRotacionModelo = 10f;
     [SerializeField] private float offsetRotacionModelo = 0f;
 
-    //SUELOS VFX
     [Header("Suelos / VFX pasos")]
     [SerializeField] private Transform puntoPieIzquierdo;
     [SerializeField] private Transform puntoPieDerecho;
 
-    //SUELOS VFX
+    [Header("Deteccion de suelo")]
+    [Tooltip("Activa una deteccion extra hacia abajo para conocer el tipo de suelo aunque el jugador ya empiece encima del suelo y no se dispare OnCollisionEnter.")]
+    [SerializeField] private bool detectarTipoSueloPorRaycast = true;
+    [SerializeField] private LayerMask capasDeteccionSuelo = ~0;
+    [SerializeField] private float distanciaRaycastSuelo = 1.8f;
+    [SerializeField] private float radioSphereCastSuelo = 0.25f;
+    [SerializeField] private float alturaOrigenRaycastSuelo = 0.8f;
+
     private Suelo sueloActual;
-
-    //SUELOS VFX
     private TipoSuelo tipoSueloActual;
-
-    //SUELOS VFX
     private ParticleSystem efectoPasosIzquierdo;
-
-    //SUELOS VFX
     private ParticleSystem efectoPasosDerecho;
 
-    //VFX MORSA
-    [Header("VFX impulso morsa")]
+    [Header("VFX impulso morsa / salto")]
     [SerializeField] private GameObject vfxImpulsoMorsa;
-
-    //VFX MORSA
     [SerializeField] private float duracionVFXImpulsoMorsa = 1f;
 
-    [Header("Audio - Player 2D")]
-    [SerializeField] private AudioSource audioSourcePlayer;
+    [Header("Audio - Player")]
+    [Tooltip("Grupo para la voz/sonido general de salto de Guppy, por ejemplo el viento o quejido de salto.")]
     [SerializeField] private AudioMixerGroup grupoMixerPlayer;
 
-    [Header("Clips Player")]
+    [Tooltip("Grupo para pisadas, salto del suelo y caida. Pon aqui SFX > Pasos.")]
+    [SerializeField] private AudioMixerGroup grupoMixerPasos;
+
+    [SerializeField] private AudioSource audioSourcePieIzquierdo;
+    [SerializeField] private AudioSource audioSourcePieDerecho;
+    [SerializeField] private AudioSource audioSourceSaltoGeneral;
+
+    [Header("Audio pasos")]
+    [SerializeField, Range(0f, 1f)] private float volumenPasos = 0.85f;
+    [SerializeField, Range(0f, 0.5f)] private float variacionPitchPasos = 0.04f;
+    [SerializeField] private float tiempoMinimoEntrePasosMismoPie = 0.08f;
+    [SerializeField] private bool pasosSoloSiEstaCaminando = true;
+
+    [Header("Fallback pasos sin Animation Events")]
+    [Tooltip("Si todavia no has puesto eventos PasoIzquierdo/PasoDerecho en la animacion, esto reproduce pasos automaticamente al caminar.")]
+    [SerializeField] private bool usarPasosAutomaticosSiNoHayEventos = true;
+    [SerializeField] private float intervaloPasoAutomatico = 0.28f;
+
+    [Header("Audio salto y caida")]
+    [Tooltip("Sonido comun del salto, por ejemplo un viento. Si metes varios, elige uno aleatorio.")]
     [SerializeField] private AudioClip[] sonidosSalto;
     [SerializeField, Range(0f, 1f)] private float volumenSalto = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenSaltoSuelo = 0.85f;
+    [SerializeField, Range(0f, 1f)] private float volumenCaidaSuelo = 1f;
     [SerializeField] private bool evitarRepetirMismoSalto = true;
+    [SerializeField] private bool reproducirSonidoSueloAlSaltar = true;
+    [SerializeField] private bool reproducirSonidoVientoAlSaltar = true;
+    [SerializeField] private bool reproducirSonidoCaidaAlAterrizar = true;
     [SerializeField] private bool reproducirSaltoTambienEnReboteMorsa = false;
 
+    [Header("Audio 2D / 3D")]
+    [Tooltip("0 = 2D. Recomendado para Guppy porque suele estar a la misma distancia de la camara.")]
+    [SerializeField, Range(0f, 1f)] private float spatialBlendPlayer = 0f;
+
+    private int ultimoIndicePasoIzquierdo = -1;
+    private int ultimoIndicePasoDerecho = -1;
+    private int ultimoIndiceSaltoSuelo = -1;
+    private int ultimoIndiceCaida = -1;
     private int ultimoIndiceSalto = -1;
+    private float tiempoUltimoPasoIzquierdo = -999f;
+    private float tiempoUltimoPasoDerecho = -999f;
+    private float temporizadorPasoAutomatico = 0f;
+    private bool siguientePasoAutomaticoIzquierdo = true;
+    private float tiempoUltimoEventoPasoAnimacion = -999f;
 
     private TutorialManager tutorialManager;
-
     private Rigidbody rb;
 
     private float inputX;
     private float inputZ;
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         tutorialManager = FindFirstObjectByType<TutorialManager>();
 
-        ConfigurarAudioSourcePlayer();
-
-        //ANIMACION
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
         }
 
-        //ANIMACION
         if (animator != null)
         {
             animator.SetBool(PARAM_EN_SUELO, estaEnSuelo);
         }
 
-        //ROTACION MODELO
         if (modeloVisual == null)
         {
             Transform encontrado = transform.Find("Pinguino");
@@ -118,63 +130,41 @@ public class Player : MonoBehaviour
             }
         }
 
-        //SUELOS VFX
         if (puntoPieIzquierdo == null)
         {
             puntoPieIzquierdo = transform;
         }
 
-        //SUELOS VFX
         if (puntoPieDerecho == null)
         {
             puntoPieDerecho = transform;
         }
+
+        ConfigurarAudioSourcesPlayer();
+        ActualizarTipoSueloPorRaycast();
     }
 
-    void Update()
+    private void Update()
     {
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
 
-        //ANIMACION
         ActualizarAnimacionMovimiento();
-
-        //ANIMACION
         ActualizarAnimacionFidget();
-
-        //ROTACION MODELO
         ActualizarRotacionModelo();
-
-        //SUELOS VFX
+        ActualizarTipoSueloPorRaycast();
         ActualizarEfectoPasos();
+        ActualizarPasosAutomaticos();
 
         if (Input.GetButtonDown("Saltar") && estaEnSuelo)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            estaEnSuelo = false;
-            ReproducirVFXImpulsoMorsa();
-            ReproducirSonidoSalto();
-            //SUELOS VFX
-            DetenerEfectoPasos();
-
-            //ANIMACION
-            temporizadorQuieto = 0f;
-
-            //ANIMACION
-            if (animator != null)
-            {
-                animator.ResetTrigger(PARAM_FIDGET);
-                animator.SetBool(PARAM_EN_SUELO, false);
-                animator.SetTrigger(PARAM_SALTAR);
-            }
+            SaltarDesdeSuelo();
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
-
-        // Evita que en diagonal vaya más rápido
         direccion = Vector3.ClampMagnitude(direccion, 1f);
 
         Vector3 velocidad = direccion * speed;
@@ -190,11 +180,28 @@ public class Player : MonoBehaviour
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (multiplicadorSaltoBajo - 1) * Time.fixedDeltaTime;
         }
 
-        //ANIMACION
         ActualizarAnimacionAire();
     }
 
-    //ANIMACION
+    private void SaltarDesdeSuelo()
+    {
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        estaEnSuelo = false;
+
+        ReproducirVFXImpulsoMorsa();
+        ReproducirSonidoSaltoCompleto();
+        DetenerEfectoPasos();
+
+        temporizadorQuieto = 0f;
+
+        if (animator != null)
+        {
+            animator.ResetTrigger(PARAM_FIDGET);
+            animator.SetBool(PARAM_EN_SUELO, false);
+            animator.SetTrigger(PARAM_SALTAR);
+        }
+    }
+
     private void ActualizarAnimacionMovimiento()
     {
         if (animator == null)
@@ -206,7 +213,6 @@ public class Player : MonoBehaviour
         animator.SetBool(PARAM_CAMINANDO, estaCaminando);
     }
 
-    //ANIMACION
     private void ActualizarAnimacionFidget()
     {
         if (animator == null || rb == null)
@@ -226,7 +232,6 @@ public class Player : MonoBehaviour
             {
                 animator.ResetTrigger(PARAM_FIDGET);
                 animator.SetTrigger(PARAM_FIDGET);
-
                 temporizadorQuieto = 0f;
             }
         }
@@ -237,7 +242,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    //ANIMACION
     private void ActualizarAnimacionAire()
     {
         if (animator == null || rb == null)
@@ -247,7 +251,6 @@ public class Player : MonoBehaviour
         animator.SetFloat(PARAM_VELOCIDAD_Y, rb.linearVelocity.y);
     }
 
-    //ROTACION MODELO
     private void ActualizarRotacionModelo()
     {
         if (modeloVisual == null)
@@ -268,7 +271,6 @@ public class Player : MonoBehaviour
         );
     }
 
-    //SUELOS VFX
     private void ActualizarEfectoPasos()
     {
         if (!estaEnSuelo)
@@ -290,7 +292,6 @@ public class Player : MonoBehaviour
         ReproducirEfecto(efectoPasosDerecho);
     }
 
-    //SUELOS VFX
     private void CambiarTipoSuelo(Suelo nuevoSuelo)
     {
         if (nuevoSuelo == null || nuevoSuelo.tipo == null)
@@ -302,7 +303,6 @@ public class Player : MonoBehaviour
             return;
 
         tipoSueloActual = nuevoSuelo.tipo;
-
         DestruirEfectosPasos();
 
         if (tipoSueloActual.efectoVisualCaminar != null)
@@ -314,8 +314,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    //SUELOS VFX
     private ParticleSystem CrearEfectoPasos(Transform punto)
     {
         if (punto == null || tipoSueloActual == null || tipoSueloActual.efectoVisualCaminar == null)
@@ -344,7 +342,6 @@ public class Player : MonoBehaviour
         return particulas;
     }
 
-    //SUELOS VFX
     private void DestruirEfectosPasos()
     {
         if (efectoPasosIzquierdo != null)
@@ -360,7 +357,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    //SUELOS VFX
     private void ReproducirEfecto(ParticleSystem efecto)
     {
         if (efecto != null && !efecto.isPlaying)
@@ -369,7 +365,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    //SUELOS VFX
     private void DetenerEfecto(ParticleSystem efecto)
     {
         if (efecto != null && efecto.isPlaying)
@@ -378,20 +373,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    //SUELOS VFX
     private void DetenerEfectoPasos()
     {
         DetenerEfecto(efectoPasosIzquierdo);
         DetenerEfecto(efectoPasosDerecho);
     }
-    //VFX MORSA
+
     private void ReproducirVFXImpulsoMorsa()
     {
         CrearVFXImpulsoEnPie(puntoPieIzquierdo);
         CrearVFXImpulsoEnPie(puntoPieDerecho);
     }
 
-    //VFX MORSA
     private void CrearVFXImpulsoEnPie(Transform puntoPie)
     {
         if (vfxImpulsoMorsa == null || puntoPie == null)
@@ -417,27 +410,197 @@ public class Player : MonoBehaviour
 
         Destroy(nuevoVFX, duracionVFXImpulsoMorsa);
     }
-    private void ConfigurarAudioSourcePlayer()
+
+    private void ConfigurarAudioSourcesPlayer()
     {
-        if (audioSourcePlayer == null)
-        {
-            audioSourcePlayer = GetComponent<AudioSource>();
-        }
+        AudioMixerGroup grupoPasosFinal = grupoMixerPasos != null ? grupoMixerPasos : grupoMixerPlayer;
 
-        if (audioSourcePlayer == null)
-        {
-            audioSourcePlayer = gameObject.AddComponent<AudioSource>();
-        }
-
-        audioSourcePlayer.playOnAwake = false;
-        audioSourcePlayer.loop = false;
-        audioSourcePlayer.spatialBlend = 0f; // 2D, porque el player siempre está a distancia similar de la cámara.
-        audioSourcePlayer.outputAudioMixerGroup = grupoMixerPlayer;
+        audioSourcePieIzquierdo = ConfigurarAudioSource(audioSourcePieIzquierdo, puntoPieIzquierdo, "Audio_Pie_Izquierdo", grupoPasosFinal);
+        audioSourcePieDerecho = ConfigurarAudioSource(audioSourcePieDerecho, puntoPieDerecho, "Audio_Pie_Derecho", grupoPasosFinal);
+        audioSourceSaltoGeneral = ConfigurarAudioSource(audioSourceSaltoGeneral, transform, "Audio_Salto_General", grupoMixerPlayer);
     }
 
-    private void ReproducirSonidoSalto()
+    private AudioSource ConfigurarAudioSource(AudioSource source, Transform punto, string nombre, AudioMixerGroup grupoMixer)
     {
-        if (sonidosSalto == null || sonidosSalto.Length == 0 || audioSourcePlayer == null)
+        if (punto == null)
+        {
+            punto = transform;
+        }
+
+        if (source == null)
+        {
+            source = punto.GetComponent<AudioSource>();
+        }
+
+        if (source == null)
+        {
+            GameObject objetoAudio = new GameObject(nombre);
+            objetoAudio.transform.SetParent(punto, false);
+            objetoAudio.transform.localPosition = Vector3.zero;
+            source = objetoAudio.AddComponent<AudioSource>();
+        }
+
+        source.playOnAwake = false;
+        source.loop = false;
+        source.spatialBlend = spatialBlendPlayer;
+        source.dopplerLevel = 0f;
+
+        if (grupoMixer != null)
+        {
+            source.outputAudioMixerGroup = grupoMixer;
+        }
+
+        return source;
+    }
+
+    public void ReproducirPasoIzquierdoDesdeAnimacion()
+    {
+        tiempoUltimoEventoPasoAnimacion = Time.time;
+        ReproducirSonidoPaso(true);
+    }
+
+    public void ReproducirPasoDerechoDesdeAnimacion()
+    {
+        tiempoUltimoEventoPasoAnimacion = Time.time;
+        ReproducirSonidoPaso(false);
+    }
+
+    private void ActualizarPasosAutomaticos()
+    {
+        if (!usarPasosAutomaticosSiNoHayEventos)
+            return;
+
+        if (!estaEnSuelo || tipoSueloActual == null)
+        {
+            temporizadorPasoAutomatico = 0f;
+            return;
+        }
+
+        Vector2 inputMovimiento = new Vector2(inputX, inputZ);
+
+        if (inputMovimiento.magnitude <= deadzoneAnimacion)
+        {
+            temporizadorPasoAutomatico = 0f;
+            return;
+        }
+
+        // Si ya hay eventos reales de animacion llegando, no duplicamos pasos automaticos.
+        if (Time.time - tiempoUltimoEventoPasoAnimacion < intervaloPasoAutomatico * 1.5f)
+            return;
+
+        temporizadorPasoAutomatico += Time.deltaTime;
+
+        float intensidadMovimiento = Mathf.Clamp01(inputMovimiento.magnitude);
+        float intervaloActual = Mathf.Lerp(intervaloPasoAutomatico * 1.15f, intervaloPasoAutomatico * 0.8f, intensidadMovimiento);
+
+        if (temporizadorPasoAutomatico < intervaloActual)
+            return;
+
+        temporizadorPasoAutomatico = 0f;
+        ReproducirSonidoPaso(siguientePasoAutomaticoIzquierdo);
+        siguientePasoAutomaticoIzquierdo = !siguientePasoAutomaticoIzquierdo;
+    }
+
+    private void ReproducirSonidoPaso(bool pieIzquierdo)
+    {
+        if (tipoSueloActual == null)
+            return;
+
+        if (!estaEnSuelo)
+            return;
+
+        if (pasosSoloSiEstaCaminando)
+        {
+            Vector2 inputMovimiento = new Vector2(inputX, inputZ);
+
+            if (inputMovimiento.magnitude <= deadzoneAnimacion)
+                return;
+        }
+
+        AudioSource source = pieIzquierdo ? audioSourcePieIzquierdo : audioSourcePieDerecho;
+
+        if (source == null)
+            return;
+
+        float tiempoUltimo = pieIzquierdo ? tiempoUltimoPasoIzquierdo : tiempoUltimoPasoDerecho;
+
+        if (Time.time - tiempoUltimo < tiempoMinimoEntrePasosMismoPie)
+            return;
+
+        int ultimoIndice = pieIzquierdo ? ultimoIndicePasoIzquierdo : ultimoIndicePasoDerecho;
+        int nuevoIndice;
+        AudioClip clip = tipoSueloActual.ObtenerSonidoPasoAleatorio(ultimoIndice, out nuevoIndice);
+
+        if (clip == null)
+            return;
+
+        if (pieIzquierdo)
+        {
+            ultimoIndicePasoIzquierdo = nuevoIndice;
+            tiempoUltimoPasoIzquierdo = Time.time;
+        }
+        else
+        {
+            ultimoIndicePasoDerecho = nuevoIndice;
+            tiempoUltimoPasoDerecho = Time.time;
+        }
+
+        ReproducirClipEnSource(source, clip, volumenPasos, true);
+    }
+
+    private void ReproducirSonidoSaltoCompleto()
+    {
+        if (reproducirSonidoSueloAlSaltar)
+        {
+            ReproducirSonidoSaltoSueloEnAmbosPies();
+        }
+
+        if (reproducirSonidoVientoAlSaltar)
+        {
+            ReproducirSonidoSaltoGeneral();
+        }
+    }
+
+    private void ReproducirSonidoSaltoSueloEnAmbosPies()
+    {
+        if (tipoSueloActual == null)
+            return;
+
+        int nuevoIndice;
+        AudioClip clip = tipoSueloActual.ObtenerSonidoSaltoAleatorio(ultimoIndiceSaltoSuelo, out nuevoIndice);
+
+        if (clip == null)
+            return;
+
+        ultimoIndiceSaltoSuelo = nuevoIndice;
+
+        ReproducirClipEnSource(audioSourcePieIzquierdo, clip, volumenSaltoSuelo, true);
+        ReproducirClipEnSource(audioSourcePieDerecho, clip, volumenSaltoSuelo, true);
+    }
+
+    private void ReproducirSonidoCaidaEnAmbosPies()
+    {
+        if (!reproducirSonidoCaidaAlAterrizar)
+            return;
+
+        if (tipoSueloActual == null)
+            return;
+
+        int nuevoIndice;
+        AudioClip clip = tipoSueloActual.ObtenerSonidoCaidaAleatorio(ultimoIndiceCaida, out nuevoIndice);
+
+        if (clip == null)
+            return;
+
+        ultimoIndiceCaida = nuevoIndice;
+
+        ReproducirClipEnSource(audioSourcePieIzquierdo, clip, volumenCaidaSuelo, true);
+        ReproducirClipEnSource(audioSourcePieDerecho, clip, volumenCaidaSuelo, true);
+    }
+
+    private void ReproducirSonidoSaltoGeneral()
+    {
+        if (sonidosSalto == null || sonidosSalto.Length == 0 || audioSourceSaltoGeneral == null)
             return;
 
         AudioClip clip = ObtenerSonidoSaltoAleatorio();
@@ -445,7 +608,7 @@ public class Player : MonoBehaviour
         if (clip == null)
             return;
 
-        audioSourcePlayer.PlayOneShot(clip, volumenSalto);
+        ReproducirClipEnSource(audioSourceSaltoGeneral, clip, volumenSalto, false);
     }
 
     private AudioClip ObtenerSonidoSaltoAleatorio()
@@ -476,14 +639,79 @@ public class Player : MonoBehaviour
         return sonidosSalto[indice];
     }
 
-    //SUELOS VFX
+    private void ReproducirClipEnSource(AudioSource source, AudioClip clip, float volumen, bool aplicarPitch)
+    {
+        if (source == null || clip == null)
+            return;
+
+        if (aplicarPitch)
+        {
+            source.pitch = Random.Range(1f - variacionPitchPasos, 1f + variacionPitchPasos);
+        }
+        else
+        {
+            source.pitch = 1f;
+        }
+
+        source.PlayOneShot(clip, volumen);
+    }
+
+
+    private void ActualizarTipoSueloPorRaycast()
+    {
+        if (!detectarTipoSueloPorRaycast)
+            return;
+
+        Vector3 origen = transform.position + Vector3.up * alturaOrigenRaycastSuelo;
+
+        RaycastHit[] hits = Physics.SphereCastAll(
+            origen,
+            radioSphereCastSuelo,
+            Vector3.down,
+            distanciaRaycastSuelo,
+            capasDeteccionSuelo,
+            QueryTriggerInteraction.Ignore
+        );
+
+        if (hits == null || hits.Length == 0)
+            return;
+
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Collider colliderDetectado = hits[i].collider;
+
+            if (colliderDetectado == null)
+                continue;
+
+            Player playerDetectado = colliderDetectado.GetComponentInParent<Player>();
+
+            if (playerDetectado == this)
+                continue;
+
+            Suelo suelo = colliderDetectado.GetComponent<Suelo>();
+
+            if (suelo == null)
+            {
+                suelo = colliderDetectado.GetComponentInParent<Suelo>();
+            }
+
+            if (suelo == null || suelo.tipo == null)
+                continue;
+
+            CambiarTipoSuelo(suelo);
+            return;
+        }
+    }
+
     private bool IntentarDetectarSuelo(Collision collision)
     {
         bool contactoSuperior = false;
 
-        for (int i = 0; i < collision.contactCount; i++) // esto es para asegurarnos de que el contacto es por debajo del personaje, ya que a veces puede colisionar con piedras u otros objetos y no queremos que eso cuente como suelo
+        for (int i = 0; i < collision.contactCount; i++)
         {
-            ContactPoint contacto = collision.GetContact(i); // obtenemos cada punto de contacto
+            ContactPoint contacto = collision.GetContact(i);
 
             if (contacto.normal.y > 0.5f)
             {
@@ -497,7 +725,7 @@ public class Player : MonoBehaviour
 
         Suelo suelo = collision.gameObject.GetComponent<Suelo>();
 
-        if (suelo == null) // Si no se encuentra en el objeto directamente, se busca en los padres (sobre todo por las piedras q tienen varios colliders)
+        if (suelo == null)
         {
             suelo = collision.gameObject.GetComponentInParent<Suelo>();
         }
@@ -508,10 +736,6 @@ public class Player : MonoBehaviour
         estaEnSuelo = true;
         CambiarTipoSuelo(suelo);
 
-
-
-
-        //ANIMACION
         if (animator != null)
         {
             animator.SetBool(PARAM_EN_SUELO, true);
@@ -522,55 +746,59 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //SUELOS VFX
-        IntentarDetectarSuelo(collision);
-
         if (collision.gameObject.CompareTag("Trampolin"))
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
-            //VFX MORSA
-            ReproducirVFXImpulsoMorsa();
+            RebotarEnMorsa(collision);
+            return;
+        }
 
-            if (reproducirSaltoTambienEnReboteMorsa)
-            {
-                ReproducirSonidoSalto();
-            }
+        bool estabaEnSueloAntes = estaEnSuelo;
+        bool detectoSuelo = IntentarDetectarSuelo(collision);
 
-            MorsaAnimacion morsaAnimacion = collision.gameObject.GetComponentInParent<MorsaAnimacion>();
+        if (detectoSuelo && !estabaEnSueloAntes)
+        {
+            ReproducirSonidoCaidaEnAmbosPies();
+        }
+    }
 
-            if (morsaAnimacion != null)
-            {
-                morsaAnimacion.ReproducirRebote();
-            }
+    private void RebotarEnMorsa(Collision collision)
+    {
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        rb.AddForce(Vector3.up * jumpTrampolin, ForceMode.Impulse);
 
-            //ANIMACION
-            estaEnSuelo = false;
+        ReproducirVFXImpulsoMorsa();
 
-            //SUELOS VFX
-            DetenerEfectoPasos();
+        if (reproducirSaltoTambienEnReboteMorsa)
+        {
+            ReproducirSonidoSaltoGeneral();
+        }
 
-            //ANIMACION
-            temporizadorQuieto = 0f;
+        MorsaAnimacion morsaAnimacion = collision.gameObject.GetComponentInParent<MorsaAnimacion>();
 
-            //ANIMACION
-            if (animator != null)
-            {
-                animator.ResetTrigger(PARAM_FIDGET);
-                animator.SetBool(PARAM_EN_SUELO, false);
-                animator.SetTrigger(PARAM_SALTAR);
-            }
+        if (morsaAnimacion != null)
+        {
+            morsaAnimacion.ReproducirRebote();
+        }
 
-            if (tutorialManager != null)
-            {
-                tutorialManager.NotificarReboteEnMorsa();
-            }
+        estaEnSuelo = false;
+        DetenerEfectoPasos();
+        temporizadorQuieto = 0f;
+
+        if (animator != null)
+        {
+            animator.ResetTrigger(PARAM_FIDGET);
+            animator.SetBool(PARAM_EN_SUELO, false);
+            animator.SetTrigger(PARAM_SALTAR);
+        }
+
+        if (tutorialManager != null)
+        {
+            tutorialManager.NotificarReboteEnMorsa();
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        //SUELOS VFX
         Suelo sueloSalida = collision.gameObject.GetComponent<Suelo>();
 
         if (sueloSalida == null)
