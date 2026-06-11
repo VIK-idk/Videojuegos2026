@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 // ====================
@@ -73,6 +74,25 @@ public class UIEncargoLegacy : MonoBehaviour
     [SerializeField] private AnimationCurve curvaMovimiento = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     // ====================
+    // AUDIO
+    // ====================
+    [Header("Audio - Encargos 2D")]
+    [SerializeField] private AudioSource audioSourceEncargos;
+    [SerializeField] private AudioMixerGroup grupoMixerEncargos;
+
+    [Header("Clips de encargo")]
+    [SerializeField] private AudioClip sonidoAparecerEncargo;
+    [SerializeField] private AudioClip sonidoDesaparecerEncargo;
+    [SerializeField] private AudioClip sonidoVictoriaEncargo;
+    [SerializeField] private AudioClip sonidoDerrotaEncargo;
+
+    [Header("Volumenes de encargo")]
+    [SerializeField, Range(0f, 1f)] private float volumenAparecer = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenDesaparecer = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenVictoria = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenDerrota = 1f;
+
+    // ====================
     // EFECTO RECOGIDA
     // ====================
     [Header("Efecto recogida")]
@@ -92,6 +112,7 @@ public class UIEncargoLegacy : MonoBehaviour
     private FilaEncargoUI filaActivaRosa;
     private FilaEncargoUI filaActivaAmarilla;
     private FilaEncargoUI filaActivaVerde;
+    private bool panelVisible = false;
 
     // ====================
     // UNITY
@@ -109,6 +130,8 @@ public class UIEncargoLegacy : MonoBehaviour
             posicionOriginalPanel = panelRect.anchoredPosition;
             posicionOcultaIzquierda = posicionOriginalPanel + Vector2.left * distanciaEntradaIzquierda;
         }
+
+        ConfigurarAudioSource();
 
         GuardarEscalasOriginales(plantilla1Tipo);
         GuardarEscalasOriginales(plantilla2Tipos);
@@ -415,6 +438,13 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     public void Mostrar()
     {
+        // Evita volver a lanzar la entrada y su sonido si el encargo ya está visible.
+        if (panelVisible)
+            return;
+
+        panelVisible = true;
+        ReproducirClip(sonidoAparecerEncargo, volumenAparecer);
+
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
@@ -431,6 +461,13 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     public void Ocultar()
     {
+        // Evita sonidos de salida duplicados si ya estaba oculto.
+        if (!panelVisible)
+            return;
+
+        panelVisible = false;
+        ReproducirClip(sonidoDesaparecerEncargo, volumenDesaparecer);
+
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
@@ -447,6 +484,8 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     public void OcultarInstantaneo()
     {
+        panelVisible = false;
+
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
@@ -455,6 +494,50 @@ public class UIEncargoLegacy : MonoBehaviour
 
         if (panelRect != null)
             panelRect.anchoredPosition = posicionOcultaIzquierda;
+    }
+
+    // ====================
+    // SONIDOS DE RESULTADO
+    // ====================
+    public void ReproducirVictoria()
+    {
+        ReproducirClip(sonidoVictoriaEncargo, volumenVictoria);
+    }
+
+    public void ReproducirDerrota()
+    {
+        ReproducirClip(sonidoDerrotaEncargo, volumenDerrota);
+    }
+
+    private void ConfigurarAudioSource()
+    {
+        if (audioSourceEncargos == null)
+            audioSourceEncargos = GetComponent<AudioSource>();
+
+        if (audioSourceEncargos == null)
+            audioSourceEncargos = gameObject.AddComponent<AudioSource>();
+
+        audioSourceEncargos.playOnAwake = false;
+        audioSourceEncargos.loop = false;
+        audioSourceEncargos.spatialBlend = 0f;
+        audioSourceEncargos.dopplerLevel = 0f;
+
+        if (grupoMixerEncargos != null)
+            audioSourceEncargos.outputAudioMixerGroup = grupoMixerEncargos;
+    }
+
+    private void ReproducirClip(AudioClip clip, float volumen)
+    {
+        if (clip == null)
+            return;
+
+        if (audioSourceEncargos == null)
+            ConfigurarAudioSource();
+
+        if (audioSourceEncargos == null)
+            return;
+
+        audioSourceEncargos.PlayOneShot(clip, Mathf.Clamp01(volumen));
     }
 
     // ====================

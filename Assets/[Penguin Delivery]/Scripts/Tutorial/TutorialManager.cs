@@ -25,7 +25,7 @@ public class TutorialManager : MonoBehaviour
     [Header("UI Saltar Tutorial")]
     [SerializeField] private GameObject tutorialSaltarPanel;
     [SerializeField] private Text tutorialSaltarTexto;
-    [SerializeField] private string textoSaltarTutorial = "TAB: saltar tutorial";
+    [SerializeField] private string textoSaltarTutorial = ": saltar tutorial";
 
     [Header("Posicion panel tutorial")]
     [SerializeField] private Vector2 posicionPanelArriba = new Vector2(0f, 300f);
@@ -378,7 +378,7 @@ public class TutorialManager : MonoBehaviour
         // Este texto queda visible mientras se enseña la morsa y hasta que el jugador rebote.
         // No espera tecla: el propio rebote en la morsa lo sustituye por el diálogo de peces.
         yield return StartCoroutine(MostrarDialogoSoloEscribir(
-            "Bien",
+            "Morsas",
             "Salta sobre una morsa para alcanzar los peces.",
             false
         ));

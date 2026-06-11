@@ -14,4 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Hielo
   efectoSonido: {fileID: 0}
+  sonidosPasos:
+  - {fileID: 8300000, guid: 84740f00fe497c943913a74908f76ebb, type: 3}
+  - {fileID: 8300000, guid: 8f118f9e869d2214ab76d57c3e574324, type: 3}
+  - {fileID: 8300000, guid: f147f704c9519054e88ceded4bd3bb38, type: 3}
+  - {fileID: 8300000, guid: 4cb3491496f254d47ae10b49a13f8e32, type: 3}
+  - {fileID: 8300000, guid: 988cf1f31aa406c4086ae1712c5806a7, type: 3}
+  sonidosSaltoSuelo: []
+  sonidosCaidaSuelo: []
   efectoVisualCaminar: {fileID: 3383157717785543197, guid: 45ae853ed6966e049834d65a12fc2e98, type: 3}

@@ -60,6 +60,10 @@ public abstract class HabilidadBase : MonoBehaviour
                 tiempoActivoRestante = 0f;
                 activa = false;
                 AlTerminarEfecto(manager);
+
+                if (manager != null)
+                    manager.NotificarHabilidadTerminada(this);
+
                 if (cooldown > 0f) tiempoCooldownRestante = cooldown;
             }
         }
@@ -74,7 +78,13 @@ public abstract class HabilidadBase : MonoBehaviour
     {
         if (!adquirida || activa || EstaEnCooldown() || EstaUsada()) return false;
         if (manager != null && manager.HayOtraHabilidadActiva(this)) return false;
-        return Activar(manager);
+
+        bool activadaCorrectamente = Activar(manager);
+
+        if (activadaCorrectamente && manager != null)
+            manager.NotificarHabilidadActivada(this);
+
+        return activadaCorrectamente;
     }
 
     protected void EmpezarEfecto()
@@ -85,5 +95,5 @@ public abstract class HabilidadBase : MonoBehaviour
 
     protected abstract bool Activar(HabilidadesManager manager);
 
-    protected virtual void AlTerminarEfecto(HabilidadesManager manager) {}
+    protected virtual void AlTerminarEfecto(HabilidadesManager manager) { }
 }

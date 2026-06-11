@@ -2514,6 +2514,24 @@ MonoBehaviour:
   sensibilidadSlider: {fileID: 1196769483}
   textoValorSensibilidad: {fileID: 1633948557}
   primerBotonOpciones: {fileID: 808398033}
+  configurarSonidosAutomaticamente: 1
+  reproducirHoverEnControles: 1
+  sonidoPruebaMaster: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaMaster: {fileID: 24300002, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaMaster: 0.8
+  sonidoPruebaMusica: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaMusica: {fileID: 1972981172953347240, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaMusica: 0.8
+  sonidoPruebaSFX: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaSFX: {fileID: 835002167536415290, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaSFX: 0.8
+  sonidoPruebaSensibilidad: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaSensibilidad: {fileID: 835002167536415290, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaSensibilidad: 0.8
+  reproducirPruebaAlPulsar: 0
+  reproducirPruebaAlSoltar: 1
+  reproducirPruebaConTecladoMando: 1
+  retardoPruebaTecladoMando: 0.14
 --- !u!4 &417434190
 Transform:
   m_ObjectHideFlags: 0
@@ -4386,6 +4404,7 @@ MonoBehaviour:
   escalaHover: {x: 1.12, y: 1.12, z: 1}
   velocidadMovimiento: 15
   velocidadHover: 12
+  reproducirSonidoAlCambiar: 1
 --- !u!114 &808398037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5275,8 +5294,10 @@ MonoBehaviour:
   grupoMixerUI: {fileID: 722407559246278875, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
   sonidoHoverSelected: {fileID: 8300000, guid: bfa590d57e5a4dc4e9bd34073fc84eec, type: 3}
   sonidoPulsar: {fileID: 8300000, guid: 8291271849d6c544c8cebd309b9fc0f8, type: 3}
+  sonidoToggle: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
   volumenHoverSelected: 0.8
   volumenPulsar: 1
+  volumenToggle: 0.8
   intervaloMinimoHover: 0.05
 --- !u!82 &1084138502
 AudioSource:

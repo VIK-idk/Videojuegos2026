@@ -12,6 +12,10 @@ public static class SesionPartida
     public static bool habilidadImanComprada = false;
     public static bool habilidadQuitarStrikeComprada = false;
 
+    // Progreso temporal de dificultad. Se conserva entre Lobby y Gameplay,
+    // pero no se guarda en disco.
+    public static int encargosCompletadosDificultad = 0;
+
     public static void ReiniciarSesion()
     {
         monedas = 0;
@@ -20,5 +24,14 @@ public static class SesionPartida
         habilidadX2Comprada = false;
         habilidadImanComprada = false;
         habilidadQuitarStrikeComprada = false;
+
+        encargosCompletadosDificultad = 0;
+
+ 
+        if (PlayerPrefs.HasKey("EncargosTotalesHistoricos"))
+        {
+            PlayerPrefs.DeleteKey("EncargosTotalesHistoricos");
+            PlayerPrefs.Save();
+        }
     }
 }

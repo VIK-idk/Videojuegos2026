@@ -209,6 +209,37 @@ public class MusicaManager : MonoBehaviour
         rutinaCambioMusica = StartCoroutine(FadeOutYPararTodasLasFuentes(fadeSalida));
     }
 
+    /// <summary>
+    /// Baja suavemente toda la musica que pertenece a la escena actual y la detiene.
+    /// Sirve para secuencias especiales, como la derrota, sin cargar otra escena todavía.
+    /// </summary>
+    public void DesvanecerMusicaActual(float duracion)
+    {
+        if (rutinaCambioMusica != null)
+        {
+            StopCoroutine(rutinaCambioMusica);
+            rutinaCambioMusica = null;
+        }
+
+        if (rutinaIntroLoop != null)
+        {
+            StopCoroutine(rutinaIntroLoop);
+            rutinaIntroLoop = null;
+        }
+
+        duracion = Mathf.Max(0f, duracion);
+        rutinaCambioMusica = StartCoroutine(DesvanecerMusicaActualRutina(duracion));
+    }
+
+    private IEnumerator DesvanecerMusicaActualRutina(float duracion)
+    {
+        yield return StartCoroutine(FadeOutYPararTodasLasFuentes(duracion));
+
+        fuenteActual = null;
+        escenaMusicaActual = "";
+        rutinaCambioMusica = null;
+    }
+
     private IEnumerator CambiarMusica(MusicaPorEscena config, bool conFade)
     {
         if (config.usarIntroYLoop && config.intro != null && config.loop != null)

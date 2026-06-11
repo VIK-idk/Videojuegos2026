@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class LobbyMonedasUI : MonoBehaviour
@@ -22,9 +23,24 @@ public class LobbyMonedasUI : MonoBehaviour
     [SerializeField] private Color colorGanancia = Color.green;
     [SerializeField] private Color colorGasto = Color.red;
 
+    [Header("Audio - Conteo de monedas ganadas")]
+    [SerializeField] private AudioSource audioSourceConteoMonedas;
+    [SerializeField] private AudioMixerGroup grupoMixerMonedas;
+    [SerializeField] private AudioClip sonidoConteoGanancia;
+    [SerializeField, Range(0f, 1f)] private float volumenConteoGanancia = 0.7f;
+    [SerializeField, Min(0.01f)] private float intervaloMinimoEntreSonidos = 0.06f;
+
     private Coroutine rutinaCambio;
     private bool animandoCambio = false;
     private int valorMostrado = 0;
+
+    private float siguienteMomentoSonido = 0f;
+    private int ultimoValorQueSono = int.MinValue;
+
+    private void Awake()
+    {
+        ConfigurarAudioConteo();
+    }
 
     private void Start()
     {
@@ -39,6 +55,7 @@ public class LobbyMonedasUI : MonoBehaviour
 
     private void OnEnable()
     {
+        ConfigurarAudioConteo();
         ActualizarMonedas(true);
         OcultarCambio();
 
@@ -46,6 +63,11 @@ public class LobbyMonedasUI : MonoBehaviour
             OcultarGrupoInstantaneo();
         else
             MostrarGrupoInstantaneo();
+    }
+
+    private void OnDisable()
+    {
+        DetenerSonidoConteo();
     }
 
     public void ActualizarMonedas()
@@ -75,7 +97,13 @@ public class LobbyMonedasUI : MonoBehaviour
         if (cantidad <= 0)
             return;
 
-        IniciarAnimacionCambio(origen, destino, "-" + cantidad, colorGasto);
+        IniciarAnimacionCambio(
+            origen,
+            destino,
+            "-" + cantidad,
+            colorGasto,
+            reproducirSonidoConteoGanancia: false
+        );
     }
 
     public void MostrarGanancia(int cantidad)
@@ -91,18 +119,44 @@ public class LobbyMonedasUI : MonoBehaviour
         if (cantidad <= 0)
             return;
 
-        IniciarAnimacionCambio(origen, destino, "+" + cantidad, colorGanancia);
+        IniciarAnimacionCambio(
+            origen,
+            destino,
+            "+" + cantidad,
+            colorGanancia,
+            reproducirSonidoConteoGanancia: true
+        );
     }
 
-    private void IniciarAnimacionCambio(int origen, int destino, string textoCambio, Color color)
+    private void IniciarAnimacionCambio(
+        int origen,
+        int destino,
+        string textoCambio,
+        Color color,
+        bool reproducirSonidoConteoGanancia)
     {
         if (rutinaCambio != null)
             StopCoroutine(rutinaCambio);
 
-        rutinaCambio = StartCoroutine(AnimarCambio(origen, destino, textoCambio, color));
+        DetenerSonidoConteo();
+
+        rutinaCambio = StartCoroutine(
+            AnimarCambio(
+                origen,
+                destino,
+                textoCambio,
+                color,
+                reproducirSonidoConteoGanancia
+            )
+        );
     }
 
-    private IEnumerator AnimarCambio(int origen, int destino, string textoCambio, Color color)
+    private IEnumerator AnimarCambio(
+        int origen,
+        int destino,
+        string textoCambio,
+        Color color,
+        bool reproducirSonidoConteoGanancia)
     {
         animandoCambio = true;
 
@@ -114,22 +168,36 @@ public class LobbyMonedasUI : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(esperaAntesDeContar);
 
+        PrepararSonidoConteo(valorMostrado);
+
         float tiempo = 0f;
 
         while (tiempo < duracionConteo)
         {
             tiempo += Time.unscaledDeltaTime;
 
-            float t = Mathf.Clamp01(tiempo / duracionConteo);
-            valorMostrado = Mathf.RoundToInt(Mathf.Lerp(origen, destino, t));
+            float t = duracionConteo <= 0f
+                ? 1f
+                : Mathf.Clamp01(tiempo / duracionConteo);
 
-            MostrarValor(valorMostrado);
+            int nuevoValor = Mathf.RoundToInt(Mathf.Lerp(origen, destino, t));
+
+            if (nuevoValor != valorMostrado)
+            {
+                valorMostrado = nuevoValor;
+                MostrarValor(valorMostrado);
+
+                if (reproducirSonidoConteoGanancia && destino > origen)
+                    IntentarReproducirSonidoConteo(valorMostrado);
+            }
 
             yield return null;
         }
 
         valorMostrado = destino;
         MostrarValor(valorMostrado);
+
+        DetenerSonidoConteo();
 
         yield return new WaitForSecondsRealtime(esperaDespuesDeContar);
 
@@ -140,6 +208,58 @@ public class LobbyMonedasUI : MonoBehaviour
 
         animandoCambio = false;
         rutinaCambio = null;
+    }
+
+    private void ConfigurarAudioConteo()
+    {
+        if (audioSourceConteoMonedas == null)
+            audioSourceConteoMonedas = GetComponent<AudioSource>();
+
+        if (audioSourceConteoMonedas == null)
+            return;
+
+        audioSourceConteoMonedas.playOnAwake = false;
+        audioSourceConteoMonedas.loop = false;
+        audioSourceConteoMonedas.spatialBlend = 0f;
+        audioSourceConteoMonedas.dopplerLevel = 0f;
+
+        if (grupoMixerMonedas != null)
+            audioSourceConteoMonedas.outputAudioMixerGroup = grupoMixerMonedas;
+    }
+
+    private void PrepararSonidoConteo(int valorInicial)
+    {
+        siguienteMomentoSonido = Time.unscaledTime;
+        ultimoValorQueSono = valorInicial;
+    }
+
+    private void IntentarReproducirSonidoConteo(int nuevoValor)
+    {
+        if (audioSourceConteoMonedas == null || sonidoConteoGanancia == null)
+            return;
+
+        if (nuevoValor == ultimoValorQueSono)
+            return;
+
+        if (Time.unscaledTime < siguienteMomentoSonido)
+            return;
+
+        audioSourceConteoMonedas.PlayOneShot(
+            sonidoConteoGanancia,
+            volumenConteoGanancia
+        );
+
+        ultimoValorQueSono = nuevoValor;
+        siguienteMomentoSonido = Time.unscaledTime + intervaloMinimoEntreSonidos;
+    }
+
+    private void DetenerSonidoConteo()
+    {
+        if (audioSourceConteoMonedas != null)
+            audioSourceConteoMonedas.Stop();
+
+        siguienteMomentoSonido = 0f;
+        ultimoValorQueSono = int.MinValue;
     }
 
     private IEnumerator MostrarGrupoConFade()
@@ -160,7 +280,10 @@ public class LobbyMonedasUI : MonoBehaviour
         {
             tiempo += Time.unscaledDeltaTime;
 
-            float t = Mathf.Clamp01(tiempo / duracionFadeEntrada);
+            float t = duracionFadeEntrada <= 0f
+                ? 1f
+                : Mathf.Clamp01(tiempo / duracionFadeEntrada);
+
             grupoMonedas.alpha = Mathf.Lerp(alphaInicial, 1f, t);
 
             yield return null;
@@ -219,7 +342,9 @@ public class LobbyMonedasUI : MonoBehaviour
         {
             tiempo += Time.unscaledDeltaTime;
 
-            float t = Mathf.Clamp01(tiempo / duracionFadeEntrada);
+            float t = duracionFadeEntrada <= 0f
+                ? 1f
+                : Mathf.Clamp01(tiempo / duracionFadeEntrada);
 
             color.a = Mathf.Lerp(0f, 1f, t);
             textoGasto.color = color;

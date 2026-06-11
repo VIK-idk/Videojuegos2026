@@ -30,6 +30,9 @@ public class PanelHabilidadUI : MonoBehaviour
     [Header("Mercader")]
     [SerializeField] private MercaderAnimacion mercaderAnimacion;
 
+    [Header("Sonidos tienda")]
+    [SerializeField] private SonidosTiendaManager sonidosTiendaManager;
+
     [Header("Mensajes")]
     public Text textoErrorCompra;
 
@@ -112,6 +115,9 @@ public class PanelHabilidadUI : MonoBehaviour
 
         if (mercaderAnimacion == null)
             mercaderAnimacion = FindFirstObjectByType<MercaderAnimacion>();
+
+        if (sonidosTiendaManager == null)
+            sonidosTiendaManager = FindFirstObjectByType<SonidosTiendaManager>();
     }
 
     public void MostrarHabilidad(Habilidad habilidadSeleccionada, BotonHabilidadUI botonSeleccionado)
@@ -211,6 +217,9 @@ public class PanelHabilidadUI : MonoBehaviour
 
         if (SesionPartida.monedas < habilidadActual.Precio)
         {
+            if (sonidosTiendaManager != null)
+                sonidosTiendaManager.ReproducirCompraSinDinero();
+
             if (mercaderAnimacion != null)
                 mercaderAnimacion.PedirEnojado();
 
@@ -226,6 +235,9 @@ public class PanelHabilidadUI : MonoBehaviour
         int monedasDespues = SesionPartida.monedas;
 
         MarcarComprada(habilidadActual.Id);
+
+        if (sonidosTiendaManager != null)
+            sonidosTiendaManager.ReproducirCompraExitosa();
 
         if (mercaderAnimacion != null)
             mercaderAnimacion.PedirAlegre();

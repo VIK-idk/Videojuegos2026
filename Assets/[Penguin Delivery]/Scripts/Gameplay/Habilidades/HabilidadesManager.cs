@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 // ====================
@@ -35,15 +36,43 @@ public class HabilidadesManager : MonoBehaviour
     [SerializeField] private TipoHabilidadVFX tipoVFXHabilidad2;
     [SerializeField] private TipoHabilidadVFX tipoVFXHabilidad3;
 
+    [Header("Audio - Habilidades 2D")]
+    [Tooltip("Fuente para el sonido comun que suena al activar cualquier habilidad.")]
+    [SerializeField] private AudioSource audioSourceActivacion;
+
+    [Tooltip("Fuente para el sonido especial de cada habilidad. En X2 e iman se usa en bucle.")]
+    [SerializeField] private AudioSource audioSourceEfectoHabilidad;
+
+    [SerializeField] private AudioMixerGroup grupoMixerHabilidades;
+
+    [Header("Audio - Activacion comun")]
+    [SerializeField] private AudioClip sonidoActivarHabilidad;
+    [SerializeField, Range(0f, 1f)] private float volumenActivarHabilidad = 1f;
+
+    [Header("Audio - X2 peces")]
+    [SerializeField] private AudioClip sonidoX2Activo;
+    [SerializeField, Range(0f, 1f)] private float volumenX2Activo = 0.75f;
+
+    [Header("Audio - Iman")]
+    [SerializeField] private AudioClip sonidoImanActivo;
+    [SerializeField, Range(0f, 1f)] private float volumenImanActivo = 0.75f;
+
+    [Header("Audio - Quitar strike")]
+    [SerializeField] private AudioClip sonidoQuitarStrike;
+    [SerializeField, Range(0f, 1f)] private float volumenQuitarStrike = 1f;
+
     private GameObject vfxActivoHabilidad1;
     private GameObject vfxActivoHabilidad2;
     private GameObject vfxActivoHabilidad3;
 
     private Coroutine rutinaMensaje;
     private Vector3 escalaOriginalMensaje = Vector3.one;
+    private HabilidadBase habilidadConSonidoEnBucle;
 
     private void Awake()
     {
+        ConfigurarAudioHabilidades();
+
         if (textoMensajeRect == null && textoMensaje != null)
             textoMensajeRect = textoMensaje.GetComponent<RectTransform>();
 
@@ -299,6 +328,105 @@ public class HabilidadesManager : MonoBehaviour
                 habilidad.GetIconoMando()
             );
         }
+    }
+
+    // ====================
+    // AUDIO HABILIDADES
+    // ====================
+
+    public void NotificarHabilidadActivada(HabilidadBase habilidad)
+    {
+        ConfigurarAudioHabilidades();
+
+        ReproducirOneShot(audioSourceActivacion, sonidoActivarHabilidad, volumenActivarHabilidad);
+
+        if (habilidad == habilidad1)
+        {
+            IniciarSonidoBucleHabilidad(habilidad, sonidoX2Activo, volumenX2Activo);
+        }
+        else if (habilidad == habilidad2)
+        {
+            IniciarSonidoBucleHabilidad(habilidad, sonidoImanActivo, volumenImanActivo);
+        }
+        else if (habilidad == habilidad3)
+        {
+            DetenerSonidoBucleHabilidad();
+            ReproducirOneShot(audioSourceEfectoHabilidad, sonidoQuitarStrike, volumenQuitarStrike);
+        }
+    }
+
+    public void NotificarHabilidadTerminada(HabilidadBase habilidad)
+    {
+        if (habilidadConSonidoEnBucle == habilidad)
+            DetenerSonidoBucleHabilidad();
+    }
+
+    private void ConfigurarAudioHabilidades()
+    {
+        if (audioSourceActivacion == null)
+            audioSourceActivacion = gameObject.AddComponent<AudioSource>();
+
+        if (audioSourceEfectoHabilidad == null)
+            audioSourceEfectoHabilidad = gameObject.AddComponent<AudioSource>();
+
+        ConfigurarAudioSource2D(audioSourceActivacion, false);
+        ConfigurarAudioSource2D(audioSourceEfectoHabilidad, false);
+    }
+
+    private void ConfigurarAudioSource2D(AudioSource source, bool loop)
+    {
+        if (source == null)
+            return;
+
+        source.playOnAwake = false;
+        source.loop = loop;
+        source.spatialBlend = 0f;
+        source.dopplerLevel = 0f;
+
+        if (grupoMixerHabilidades != null)
+            source.outputAudioMixerGroup = grupoMixerHabilidades;
+    }
+
+    private void ReproducirOneShot(AudioSource source, AudioClip clip, float volumen)
+    {
+        if (source == null || clip == null)
+            return;
+
+        source.PlayOneShot(clip, volumen);
+    }
+
+    private void IniciarSonidoBucleHabilidad(HabilidadBase habilidad, AudioClip clip, float volumen)
+    {
+        DetenerSonidoBucleHabilidad();
+
+        if (audioSourceEfectoHabilidad == null || clip == null)
+            return;
+
+        habilidadConSonidoEnBucle = habilidad;
+        audioSourceEfectoHabilidad.clip = clip;
+        audioSourceEfectoHabilidad.volume = volumen;
+        audioSourceEfectoHabilidad.loop = true;
+        audioSourceEfectoHabilidad.Play();
+    }
+
+    private void DetenerSonidoBucleHabilidad()
+    {
+        habilidadConSonidoEnBucle = null;
+
+        if (audioSourceEfectoHabilidad == null)
+            return;
+
+        audioSourceEfectoHabilidad.Stop();
+        audioSourceEfectoHabilidad.clip = null;
+        audioSourceEfectoHabilidad.loop = false;
+    }
+
+    private void OnDisable()
+    {
+        DetenerSonidoBucleHabilidad();
+
+        if (audioSourceActivacion != null)
+            audioSourceActivacion.Stop();
     }
 
     // ====================

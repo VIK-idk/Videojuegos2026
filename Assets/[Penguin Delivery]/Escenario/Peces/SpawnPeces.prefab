@@ -89,7 +89,7 @@ MonoBehaviour:
   duracionAntesDeRecoger: 0.4
   vfxRecogerPez: {fileID: 2675330995084703409}
   audioSourceRecogida: {fileID: 1706223927554939198}
-  grupoMixerPlayer: {fileID: 835002167536415290, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  grupoMixerPlayer: {fileID: 1141553035212343841, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
   sonidosRecogidaBurbuja:
   - {fileID: 8300000, guid: 4c588064f8e47d64cbcc080267fefa5e, type: 3}
   - {fileID: 8300000, guid: 500df813f02acdf44831d018c9d38376, type: 3}
@@ -133,7 +133,7 @@ AudioSource:
   m_GameObject: {fileID: 1222574810564137369}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 835002167536415290, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  OutputAudioMixerGroup: {fileID: 1141553035212343841, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -145,8 +145,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 0
-  MinDistance: 2
-  MaxDistance: 18
+  MinDistance: 5
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

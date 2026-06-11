@@ -14,13 +14,19 @@ public class SonidosUIManager : MonoBehaviour
     [SerializeField] private AudioSource audioSourceUI;
     [SerializeField] private AudioMixerGroup grupoMixerUI;
 
-    [Header("Clips")]
+    [Header("Clips botones generales")]
     [SerializeField] private AudioClip sonidoHoverSelected;
     [SerializeField] private AudioClip sonidoPulsar;
 
-    [Header("Volumen")]
+    [Header("Clip toggle opciones")]
+    [SerializeField] private AudioClip sonidoToggle;
+
+    [Header("Volumen botones generales")]
     [SerializeField, Range(0f, 1f)] private float volumenHoverSelected = 0.8f;
     [SerializeField, Range(0f, 1f)] private float volumenPulsar = 1f;
+
+    [Header("Volumen toggle")]
+    [SerializeField, Range(0f, 1f)] private float volumenToggle = 0.8f;
 
     [Header("Protección contra sonidos repetidos")]
     [SerializeField, Min(0f)] private float intervaloMinimoHover = 0.05f;
@@ -95,6 +101,14 @@ public class SonidosUIManager : MonoBehaviour
         Instancia.ReproducirPulsarInterno();
     }
 
+    public static void ReproducirToggle()
+    {
+        if (Instancia == null)
+            return;
+
+        Instancia.ReproducirToggleInterno();
+    }
+
     private void ReproducirHoverInterno()
     {
         if (audioSourceUI == null || sonidoHoverSelected == null)
@@ -113,5 +127,13 @@ public class SonidosUIManager : MonoBehaviour
             return;
 
         audioSourceUI.PlayOneShot(sonidoPulsar, volumenPulsar);
+    }
+
+    private void ReproducirToggleInterno()
+    {
+        if (audioSourceUI == null || sonidoToggle == null)
+            return;
+
+        audioSourceUI.PlayOneShot(sonidoToggle, volumenToggle);
     }
 }

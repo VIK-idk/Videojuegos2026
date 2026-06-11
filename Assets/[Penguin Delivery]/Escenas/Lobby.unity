@@ -4511,13 +4511,15 @@ MonoBehaviour:
   textoPrecio: {fileID: 1594245230}
   botonComprar: {fileID: 1256409624}
   usarTextoInicialDelInspector: 1
-  nombreInicialTienda: 
-  descripcionInicialTienda: 
+  nombreInicialTienda: "\xA1Te doy la bienvenida a mi tienda!"
+  descripcionInicialTienda: Toca cualquier articulo para ver sus detalles, precio
+    o incluso comprarla.
   grupoPrecio: {fileID: 364274383}
   iconoMonedaPrecio: {fileID: 2088586590}
   imagenComprado: {fileID: 1309214246}
   lobbyMonedasUI: {fileID: 1992347104}
   mercaderAnimacion: {fileID: 169691411}
+  sonidosTiendaManager: {fileID: 916632707}
   textoErrorCompra: {fileID: 486057618}
   duracionTextoError: 2
   seleccionarComprarAlElegirHabilidad: 1
@@ -5558,6 +5560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 738663816}
+  - component: {fileID: 738663817}
   m_Layer: 5
   m_Name: Botones
   m_TagString: Untagged
@@ -5584,9 +5587,26 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 17.1, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &738663817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738663815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b135a37932c771842add38ecb69cd2e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipoBoton: 1
+  incluirBotonesInactivos: 1
+  reproducirHoverSelected: 1
+  reproducirPulsar: 1
+  silenciarSeleccionInicial: 0
 --- !u!1 &739161615
 GameObject:
   m_ObjectHideFlags: 0
@@ -6138,7 +6158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -25, y: -3.2}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &793283307
@@ -6177,8 +6197,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -80.8, y: -67.4}
-  m_SizeDelta: {x: 40, y: 20}
+  m_AnchoredPosition: {x: -80.8, y: -76.69999}
+  m_SizeDelta: {x: 50, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &793283309
 MonoBehaviour:
@@ -6277,6 +6297,26 @@ PrefabInstance:
     - target: {fileID: 6255396790138077705, guid: 001f050e03d874349a1a1740ad595858, type: 3}
       propertyPath: sensibilidadMando
       value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752169066303321444, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: volumenRascarse
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752169066303321444, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: volumenApoyoPies
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752169066303321444, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: retrasoSonidoRascarse
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752169066303321444, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: retrasoApoyoPieDerecho
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752169066303321444, guid: 001f050e03d874349a1a1740ad595858, type: 3}
+      propertyPath: retrasoApoyoPieIzquierdo
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6415,6 +6455,7 @@ MonoBehaviour:
   escalaHover: {x: 1.12, y: 1.12, z: 1}
   velocidadMovimiento: 15
   velocidadHover: 12
+  reproducirSonidoAlCambiar: 1
 --- !u!114 &808398037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6667,8 +6708,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 783334419}
   - {fileID: 738663816}
+  - {fileID: 783334419}
   m_Father: {fileID: 916632704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -7422,6 +7463,8 @@ GameObject:
   - component: {fileID: 916632704}
   - component: {fileID: 916632706}
   - component: {fileID: 916632705}
+  - component: {fileID: 916632708}
+  - component: {fileID: 916632707}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -7491,6 +7534,130 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 916632703}
   m_CullTransparentMesh: 1
+--- !u!114 &916632707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916632703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf319f1419d45c45a6e91779b770b2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourceTienda: {fileID: 916632708}
+  grupoMixerUI: {fileID: 722407559246278875, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  sonidoHoverMadera: {fileID: 8300000, guid: bfa590d57e5a4dc4e9bd34073fc84eec, type: 3}
+  sonidoPulsarMadera: {fileID: 8300000, guid: 043661b433cfac64f9e06094cbc60f9b, type: 3}
+  volumenHoverMadera: 0.8
+  volumenPulsarMadera: 1
+  sonidoHoverHabilidad: {fileID: 8300000, guid: 581c557c6f2dfe6458fdd7f0e014785c, type: 3}
+  sonidoPulsarHabilidad: {fileID: 8300000, guid: ed004ca3e63d0e14383eaaa8aeed5092, type: 3}
+  volumenHoverHabilidad: 0.8
+  volumenPulsarHabilidad: 1
+  sonidoCompraExitosa: {fileID: 8300000, guid: f676a1de217ccae42aa366345c279b7c, type: 3}
+  sonidoCompraSinDinero: {fileID: 8300000, guid: 56d93c5ac0c67844aa37d0612d19a8b9, type: 3}
+  volumenCompraExitosa: 1
+  volumenCompraSinDinero: 1
+  intervaloMinimoHover: 0.05
+--- !u!82 &916632708
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916632703}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 722407559246278875, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &918456984
 GameObject:
   m_ObjectHideFlags: 0
@@ -7918,6 +8085,24 @@ MonoBehaviour:
   sensibilidadSlider: {fileID: 1196769483}
   textoValorSensibilidad: {fileID: 1633948557}
   primerBotonOpciones: {fileID: 808398033}
+  configurarSonidosAutomaticamente: 1
+  reproducirHoverEnControles: 1
+  sonidoPruebaMaster: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaMaster: {fileID: 24300002, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaMaster: 0.8
+  sonidoPruebaMusica: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaMusica: {fileID: 1972981172953347240, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaMusica: 0.8
+  sonidoPruebaSFX: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaSFX: {fileID: 835002167536415290, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaSFX: 0.8
+  sonidoPruebaSensibilidad: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
+  grupoPruebaSensibilidad: {fileID: 835002167536415290, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
+  volumenPruebaSensibilidad: 0.8
+  reproducirPruebaAlPulsar: 0
+  reproducirPruebaAlSoltar: 1
+  reproducirPruebaConTecladoMando: 1
+  retardoPruebaTecladoMando: 0.14
 --- !u!4 &948456537
 Transform:
   m_ObjectHideFlags: 0
@@ -8364,6 +8549,7 @@ GameObject:
   - component: {fileID: 1004297736}
   - component: {fileID: 1004297735}
   - component: {fileID: 1004297734}
+  - component: {fileID: 1004297737}
   m_Layer: 5
   m_Name: BtnVolver
   m_TagString: Untagged
@@ -8484,6 +8670,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004297732}
   m_CullTransparentMesh: 1
+--- !u!114 &1004297737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004297732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0dd572c0b046e42a90831c5564a211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boton: {fileID: 1004297734}
+  sonidosTiendaManager: {fileID: 916632707}
+  tipoBoton: 0
+  reproducirHoverSelected: 1
+  reproducirPulsar: 1
+  silenciarSeleccionInicial: 0
+  tiempoSilencioInicial: 0.08
 --- !u!1 &1045090712
 GameObject:
   m_ObjectHideFlags: 0
@@ -8527,6 +8732,7 @@ GameObject:
   - component: {fileID: 1051688934}
   - component: {fileID: 1051688933}
   - component: {fileID: 1051688932}
+  - component: {fileID: 1051688935}
   m_Layer: 5
   m_Name: BtnH1
   m_TagString: Untagged
@@ -8635,6 +8841,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051688929}
   m_CullTransparentMesh: 1
+--- !u!114 &1051688935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051688929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0dd572c0b046e42a90831c5564a211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boton: {fileID: 1051688932}
+  sonidosTiendaManager: {fileID: 916632707}
+  tipoBoton: 1
+  reproducirHoverSelected: 1
+  reproducirPulsar: 1
+  silenciarSeleccionInicial: 0
+  tiempoSilencioInicial: 0.08
 --- !u!1 &1057103737
 GameObject:
   m_ObjectHideFlags: 0
@@ -9453,6 +9678,7 @@ GameObject:
   - component: {fileID: 1256409626}
   - component: {fileID: 1256409625}
   - component: {fileID: 1256409624}
+  - component: {fileID: 1256409627}
   m_Layer: 5
   m_Name: BtnComprar
   m_TagString: Untagged
@@ -9561,6 +9787,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1256409622}
   m_CullTransparentMesh: 1
+--- !u!114 &1256409627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1256409622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0dd572c0b046e42a90831c5564a211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boton: {fileID: 1256409624}
+  sonidosTiendaManager: {fileID: 916632707}
+  tipoBoton: 0
+  reproducirHoverSelected: 1
+  reproducirPulsar: 1
+  silenciarSeleccionInicial: 0
+  tiempoSilencioInicial: 0.08
 --- !u!1 &1271754256
 GameObject:
   m_ObjectHideFlags: 0
@@ -11402,6 +11647,7 @@ GameObject:
   - component: {fileID: 1529000905}
   - component: {fileID: 1529000904}
   - component: {fileID: 1529000903}
+  - component: {fileID: 1529000906}
   m_Layer: 5
   m_Name: BtnH2
   m_TagString: Untagged
@@ -11510,6 +11756,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529000900}
   m_CullTransparentMesh: 1
+--- !u!114 &1529000906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529000900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0dd572c0b046e42a90831c5564a211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boton: {fileID: 1529000903}
+  sonidosTiendaManager: {fileID: 916632707}
+  tipoBoton: 1
+  reproducirHoverSelected: 1
+  reproducirPulsar: 1
+  silenciarSeleccionInicial: 0
+  tiempoSilencioInicial: 0.08
 --- !u!1 &1535235868
 GameObject:
   m_ObjectHideFlags: 0
@@ -12190,6 +12455,7 @@ GameObject:
   - component: {fileID: 1644439519}
   - component: {fileID: 1644439518}
   - component: {fileID: 1644439517}
+  - component: {fileID: 1644439520}
   m_Layer: 5
   m_Name: BtnH3
   m_TagString: Untagged
@@ -12298,6 +12564,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644439514}
   m_CullTransparentMesh: 1
+--- !u!114 &1644439520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644439514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0dd572c0b046e42a90831c5564a211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boton: {fileID: 1644439517}
+  sonidosTiendaManager: {fileID: 916632707}
+  tipoBoton: 1
+  reproducirHoverSelected: 1
+  reproducirPulsar: 1
+  silenciarSeleccionInicial: 0
+  tiempoSilencioInicial: 0.08
 --- !u!1 &1645976509
 GameObject:
   m_ObjectHideFlags: 0
@@ -12958,8 +13243,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -82, y: 37.9}
-  m_SizeDelta: {x: 40, y: 20}
+  m_AnchoredPosition: {x: -82, y: 31.8}
+  m_SizeDelta: {x: 50, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1692360766
 MonoBehaviour:
@@ -13710,8 +13995,10 @@ MonoBehaviour:
   grupoMixerUI: {fileID: 722407559246278875, guid: cc2a5944bef38f94ab337ef7f08b489e, type: 2}
   sonidoHoverSelected: {fileID: 8300000, guid: bfa590d57e5a4dc4e9bd34073fc84eec, type: 3}
   sonidoPulsar: {fileID: 8300000, guid: 8291271849d6c544c8cebd309b9fc0f8, type: 3}
+  sonidoToggle: {fileID: 8300000, guid: 7e017c870fe745040bc6de45462970f7, type: 3}
   volumenHoverSelected: 0.8
   volumenPulsar: 1
+  volumenToggle: 0.8
   intervaloMinimoHover: 0.05
 --- !u!82 &1769337266
 AudioSource:
@@ -14283,6 +14570,11 @@ MonoBehaviour:
   esperaDespuesDeContar: 0.5
   colorGanancia: {r: 0, g: 1, b: 0, a: 1}
   colorGasto: {r: 1, g: 0, b: 0, a: 1}
+  audioSourceConteoMonedas: {fileID: 0}
+  grupoMixerMonedas: {fileID: 0}
+  sonidoConteoGanancia: {fileID: 0}
+  volumenConteoGanancia: 0.7
+  intervaloMinimoEntreSonidos: 0.06
 --- !u!4 &1992347105
 Transform:
   m_ObjectHideFlags: 0
@@ -14916,8 +15208,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -82.1, y: -15.9}
-  m_SizeDelta: {x: 40, y: 20}
+  m_AnchoredPosition: {x: -81.2, y: -25}
+  m_SizeDelta: {x: 50, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2050953540
 MonoBehaviour:

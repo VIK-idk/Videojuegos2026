@@ -17,6 +17,9 @@ public class GestorEncargosTest : MonoBehaviour
     [Header("Rey Morsa")]
     [SerializeField] private ReyMorsaAnimacion reyMorsaAnimacion;
 
+    [Header("Guppy")]
+    [SerializeField] private GuppySonidos guppySonidos;
+
     [Header("UI")]
     [SerializeField] private UIEncargoLegacy uiEncargo;
     [SerializeField] private UIEstadoEncargoLegacy uiEstado;
@@ -155,7 +158,7 @@ public class GestorEncargosTest : MonoBehaviour
         esperandoPrimerEncargo = false;
 
         encargosCompletadosEstaRonda = 0;
-        encargosCompletadosTotalesPartida = PlayerPrefs.GetInt("EncargosTotalesHistoricos", 0);
+        encargosCompletadosTotalesPartida = SesionPartida.encargosCompletadosDificultad;
 
         if (uiEncargo != null)
         {
@@ -175,6 +178,11 @@ public class GestorEncargosTest : MonoBehaviour
         if (tutorialManager == null)
         {
             tutorialManager = FindFirstObjectByType<TutorialManager>();
+        }
+
+        if (guppySonidos == null)
+        {
+            guppySonidos = FindFirstObjectByType<GuppySonidos>();
         }
 
         if (iniciarAutomaticamente)
@@ -543,12 +551,16 @@ public class GestorEncargosTest : MonoBehaviour
         encargoActual.enProceso = false;
         encargoActual.completado = true;
 
+        if (uiEncargo != null)
+        {
+            uiEncargo.ReproducirVictoria();
+        }
+
         if (!tutorialActivo)
         {
             encargosCompletadosEstaRonda++;
             encargosCompletadosTotalesPartida++;
-            PlayerPrefs.SetInt("EncargosTotalesHistoricos", encargosCompletadosTotalesPartida);
-            PlayerPrefs.Save();
+            SesionPartida.encargosCompletadosDificultad = encargosCompletadosTotalesPartida;
         }
 
         if (reyMorsaAnimacion != null)
@@ -605,6 +617,17 @@ public class GestorEncargosTest : MonoBehaviour
 
         encargoActual.enProceso = false;
         encargoActual.fallado = true;
+
+        if (uiEncargo != null)
+        {
+            uiEncargo.ReproducirDerrota();
+        }
+
+        if (guppySonidos == null)
+            guppySonidos = FindFirstObjectByType<GuppySonidos>();
+
+        if (guppySonidos != null)
+            guppySonidos.ReproducirTristePorEncargoFallado();
 
         if (reyMorsaAnimacion != null)
         {
@@ -802,8 +825,6 @@ public class GestorEncargosTest : MonoBehaviour
 
         if (uiEncargo != null)
         {
-            // Primero rellenamos el encargo mientras está oculto y después lo deslizamos.
-            // Esto evita que aparezca vacío, se apague un instante y vuelva a aparecer.
             uiEncargo.ActualizarUI(
                 encargoActual,
                 tiempoRestante,

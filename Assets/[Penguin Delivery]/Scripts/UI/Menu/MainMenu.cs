@@ -22,6 +22,9 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        // Entrar en la escena del menú principal inicia una sesión nueva.
+        // Esto reinicia monedas, habilidades y dificultad temporal.
+        SesionPartida.ReiniciarSesion();
         InicializarMenu();
     }
 
@@ -51,8 +54,6 @@ public class MainMenu : MonoBehaviour
 
     public void Jugar()
     {
-        SesionPartida.ReiniciarSesion();
-
         if (TutorialEstado.EstaCompletado())
             SceneLoader.CargarEscena(nombreEscena);
         else
