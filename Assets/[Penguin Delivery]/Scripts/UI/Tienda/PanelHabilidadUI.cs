@@ -149,8 +149,12 @@ public class PanelHabilidadUI : MonoBehaviour
         if (lobbyMonedasUI != null)
             lobbyMonedasUI.ActualizarMonedas();
 
-        if (seleccionarComprarAlElegirHabilidad && !comprada)
+        if (seleccionarComprarAlElegirHabilidad &&
+            !comprada &&
+            InputDetector.DebeMostrarSeleccionUI)
+        {
             StartCoroutine(SeleccionarComprarAlFinalDelFrame());
+        }
     }
 
     private void ActualizarPrecioPanel(bool comprada)
@@ -319,6 +323,9 @@ public class PanelHabilidadUI : MonoBehaviour
     private IEnumerator SeleccionarComprarAlFinalDelFrame()
     {
         yield return null;
+
+        if (!InputDetector.DebeMostrarSeleccionUI)
+            yield break;
 
         if (EventSystem.current == null)
             yield break;

@@ -455,6 +455,7 @@ MonoBehaviour:
   controladorCamara: {fileID: 1418184981}
   controladorJugador: {fileID: 325548269}
   primerBotonTienda: {fileID: 1004297732}
+  botonCerrarMando: 331
 --- !u!1001 &18576783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -964,7 +965,7 @@ GameObject:
   m_Component:
   - component: {fileID: 149332511}
   m_Layer: 0
-  m_Name: TIenda Prueba
+  m_Name: TIendaInteraccion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3413,7 +3414,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 9a337dd56804f784bac2ae05af6b27fa, type: 3}
     m_FontSize: 25
     m_FontStyle: 1
     m_BestFit: 0
@@ -4531,7 +4532,7 @@ GameObject:
   - component: {fileID: 532122533}
   - component: {fileID: 532122532}
   m_Layer: 0
-  m_Name: PuertaPrueba
+  m_Name: PuertaInteraccion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4619,7 +4620,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 8883fac126e427c4f8b58b74bf4a3e22, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
@@ -4631,9 +4632,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Tienda
+  m_Text: '
 
-    Pulsa [E]'
+    Pulsa     '
 --- !u!222 &534240444
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5224,7 +5225,6 @@ GameObject:
   - component: {fileID: 614723808}
   - component: {fileID: 614723810}
   - component: {fileID: 614723809}
-  - component: {fileID: 614723811}
   m_Layer: 5
   m_Name: TextoPuerta
   m_TagString: Untagged
@@ -5240,7 +5240,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614723807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 16.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5272,7 +5272,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 8883fac126e427c4f8b58b74bf4a3e22, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
@@ -5286,7 +5286,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Volver a jugar
 
-    Pulsa [E]'
+    Pulsa     '
 --- !u!222 &614723810
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5295,21 +5295,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614723807}
   m_CullTransparentMesh: 1
---- !u!114 &614723811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614723807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8c8f70531e68d42a47fc78695ee54e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  miImagen: {fileID: 0}
-  imagenTeclado: {fileID: 0}
-  imagenMando: {fileID: 0}
 --- !u!1 &699846382
 GameObject:
   m_ObjectHideFlags: 0
@@ -6483,6 +6468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controladorCamara: {fileID: 1418184981}
   controladorJugador: {fileID: 325548269}
+  botonCerrarMando: 331
 --- !u!4 &828286902
 Transform:
   m_ObjectHideFlags: 0
@@ -6510,6 +6496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfbfe3d0d9e3d9d4bbfa1f5d846d8333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zonaMuertaMando: 0.45
+  pixelesMinimosMovimientoRaton: 1.5
 --- !u!1 &836362840
 GameObject:
   m_ObjectHideFlags: 0
@@ -6806,7 +6794,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 869091966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a35922f82b7eff4f929ef363f5b6185, type: 3}
+  m_Script: {fileID: 11500000, guid: b3c782cb72a58d44c84fb116cbca32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &869091970
@@ -6818,10 +6806,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 869091966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fae5ecaef6d307243a40a501451a7410, type: 3}
+  m_Script: {fileID: 11500000, guid: 905d71a35d536b94ea8443ab550a582d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textoInteractuar: {fileID: 1302708107}
+  tiendaUIController: {fileID: 9700630}
 --- !u!1 &877454815
 GameObject:
   m_ObjectHideFlags: 0
@@ -7028,7 +7017,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 884764199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a35922f82b7eff4f929ef363f5b6185, type: 3}
+  m_Script: {fileID: 11500000, guid: b3c782cb72a58d44c84fb116cbca32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &884764204
@@ -7040,10 +7029,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 884764199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fae5ecaef6d307243a40a501451a7410, type: 3}
+  m_Script: {fileID: 11500000, guid: 80476255b10768648b29d5453835961b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textoInteractuar: {fileID: 2062500535}
+  nombreEscena: Gameplay
 --- !u!1 &889794505
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,7 +8325,7 @@ MonoBehaviour:
     fadeEntrada: 1
     fadeSalida: 1
   - nombreEscena: Tutorial
-    musicaNormal: {fileID: 8300000, guid: e2089faf3fc17144aa042b9cba38de3b, type: 3}
+    musicaNormal: {fileID: 8300000, guid: eab905c25865dd845bc75d2605effd4c, type: 3}
     usarIntroYLoop: 0
     intro: {fileID: 0}
     loop: {fileID: 0}
@@ -9926,7 +9916,7 @@ Transform:
   m_GameObject: {fileID: 1302708107}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.016, y: 1.456, z: -0.79}
+  m_LocalPosition: {x: -0.745, y: 1.456, z: -0.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10387,8 +10377,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miImagen: {fileID: 1364842347}
-  imagenTeclado: {fileID: 21300000, guid: 50a24022f13287e4c89a010b7c049efc, type: 3}
-  imagenMando: {fileID: 21300000, guid: 702972e2089e0ff4885ceb7a786a87b0, type: 3}
+  imagenTeclado: {fileID: 21300000, guid: 5754d491f50439b45b53d95daf58480f, type: 3}
+  imagenMando: {fileID: 21300000, guid: 837ce12a98469d944b50614a8079f7b7, type: 3}
 --- !u!114 &1364842347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10409,7 +10399,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5754d491f50439b45b53d95daf58480f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11241,16 +11231,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477771741}
-  m_LocalRotation: {x: -0, y: 0.99999774, z: -0, w: 0.0021193917}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2899999, y: 0.28999996, z: 0.14446872}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 770934934}
-  m_LocalEulerAnglesHint: {x: 0, y: 179.757, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 36.1, y: -15.6661415}
+  m_AnchoredPosition: {x: 35.7, y: -15.6661415}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1477771743
@@ -11266,8 +11256,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miImagen: {fileID: 1477771744}
-  imagenTeclado: {fileID: 21300000, guid: 50a24022f13287e4c89a010b7c049efc, type: 3}
-  imagenMando: {fileID: 21300000, guid: 702972e2089e0ff4885ceb7a786a87b0, type: 3}
+  imagenTeclado: {fileID: 21300000, guid: 5754d491f50439b45b53d95daf58480f, type: 3}
+  imagenMando: {fileID: 21300000, guid: 837ce12a98469d944b50614a8079f7b7, type: 3}
 --- !u!114 &1477771744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11288,7 +11278,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5754d491f50439b45b53d95daf58480f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

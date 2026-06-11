@@ -24,7 +24,7 @@ public class TutorialManager : MonoBehaviour
     [Header("UI Saltar Tutorial")]
     [SerializeField] private GameObject tutorialSaltarPanel;
     [SerializeField] private Text tutorialSaltarTexto;
-    [SerializeField] private string textoSaltarTutorial = "TAB: saltar tutorial";
+    [SerializeField] private string textoSaltarTutorial = ": saltar tutorial";
 
     [Header("Posicion panel tutorial")]
     [SerializeField] private Vector2 posicionPanelArriba = new Vector2(0f, 300f);
@@ -38,6 +38,12 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Configuracion")]
     [SerializeField] private KeyCode teclaSaltarTutorial = KeyCode.Tab;
+
+    [Header("Saltar tutorial con mando - Input Manager antiguo")]
+    [Tooltip("Debe ser un eje configurado como 7th axis en Project Settings > Input Manager.")]
+    [SerializeField] private string ejeSaltarTutorialMando = "SaltarTutorialMando";
+    [SerializeField, Range(0.1f, 1f)] private float umbralEjeSaltarTutorialMando = 0.6f;
+
     [SerializeField] private float tiempoMinimoLectura = 1.2f;
     [SerializeField] private float duracionMensajeFinal = 4f;
     [SerializeField] private float inputMinimoMovimiento = 0.1f;
@@ -101,6 +107,9 @@ public class TutorialManager : MonoBehaviour
     private Coroutine rutinaTutorial;
     private Coroutine rutinaDialogoEvento;
     private Coroutine rutinaSaltarTutorial;
+
+    private bool ejeSaltarTutorialMandoActivoAnterior = false;
+    private bool saltoMandoSolicitadoEsteFrame = false;
 
     // ====================
     // ESTADO DEL TUTORIAL
@@ -169,6 +178,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Update()
     {
+        saltoMandoSolicitadoEsteFrame = DetectarPulsacionEjeSaltarTutorialMando();
+
         if (Input.GetKeyDown(teclaResetTutorial))
         {
             ResetearTutorialGuardado();
@@ -178,7 +189,11 @@ public class TutorialManager : MonoBehaviour
         if (!tutorialActivo)
             return;
 
-        if (!saltandoTutorial && Input.GetKeyDown(teclaSaltarTutorial))
+        bool saltoSolicitado =
+            Input.GetKeyDown(teclaSaltarTutorial) ||
+            saltoMandoSolicitadoEsteFrame;
+
+        if (!saltandoTutorial && saltoSolicitado)
         {
             SaltarTutorial();
             return;
@@ -202,6 +217,10 @@ public class TutorialManager : MonoBehaviour
         saltandoTutorial = false;
         encargoTutorialMostrado = false;
         pasoActual = PasoTutorial.Ninguno;
+
+        ejeSaltarTutorialMandoActivoAnterior =
+            Mathf.Abs(LeerEjeSeguro(ejeSaltarTutorialMando)) >= umbralEjeSaltarTutorialMando;
+        saltoMandoSolicitadoEsteFrame = false;
 
         MostrarPanelSaltarTutorial(true);
         ActualizarTextoSkip(false);
@@ -769,7 +788,8 @@ public class TutorialManager : MonoBehaviour
 
     private bool InputParaCompletarTexto()
     {
-        if (Input.GetKeyDown(teclaSaltarTutorial))
+        // TAB y el 7th axis están reservados exclusivamente para saltar el tutorial.
+        if (Input.GetKeyDown(teclaSaltarTutorial) || saltoMandoSolicitadoEsteFrame)
             return false;
 
         return Input.anyKeyDown || Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel");
@@ -777,10 +797,36 @@ public class TutorialManager : MonoBehaviour
 
     private bool InputParaContinuarDialogo()
     {
-        if (Input.GetKeyDown(teclaSaltarTutorial))
+        // TAB y el 7th axis no avanzan diálogos: saltan directamente al final.
+        if (Input.GetKeyDown(teclaSaltarTutorial) || saltoMandoSolicitadoEsteFrame)
             return false;
 
         return Input.anyKeyDown || Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel");
+    }
+
+    private bool DetectarPulsacionEjeSaltarTutorialMando()
+    {
+        float valor = Mathf.Abs(LeerEjeSeguro(ejeSaltarTutorialMando));
+        bool activoAhora = valor >= umbralEjeSaltarTutorialMando;
+        bool pulsadoEsteFrame = activoAhora && !ejeSaltarTutorialMandoActivoAnterior;
+
+        ejeSaltarTutorialMandoActivoAnterior = activoAhora;
+        return pulsadoEsteFrame;
+    }
+
+    private float LeerEjeSeguro(string nombreEje)
+    {
+        if (string.IsNullOrWhiteSpace(nombreEje))
+            return 0f;
+
+        try
+        {
+            return Input.GetAxisRaw(nombreEje);
+        }
+        catch
+        {
+            return 0f;
+        }
     }
 
     private void PrepararCanvasGroupTutorial()

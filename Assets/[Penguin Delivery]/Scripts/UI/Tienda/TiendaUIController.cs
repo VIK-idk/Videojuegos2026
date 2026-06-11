@@ -26,28 +26,25 @@ public class TiendaUIController : MonoBehaviour
     [SerializeField] private MonoBehaviour controladorCamara;
     [SerializeField] private MonoBehaviour controladorJugador;
 
-    [Header("UI Mando")]
+    [Header("UI")]
     [SerializeField] private GameObject primerBotonTienda;
+
+    [Header("Cerrar con mando")]
+    [Tooltip("Normalmente Círculo/B en el Input Manager antiguo.")]
+    [SerializeField] private KeyCode botonCerrarMando = KeyCode.JoystickButton1;
 
     private bool tiendaOcultaPorPausa = false;
     private bool cerrandoTienda = false;
-
     private Coroutine rutinaFadeHabilidades;
 
     public bool TiendaAbierta
     {
-        get
-        {
-            return panelTienda != null && panelTienda.activeSelf;
-        }
+        get { return panelTienda != null && panelTienda.activeSelf; }
     }
 
     public bool TiendaOcultaPorPausa
     {
-        get
-        {
-            return tiendaOcultaPorPausa;
-        }
+        get { return tiendaOcultaPorPausa; }
     }
 
     private void OnDisable()
@@ -57,30 +54,23 @@ public class TiendaUIController : MonoBehaviour
 
     private void Update()
     {
-        if (tiendaOcultaPorPausa)
+        if (tiendaOcultaPorPausa || !TiendaAbierta || cerrandoTienda)
             return;
 
-        if (!TiendaAbierta)
-            return;
-
-        if (cerrandoTienda)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.JoystickButton0))
+        // Ya no usa JoystickButton0, porque ese mismo botón se usa para interactuar
+        // y podía abrir y cerrar la tienda en el mismo frame.
+        if (InputDetector.usandoMando && Input.GetKeyDown(botonCerrarMando))
         {
             CerrarTienda();
             return;
         }
 
-        MantenerSeleccionTienda();
+        ActualizarSeleccionTienda();
     }
 
     public void AbrirTienda()
     {
-        if (cerrandoTienda)
-            return;
-
-        if (TiendaAbierta)
+        if (cerrandoTienda || TiendaAbierta)
             return;
 
         HayTiendaAbierta = true;
@@ -88,6 +78,9 @@ public class TiendaUIController : MonoBehaviour
 
         if (panelTienda != null)
             panelTienda.SetActive(true);
+
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
 
         PrepararHabilidadesOcultas();
 
@@ -111,10 +104,7 @@ public class TiendaUIController : MonoBehaviour
 
     public void CerrarTienda()
     {
-        if (!TiendaAbierta)
-            return;
-
-        if (cerrandoTienda)
+        if (!TiendaAbierta || cerrandoTienda)
             return;
 
         StartCoroutine(CerrarTiendaCoroutine());
@@ -194,7 +184,7 @@ public class TiendaUIController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        SeleccionarPrimerBotonTienda();
+        PrepararSeleccionTienda();
     }
 
     private void PrepararHabilidadesOcultas()
@@ -203,12 +193,7 @@ public class TiendaUIController : MonoBehaviour
             return;
 
         grupoHabilidades.alpha = 0f;
-
-        // IMPORTANTE:
-        // No ponemos interactable = false porque eso activa el Disabled Sprite de los botones.
         grupoHabilidades.interactable = true;
-
-        // Esto sí evita que se puedan pulsar mientras están invisibles.
         grupoHabilidades.blocksRaycasts = false;
     }
 
@@ -218,25 +203,18 @@ public class TiendaUIController : MonoBehaviour
             return;
 
         grupoHabilidades.alpha = 1f;
-
-        // Siempre true para que los botones no se vean disabled/pressed.
         grupoHabilidades.interactable = true;
-
-        // Ahora sí pueden recibir clicks.
         grupoHabilidades.blocksRaycasts = true;
     }
 
     private IEnumerator AparecerHabilidadesTrasLlegada()
     {
         float espera = Mathf.Max(0f, duracionLlegadaMercader - aparecerCuandoFalte);
-
         yield return new WaitForSecondsRealtime(espera);
-
         yield return StartCoroutine(FadeGrupoHabilidades(0f, 1f));
 
         rutinaFadeHabilidades = null;
-
-        SeleccionarPrimerBotonTienda();
+        PrepararSeleccionTienda();
     }
 
     private IEnumerator FadeGrupoHabilidades(float alphaInicial, float alphaFinal)
@@ -244,11 +222,7 @@ public class TiendaUIController : MonoBehaviour
         if (grupoHabilidades == null)
             yield break;
 
-        // IMPORTANTE:
-        // Mantener interactable en true para que NO se activen los Disabled Sprite.
         grupoHabilidades.interactable = true;
-
-        // Durante el fade bloqueamos clicks sin cambiar el estado visual.
         grupoHabilidades.blocksRaycasts = false;
 
         float tiempo = 0f;
@@ -256,38 +230,51 @@ public class TiendaUIController : MonoBehaviour
         while (tiempo < duracionFadeHabilidades)
         {
             tiempo += Time.unscaledDeltaTime;
-
-            float t = tiempo / duracionFadeHabilidades;
+            float t = duracionFadeHabilidades <= 0f ? 1f : tiempo / duracionFadeHabilidades;
             grupoHabilidades.alpha = Mathf.Lerp(alphaInicial, alphaFinal, t);
-
             yield return null;
         }
 
         grupoHabilidades.alpha = alphaFinal;
-
-        bool visible = alphaFinal > 0.99f;
-
-        // Mantener siempre true.
         grupoHabilidades.interactable = true;
-
-        // Solo permitimos clicks cuando ya terminó de aparecer.
-        grupoHabilidades.blocksRaycasts = visible;
+        grupoHabilidades.blocksRaycasts = alphaFinal > 0.99f;
     }
 
-    private void MantenerSeleccionTienda()
+    private void ActualizarSeleccionTienda()
     {
         if (EventSystem.current == null)
             return;
 
-        if (EventSystem.current.currentSelectedGameObject != null)
+        if (!InputDetector.DebeMostrarSeleccionUI)
+        {
+            if (EventSystem.current.currentSelectedGameObject != null)
+                EventSystem.current.SetSelectedGameObject(null);
+
+            return;
+        }
+
+        if (grupoHabilidades != null && !grupoHabilidades.blocksRaycasts)
             return;
 
-        SeleccionarPrimerBotonTienda();
+        if (EventSystem.current.currentSelectedGameObject == null)
+            SeleccionarPrimerBotonTienda();
+    }
+
+    private void PrepararSeleccionTienda()
+    {
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        if (InputDetector.DebeMostrarSeleccionUI)
+            SeleccionarPrimerBotonTienda();
     }
 
     private void SeleccionarPrimerBotonTienda()
     {
-        if (grupoHabilidades != null && !grupoHabilidades.interactable)
+        if (!InputDetector.DebeMostrarSeleccionUI)
+            return;
+
+        if (grupoHabilidades != null && !grupoHabilidades.blocksRaycasts)
             return;
 
         if (EventSystem.current == null || primerBotonTienda == null)

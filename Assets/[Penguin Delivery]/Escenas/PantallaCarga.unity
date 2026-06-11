@@ -926,7 +926,7 @@ MonoBehaviour:
     fadeEntrada: 1
     fadeSalida: 1
   - nombreEscena: Tutorial
-    musicaNormal: {fileID: 8300000, guid: e2089faf3fc17144aa042b9cba38de3b, type: 3}
+    musicaNormal: {fileID: 8300000, guid: eab905c25865dd845bc75d2605effd4c, type: 3}
     usarIntroYLoop: 0
     intro: {fileID: 0}
     loop: {fileID: 0}

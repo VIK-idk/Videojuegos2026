@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Estado UI")]
     private GameObject menuActual;
     private GameObject primerBotonActual;
     private bool uiActiva = false;
@@ -12,20 +12,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private MonoBehaviour controladorCamara;
     [SerializeField] private MonoBehaviour controladorJugador;
 
-    void Update()
-    {
-        if (!uiActiva) return;
+    [Header("Cerrar con mando")]
+    [SerializeField] private KeyCode botonCerrarMando = KeyCode.JoystickButton1;
 
-        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+    private void Update()
+    {
+        if (!uiActiva)
+            return;
+
+        if (InputDetector.usandoMando && Input.GetKeyDown(botonCerrarMando))
         {
             CerrarMenu();
+            return;
         }
 
-
-        if (EventSystem.current.currentSelectedGameObject == null && primerBotonActual != null)
-        {
-            EventSystem.current.SetSelectedGameObject(primerBotonActual);
-        }
+        ActualizarSeleccionSegunEntrada();
     }
 
     public void AbrirMenu(GameObject menu, GameObject primerBoton)
@@ -47,11 +48,12 @@ public class UIManager : MonoBehaviour
         if (controladorJugador != null)
             controladorJugador.enabled = false;
 
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
 
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(primerBotonActual);
+        if (InputDetector.DebeMostrarSeleccionUI)
+            SeleccionarPrimerBoton();
     }
-
 
     public void CerrarMenu()
     {
@@ -69,6 +71,44 @@ public class UIManager : MonoBehaviour
         if (controladorJugador != null)
             controladorJugador.enabled = true;
 
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    private void ActualizarSeleccionSegunEntrada()
+    {
+        if (EventSystem.current == null)
+            return;
+
+        if (!InputDetector.DebeMostrarSeleccionUI)
+        {
+            if (EventSystem.current.currentSelectedGameObject != null)
+                EventSystem.current.SetSelectedGameObject(null);
+
+            return;
+        }
+
+        if (EventSystem.current.currentSelectedGameObject == null)
+            SeleccionarPrimerBoton();
+    }
+
+    private void SeleccionarPrimerBoton()
+    {
+        if (!InputDetector.DebeMostrarSeleccionUI)
+            return;
+
+        if (EventSystem.current == null || primerBotonActual == null)
+            return;
+
+        if (!primerBotonActual.activeInHierarchy)
+            return;
+
+        Selectable selectable = primerBotonActual.GetComponent<Selectable>();
+
+        if (selectable != null && !selectable.interactable)
+            return;
+
         EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(primerBotonActual);
     }
 }

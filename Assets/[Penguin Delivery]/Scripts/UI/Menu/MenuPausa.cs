@@ -15,7 +15,7 @@ public class MenuPausa : MonoBehaviour
     [Header("HUD")]
     [SerializeField] private GameObject hudGameplay;
 
-    [Header("UI Mando")]
+    [Header("Primeros botones")]
     [SerializeField] private GameObject primerBotonPausa;
     [SerializeField] private GameObject primerBotonOpciones;
 
@@ -60,7 +60,7 @@ public class MenuPausa : MonoBehaviour
             AlternarPausa();
         }
 
-        MantenerSeleccionMando();
+        ActualizarSeleccionSegunEntrada();
     }
 
     private void InicializarMenu()
@@ -136,8 +136,7 @@ public class MenuPausa : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        SeleccionarObjeto(primerBotonPausa);
-        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
+        PrepararSeleccion(primerBotonPausa);
     }
 
     private void DesactivarPausa()
@@ -157,9 +156,7 @@ public class MenuPausa : MonoBehaviour
             menuOpciones.SetActive(false);
 
         if (tiendaEstabaAbiertaAntesDePausar && tiendaUIController != null)
-        {
             tiendaUIController.RestaurarInterfazTrasPausa();
-        }
 
         bool tiendaAbiertaAhora =
             tiendaUIController != null && tiendaUIController.TiendaAbierta;
@@ -202,8 +199,7 @@ public class MenuPausa : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        SeleccionarObjeto(primerBotonOpciones);
-        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonOpciones));
+        PrepararSeleccion(primerBotonOpciones);
     }
 
     public void VolverMenuPausa()
@@ -226,8 +222,7 @@ public class MenuPausa : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        SeleccionarObjeto(primerBotonPausa);
-        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonPausa));
+        PrepararSeleccion(primerBotonPausa);
     }
 
     public void Salir()
@@ -250,26 +245,42 @@ public class MenuPausa : MonoBehaviour
         SceneLoader.CargarEscena(escenaPrincipal);
     }
 
-    private void MantenerSeleccionMando()
+    private void ActualizarSeleccionSegunEntrada()
     {
         if (!isGamePaused || EventSystem.current == null)
             return;
+
+        if (!InputDetector.DebeMostrarSeleccionUI)
+        {
+            if (EventSystem.current.currentSelectedGameObject != null)
+                EventSystem.current.SetSelectedGameObject(null);
+
+            return;
+        }
 
         if (EventSystem.current.currentSelectedGameObject != null)
             return;
 
         if (menuOpciones != null && menuOpciones.activeInHierarchy)
-        {
             SeleccionarObjeto(primerBotonOpciones);
-        }
         else if (menuPausa != null && menuPausa.activeInHierarchy)
-        {
             SeleccionarObjeto(primerBotonPausa);
-        }
+    }
+
+    private void PrepararSeleccion(GameObject objeto)
+    {
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        if (InputDetector.DebeMostrarSeleccionUI)
+            StartCoroutine(SeleccionarAlFinalDelFrame(objeto));
     }
 
     private void SeleccionarObjeto(GameObject objeto)
     {
+        if (!InputDetector.DebeMostrarSeleccionUI)
+            return;
+
         if (EventSystem.current == null || objeto == null)
             return;
 

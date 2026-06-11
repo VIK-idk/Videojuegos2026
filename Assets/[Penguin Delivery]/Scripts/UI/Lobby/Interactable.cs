@@ -13,45 +13,70 @@ public class Interactable : MonoBehaviour
 
         if (TiendaUIController.HayTiendaAbierta)
         {
-            if (textoInteractuar != null)
-                textoInteractuar.SetActive(false);
-
+            MostrarTexto(false);
             return;
         }
 
-        if (textoInteractuar != null)
-            textoInteractuar.SetActive(true);
+        MostrarTexto(true);
 
         if (Input.GetButtonDown("Interactuar"))
-        {
             Interactuar();
-        }
     }
 
     protected virtual void Interactuar()
     {
-        Debug.Log("Interaccion base");
+        Debug.LogWarning(
+            "Este objeto tiene el script Interactable base. " +
+            "Usa InteractuarUI para la tienda o InteractuarCambiarEscena para la puerta.",
+            this
+        );
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            jugadorDentro = true;
+        if (!EsJugador(other))
+            return;
 
-            if (textoInteractuar != null && !TiendaUIController.HayTiendaAbierta)
-                textoInteractuar.SetActive(true);
-        }
+        jugadorDentro = true;
+        MostrarTexto(!TiendaUIController.HayTiendaAbierta);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        // Sirve si la zona se activa cuando el jugador ya estaba dentro.
+        if (!jugadorDentro && EsJugador(other))
+            jugadorDentro = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            jugadorDentro = false;
+        if (!EsJugador(other))
+            return;
 
-            if (textoInteractuar != null)
-                textoInteractuar.SetActive(false);
-        }
+        jugadorDentro = false;
+        MostrarTexto(false);
+    }
+
+    private void OnDisable()
+    {
+        jugadorDentro = false;
+        MostrarTexto(false);
+    }
+
+    private bool EsJugador(Collider other)
+    {
+        if (other == null)
+            return false;
+
+        if (other.CompareTag("Player"))
+            return true;
+
+        return other.GetComponentInParent<Player>() != null;
+    }
+
+    private void MostrarTexto(bool mostrar)
+    {
+        if (textoInteractuar != null && textoInteractuar.activeSelf != mostrar)
+            textoInteractuar.SetActive(mostrar);
     }
 }
