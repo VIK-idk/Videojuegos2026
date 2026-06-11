@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
@@ -24,7 +25,7 @@ public class TutorialManager : MonoBehaviour
     [Header("UI Saltar Tutorial")]
     [SerializeField] private GameObject tutorialSaltarPanel;
     [SerializeField] private Text tutorialSaltarTexto;
-    [SerializeField] private string textoSaltarTutorial = ": saltar tutorial";
+    [SerializeField] private string textoSaltarTutorial = "TAB: saltar tutorial";
 
     [Header("Posicion panel tutorial")]
     [SerializeField] private Vector2 posicionPanelArriba = new Vector2(0f, 300f);
@@ -54,6 +55,13 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private float esperaAntesDePermitirAvanzarDialogo = 1.5f;
     [SerializeField] private float duracionFadeDialogo = 0.2f;
     [SerializeField] private string textoContinuarDialogo = "Pulsa cualquier tecla para continuar";
+
+    [Header("Audio escritura dialogo")]
+    [Tooltip("AudioSource 2D exclusivo para el sonido que acompana la escritura del tutorial.")]
+    [SerializeField] private AudioSource audioSourceEscritura;
+    [SerializeField] private AudioMixerGroup grupoMixerEscritura;
+    [SerializeField] private AudioClip sonidoEscritura;
+    [SerializeField, Range(0f, 1f)] private float volumenSonidoEscritura = 0.12f;
 
     [Header("Referencias")]
     [SerializeField] private StrikeManager strikeManager;
@@ -151,6 +159,7 @@ public class TutorialManager : MonoBehaviour
 
     private void Awake()
     {
+        ConfigurarAudioEscritura();
         PrepararCanvasGroupTutorial();
 
         if (tutorialPanel != null)
@@ -202,6 +211,7 @@ public class TutorialManager : MonoBehaviour
 
     private void OnDisable()
     {
+        DetenerSonidoEscritura();
         DetenerGestoReyMorsa();
         DetenerParpadeoStrikesTutorial();
     }
@@ -585,6 +595,7 @@ public class TutorialManager : MonoBehaviour
             return;
 
         saltandoTutorial = true;
+        DetenerSonidoEscritura();
 
         // Corta cualquier diálogo/fade/cámara que estuviera en marcha.
         // Esto evita que una rutina antigua oculte el panel justo cuando aparece el final.
@@ -736,17 +747,25 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator EscribirTextoDialogo(string textoCompleto, bool permitirDuranteSalto = false)
     {
         if (tutorialTexto == null)
+        {
+            DetenerSonidoEscritura();
             yield break;
+        }
 
         tutorialTexto.text = "";
 
         // Evita capturar el Input.anyKeyDown de la misma pulsación que abrió este texto.
         yield return null;
 
+        IniciarSonidoEscritura();
+
         for (int i = 0; i < textoCompleto.Length; i++)
         {
             if (saltandoTutorial && !permitirDuranteSalto)
+            {
+                DetenerSonidoEscritura();
                 yield break;
+            }
 
             tutorialTexto.text += textoCompleto[i];
 
@@ -759,6 +778,7 @@ public class TutorialManager : MonoBehaviour
                 if (!saltandoTutorial && InputParaCompletarTexto())
                 {
                     tutorialTexto.text = textoCompleto;
+                    DetenerSonidoEscritura();
 
                     // Consumimos un frame para que la misma tecla no afecte al siguiente paso.
                     yield return null;
@@ -770,6 +790,48 @@ public class TutorialManager : MonoBehaviour
         }
 
         tutorialTexto.text = textoCompleto;
+        DetenerSonidoEscritura();
+    }
+
+    private void ConfigurarAudioEscritura()
+    {
+        if (audioSourceEscritura == null)
+        {
+            GameObject objetoAudio = new GameObject("Audio_Escritura_Tutorial");
+            objetoAudio.transform.SetParent(transform, false);
+            audioSourceEscritura = objetoAudio.AddComponent<AudioSource>();
+        }
+
+        audioSourceEscritura.playOnAwake = false;
+        audioSourceEscritura.loop = true;
+        audioSourceEscritura.spatialBlend = 0f;
+        audioSourceEscritura.dopplerLevel = 0f;
+        audioSourceEscritura.volume = volumenSonidoEscritura;
+
+        if (grupoMixerEscritura != null)
+            audioSourceEscritura.outputAudioMixerGroup = grupoMixerEscritura;
+    }
+
+    private void IniciarSonidoEscritura()
+    {
+        if (sonidoEscritura == null)
+            return;
+
+        ConfigurarAudioEscritura();
+
+        audioSourceEscritura.Stop();
+        audioSourceEscritura.clip = sonidoEscritura;
+        audioSourceEscritura.volume = volumenSonidoEscritura;
+        audioSourceEscritura.loop = true;
+        audioSourceEscritura.Play();
+    }
+
+    private void DetenerSonidoEscritura()
+    {
+        if (audioSourceEscritura == null)
+            return;
+
+        audioSourceEscritura.Stop();
     }
 
     private IEnumerator EsperarCualquierTeclaParaContinuar()

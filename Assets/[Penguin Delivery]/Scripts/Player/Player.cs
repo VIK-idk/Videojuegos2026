@@ -98,6 +98,7 @@ public class Player : MonoBehaviour
     private bool siguientePasoAutomaticoIzquierdo = true;
     private float tiempoUltimoEventoPasoAnimacion = -999f;
     private bool audioJugadorBloqueado = false;
+    private bool movimientoBloqueadoPorDerrota = false;
 
     private TutorialManager tutorialManager;
     private Rigidbody rb;
@@ -147,6 +148,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (movimientoBloqueadoPorDerrota)
+        {
+            inputX = 0f;
+            inputZ = 0f;
+            MantenerJugadorQuietoPorDerrota();
+            return;
+        }
+
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
 
@@ -165,6 +174,20 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (movimientoBloqueadoPorDerrota)
+        {
+            if (rb != null)
+            {
+                Vector3 velocidadBloqueada = rb.linearVelocity;
+                velocidadBloqueada.x = 0f;
+                velocidadBloqueada.z = 0f;
+                rb.linearVelocity = velocidadBloqueada;
+            }
+
+            ActualizarAnimacionAire();
+            return;
+        }
+
         Vector3 direccion = transform.forward * inputZ + transform.right * inputX;
         direccion = Vector3.ClampMagnitude(direccion, 1f);
 
@@ -677,6 +700,44 @@ public class Player : MonoBehaviour
 
 
     /// <summary>
+    /// Bloquea el movimiento de Guppy y corta sus sonidos en cuanto empieza
+    /// la cinematica de derrota hacia el Rey Morsa.
+    /// </summary>
+    public void BloquearMovimientoYAudioPorDerrota()
+    {
+        movimientoBloqueadoPorDerrota = true;
+        inputX = 0f;
+        inputZ = 0f;
+
+        if (rb == null)
+            rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            Vector3 velocidadBloqueada = rb.linearVelocity;
+            velocidadBloqueada.x = 0f;
+            velocidadBloqueada.z = 0f;
+            rb.linearVelocity = velocidadBloqueada;
+        }
+
+        MantenerJugadorQuietoPorDerrota();
+        SilenciarAudioPorDerrota();
+    }
+
+    private void MantenerJugadorQuietoPorDerrota()
+    {
+        temporizadorQuieto = 0f;
+        temporizadorPasoAutomatico = 0f;
+        DetenerEfectoPasos();
+
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_CAMINANDO, false);
+            animator.ResetTrigger(PARAM_FIDGET);
+        }
+    }
+
+    /// <summary>
     /// Detiene inmediatamente los pasos, salto y caida de Guppy y evita que
     /// los Animation Events o los pasos automaticos vuelvan a reproducirlos.
     /// Se usa cuando la pantalla de derrota ya cubre toda la pantalla.
@@ -700,6 +761,7 @@ public class Player : MonoBehaviour
     public void ReactivarAudioJugador()
     {
         audioJugadorBloqueado = false;
+        movimientoBloqueadoPorDerrota = false;
     }
 
     private void DetenerAudioSource(AudioSource source)

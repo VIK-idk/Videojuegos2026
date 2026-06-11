@@ -97,6 +97,9 @@ public class GameOverRetornoController : MonoBehaviour
 
         yield return new WaitForSeconds(esperaAntesCamara);
 
+        // En cuanto empieza la cinematica hacia el Rey Morsa, Guppy deja de
+        // recibir movimiento y se cortan sus pasos/salto/caida.
+        BloquearJugadorAlIniciarCamaraDerrota();
         PrepararCamaraDerrota();
 
         if (camaraDerrota != null && puntoCamaraReyMorsa != null)
@@ -306,6 +309,16 @@ public class GameOverRetornoController : MonoBehaviour
 
         if (imagenPinguinoTriste != null)
             imagenPinguinoTriste.gameObject.SetActive(false);
+    }
+
+
+    private void BloquearJugadorAlIniciarCamaraDerrota()
+    {
+        if (jugador == null)
+            jugador = FindFirstObjectByType<Player>();
+
+        if (jugador != null)
+            jugador.BloquearMovimientoYAudioPorDerrota();
     }
 
     private void DetenerSonidosAlCompletarPantallaDerrota()
