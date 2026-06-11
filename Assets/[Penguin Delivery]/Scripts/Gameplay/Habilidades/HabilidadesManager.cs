@@ -245,43 +245,58 @@ public class HabilidadesManager : MonoBehaviour
         }
         else if (habilidad.EstaUsada())
         {
+            // AHORA PASA LOS ICONOS DE TECLADO Y MANDO
             slot.MostrarUsada(
                 habilidad.GetTitulo(),
-                habilidad.GetIcono()
+                habilidad.GetIcono(),
+                habilidad.GetIconoTeclado(),
+                habilidad.GetIconoMando()
             );
         }
         else if (habilidad.EstaActiva())
         {
+            // AHORA PASA LOS ICONOS DE TECLADO Y MANDO
             slot.MostrarActiva(
                 habilidad.GetTitulo(),
                 habilidad.GetTextoTecla(),
                 habilidad.GetTiempoVisible(),
-                habilidad.GetIcono()
+                habilidad.GetIcono(),
+                habilidad.GetIconoTeclado(),
+                habilidad.GetIconoMando()
             );
         }
         else if (habilidad.EstaEnCooldown())
         {
+            // AHORA PASA LOS ICONOS DE TECLADO Y MANDO
             slot.MostrarCooldown(
                 habilidad.GetTitulo(),
                 habilidad.GetTextoTecla(),
                 habilidad.GetTiempoVisible(),
-                habilidad.GetIcono()
+                habilidad.GetIcono(),
+                habilidad.GetIconoTeclado(),
+                habilidad.GetIconoMando()
             );
         }
         else if (HayOtraHabilidadActiva(habilidad))
         {
+            // AHORA PASA LOS ICONOS DE TECLADO Y MANDO
             slot.MostrarBloqueada(
                 habilidad.GetTitulo(),
                 habilidad.GetTextoTecla(),
-                habilidad.GetIcono()
+                habilidad.GetIcono(),
+                habilidad.GetIconoTeclado(),
+                habilidad.GetIconoMando()
             );
         }
         else
         {
+            // AHORA PASA LOS ICONOS DE TECLADO Y MANDO
             slot.MostrarDisponible(
                 habilidad.GetTitulo(),
                 habilidad.GetTextoTecla(),
-                habilidad.GetIcono()
+                habilidad.GetIcono(),
+                habilidad.GetIconoTeclado(),
+                habilidad.GetIconoMando()
             );
         }
     }
