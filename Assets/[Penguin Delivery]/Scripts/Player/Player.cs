@@ -97,6 +97,7 @@ public class Player : MonoBehaviour
     private float temporizadorPasoAutomatico = 0f;
     private bool siguientePasoAutomaticoIzquierdo = true;
     private float tiempoUltimoEventoPasoAnimacion = -999f;
+    private bool audioJugadorBloqueado = false;
 
     private TutorialManager tutorialManager;
     private Rigidbody rb;
@@ -467,6 +468,9 @@ public class Player : MonoBehaviour
 
     private void ActualizarPasosAutomaticos()
     {
+        if (audioJugadorBloqueado)
+            return;
+
         if (!usarPasosAutomaticosSiNoHayEventos)
             return;
 
@@ -503,6 +507,9 @@ public class Player : MonoBehaviour
 
     private void ReproducirSonidoPaso(bool pieIzquierdo)
     {
+        if (audioJugadorBloqueado)
+            return;
+
         if (tipoSueloActual == null)
             return;
 
@@ -550,6 +557,9 @@ public class Player : MonoBehaviour
 
     private void ReproducirSonidoSaltoCompleto()
     {
+        if (audioJugadorBloqueado)
+            return;
+
         if (reproducirSonidoSueloAlSaltar)
         {
             ReproducirSonidoSaltoSueloEnAmbosPies();
@@ -580,6 +590,9 @@ public class Player : MonoBehaviour
 
     private void ReproducirSonidoCaidaEnAmbosPies()
     {
+        if (audioJugadorBloqueado)
+            return;
+
         if (!reproducirSonidoCaidaAlAterrizar)
             return;
 
@@ -600,6 +613,9 @@ public class Player : MonoBehaviour
 
     private void ReproducirSonidoSaltoGeneral()
     {
+        if (audioJugadorBloqueado)
+            return;
+
         if (sonidosSalto == null || sonidosSalto.Length == 0 || audioSourceSaltoGeneral == null)
             return;
 
@@ -641,6 +657,9 @@ public class Player : MonoBehaviour
 
     private void ReproducirClipEnSource(AudioSource source, AudioClip clip, float volumen, bool aplicarPitch)
     {
+        if (audioJugadorBloqueado)
+            return;
+
         if (source == null || clip == null)
             return;
 
@@ -654,6 +673,42 @@ public class Player : MonoBehaviour
         }
 
         source.PlayOneShot(clip, volumen);
+    }
+
+
+    /// <summary>
+    /// Detiene inmediatamente los pasos, salto y caida de Guppy y evita que
+    /// los Animation Events o los pasos automaticos vuelvan a reproducirlos.
+    /// Se usa cuando la pantalla de derrota ya cubre toda la pantalla.
+    /// </summary>
+    public void SilenciarAudioPorDerrota()
+    {
+        audioJugadorBloqueado = true;
+        temporizadorPasoAutomatico = 0f;
+
+        DetenerAudioSource(audioSourcePieIzquierdo);
+        DetenerAudioSource(audioSourcePieDerecho);
+        DetenerAudioSource(audioSourceSaltoGeneral);
+
+        DetenerEfectoPasos();
+    }
+
+    /// <summary>
+    /// Permite volver a activar el audio del jugador si alguna secuencia
+    /// necesita reutilizar el mismo Player sin cambiar de escena.
+    /// </summary>
+    public void ReactivarAudioJugador()
+    {
+        audioJugadorBloqueado = false;
+    }
+
+    private void DetenerAudioSource(AudioSource source)
+    {
+        if (source == null)
+            return;
+
+        source.Stop();
+        source.pitch = 1f;
     }
 
 

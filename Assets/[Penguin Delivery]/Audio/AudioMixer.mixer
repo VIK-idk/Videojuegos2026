@@ -61,6 +61,20 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!244 &-2512902136198264111
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: fae3c8d59f04959409f4f1704b10a563
+  m_EffectName: Attenuation
+  m_MixLevel: c74ce3301eb8d194c8287f6b60359c03
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-2215370613982918571
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -89,6 +103,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-981223555665498913
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ReyMorsa
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 08b807374c76a5a45ba1641b04eeb212
+  m_Children: []
+  m_Volume: 6f2aca4f738da4d40bad5be59568fe65
+  m_Pitch: d38fe1bae87caae4cb4cdf28707a3785
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -2512902136198264111}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -122,6 +155,7 @@ AudioMixerController:
     - 50db47a8b93b58e42ae1a9f54d0389c7
     - 82d5de36eef13a04b96c60f1dfa96f2e
     - 031a53d1a6efc5a43a26e6958caacc4b
+    - 08b807374c76a5a45ba1641b04eeb212
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -221,6 +255,7 @@ AudioMixerGroupController:
   - {fileID: 8269040586936323859}
   - {fileID: 6365994927702565286}
   - {fileID: 722407559246278875}
+  - {fileID: -981223555665498913}
   m_Volume: 0610bc325368fed47974600b3b94c8ce
   m_Pitch: 821c5ad70a42d2e4097cf37a33e158a2
   m_Send: 00000000000000000000000000000000

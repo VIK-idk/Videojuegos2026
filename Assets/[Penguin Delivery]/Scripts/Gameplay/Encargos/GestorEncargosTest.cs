@@ -373,6 +373,11 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesAmarillosActuales,
                 pecesVerdesActuales);
         }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.NarrarEncargo();
+        }
     }
 
     // ====================
@@ -735,6 +740,11 @@ public class GestorEncargosTest : MonoBehaviour
                 pecesVerdesActuales);
 
             uiEncargo.Mostrar();
+        }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.NarrarEncargo();
         }
     }
 

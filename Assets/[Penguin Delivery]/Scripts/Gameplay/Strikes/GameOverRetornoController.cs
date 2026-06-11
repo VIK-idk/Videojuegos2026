@@ -15,6 +15,9 @@ public class GameOverRetornoController : MonoBehaviour
     [SerializeField] private ReyMorsaAnimacion reyMorsaAnimacion;
     [SerializeField] private float intervaloEnojoReyMorsa = 1.2f;
 
+    [Header("Jugador")]
+    [SerializeField] private Player jugador;
+
     [Header("UI derrota")]
     [SerializeField] private CanvasGroup panelNegro;
     [SerializeField] private Text textoMensaje;
@@ -109,6 +112,10 @@ public class GameOverRetornoController : MonoBehaviour
         {
             yield return StartCoroutine(FadeNegro(0f, 1f, duracionFadeNegro));
         }
+
+        // En este punto la pantalla de derrota ya cubre completamente la imagen.
+        // Detenemos la queja del Rey Morsa y todos los sonidos de movimiento de Guppy.
+        DetenerSonidosAlCompletarPantallaDerrota();
 
         yield return new WaitForSeconds(esperaTextoMensaje);
 
@@ -301,12 +308,41 @@ public class GameOverRetornoController : MonoBehaviour
             imagenPinguinoTriste.gameObject.SetActive(false);
     }
 
+    private void DetenerSonidosAlCompletarPantallaDerrota()
+    {
+        if (rutinaEnojo != null)
+        {
+            StopCoroutine(rutinaEnojo);
+            rutinaEnojo = null;
+        }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.DetenerAudioPorDerrota();
+        }
+
+        if (jugador != null)
+        {
+            jugador.SilenciarAudioPorDerrota();
+        }
+    }
+
     private void FinalizarRutinas()
     {
         if (rutinaEnojo != null)
         {
             StopCoroutine(rutinaEnojo);
             rutinaEnojo = null;
+        }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.DetenerAudioPorDerrota();
+        }
+
+        if (jugador != null)
+        {
+            jugador.SilenciarAudioPorDerrota();
         }
     }
 
@@ -317,6 +353,9 @@ public class GameOverRetornoController : MonoBehaviour
 
         if (reyMorsaAnimacion == null)
             reyMorsaAnimacion = FindFirstObjectByType<ReyMorsaAnimacion>();
+
+        if (jugador == null)
+            jugador = FindFirstObjectByType<Player>();
 
         if (strikeManager == null)
             strikeManager = FindFirstObjectByType<StrikeManager>();
