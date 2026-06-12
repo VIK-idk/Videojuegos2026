@@ -2507,6 +2507,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pantallaCompleta: {fileID: 808398034}
   resolucionDrop: {fileID: 469470623}
+  filaResolucion: {fileID: 0}
   volumenMaster: {fileID: 45833696}
   volumenMusica: {fileID: 918456986}
   volumenSFX: {fileID: 877454816}
@@ -8034,7 +8035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1638150742
 RectTransform:
   m_ObjectHideFlags: 0

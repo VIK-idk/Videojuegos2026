@@ -11,6 +11,7 @@ public class PlayerSettings : MonoBehaviour
     [Header("Pantalla")]
     [SerializeField] private Toggle pantallaCompleta;
     [SerializeField] private Dropdown resolucionDrop;
+    [SerializeField] private GameObject filaResolucion;
 
     [Header("Audio")]
     [SerializeField] private Slider volumenMaster;
@@ -103,6 +104,12 @@ public class PlayerSettings : MonoBehaviour
     private void Start()
     {
         ConfigurarDropdownResolucion();
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    if (filaResolucion != null)
+        filaResolucion.SetActive(false);
+#endif
+
         ConfigurarSliderSensibilidad();
         ConfigurarSlidersAudio();
 
@@ -444,16 +451,30 @@ public class PlayerSettings : MonoBehaviour
     // ====================
     public void SetPantallaCompletaPref(bool valor)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // En WebGL solamente solicitamos el modo pantalla completa
+    // sin cambiar la resolución del canvas.
+    Screen.fullScreen = valor;
+#else
         int indiceActual = PlayerPrefs.GetInt(
             PREF_RESOLUCION_INDEX,
             BuscarIndiceResolucionActual()
         );
 
-        indiceActual = Mathf.Clamp(indiceActual, 0, resoluciones.Length - 1);
+        indiceActual = Mathf.Clamp(
+            indiceActual,
+            0,
+            resoluciones.Length - 1
+        );
 
         AplicarResolucion(indiceActual, valor);
+#endif
 
-        PlayerPrefs.SetInt(PREF_PANTALLA_COMPLETA, valor ? 1 : 0);
+        PlayerPrefs.SetInt(
+            PREF_PANTALLA_COMPLETA,
+            valor ? 1 : 0
+        );
+
         PlayerPrefs.Save();
     }
 
@@ -485,6 +506,10 @@ public class PlayerSettings : MonoBehaviour
 
     private void AplicarResolucion(int index, bool fullscreen)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // En WebGL no cambiamos el tamaño del canvas HTML.
+    return;
+#else
         if (index < 0 || index >= resoluciones.Length)
             return;
 
@@ -493,6 +518,7 @@ public class PlayerSettings : MonoBehaviour
             resoluciones[index].y,
             fullscreen
         );
+#endif
     }
 
     // ====================

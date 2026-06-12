@@ -8616,6 +8616,7 @@ MonoBehaviour:
   strikeManager: {fileID: 945138256}
   gameManager: {fileID: 954908536}
   reyMorsaAnimacion: {fileID: 1167442139}
+  guppySonidos: {fileID: 0}
   uiEncargo: {fileID: 664659303}
   uiEstado: {fileID: 357844116}
   gameOverRetornoController: {fileID: 0}
@@ -18733,7 +18734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1484586808
 RectTransform:
   m_ObjectHideFlags: 0
