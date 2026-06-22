@@ -26,6 +26,7 @@ public class StrikeManager : MonoBehaviour
 
     private int currentStrikes = 0;
     private int lastDebugStrikes = -1;
+    private Coroutine rutinaParpadeoDemoContinuo;
 
     private GestorProgresoJugador gestorProgresoJugador;
 
@@ -246,26 +247,76 @@ public class StrikeManager : MonoBehaviour
         while (tiempo < duracion)
         {
             activo = !activo;
-
-            if (activo)
-            {
-                if (spriteStrikeActivado != null)
-                    imagenDemo.sprite = spriteStrikeActivado;
-
-                AplicarOpacidad(imagenDemo, opacidadStrikeActivado);
-            }
-            else
-            {
-                if (spriteStrikeDesactivado != null)
-                    imagenDemo.sprite = spriteStrikeDesactivado;
-
-                AplicarOpacidad(imagenDemo, opacidadStrikeDesactivado);
-            }
+            AplicarEstadoDemoStrike(imagenDemo, activo);
 
             yield return new WaitForSeconds(intervalo);
             tiempo += intervalo;
         }
 
         ActualizarStrikeUI();
+    }
+
+    public void IniciarParpadeoStrikeDemoContinuo()
+    {
+        if (strikeImages == null || strikeImages.Length == 0)
+            return;
+
+        if (rutinaParpadeoDemoContinuo != null)
+            StopCoroutine(rutinaParpadeoDemoContinuo);
+
+        rutinaParpadeoDemoContinuo = StartCoroutine(ParpadeoStrikeDemoContinuo());
+    }
+
+    public void DetenerParpadeoStrikeDemo()
+    {
+        if (rutinaParpadeoDemoContinuo != null)
+        {
+            StopCoroutine(rutinaParpadeoDemoContinuo);
+            rutinaParpadeoDemoContinuo = null;
+        }
+
+        ActualizarStrikeUI();
+    }
+
+    private IEnumerator ParpadeoStrikeDemoContinuo()
+    {
+        if (strikeImages == null || strikeImages.Length == 0)
+            yield break;
+
+        Image imagenDemo = strikeImages[0];
+
+        if (imagenDemo == null)
+            yield break;
+
+        float intervalo = 0.25f;
+        bool activo = false;
+
+        while (true)
+        {
+            activo = !activo;
+            AplicarEstadoDemoStrike(imagenDemo, activo);
+            yield return new WaitForSeconds(intervalo);
+        }
+    }
+
+    private void AplicarEstadoDemoStrike(Image imagenDemo, bool activo)
+    {
+        if (imagenDemo == null)
+            return;
+
+        if (activo)
+        {
+            if (spriteStrikeActivado != null)
+                imagenDemo.sprite = spriteStrikeActivado;
+
+            AplicarOpacidad(imagenDemo, opacidadStrikeActivado);
+        }
+        else
+        {
+            if (spriteStrikeDesactivado != null)
+                imagenDemo.sprite = spriteStrikeDesactivado;
+
+            AplicarOpacidad(imagenDemo, opacidadStrikeDesactivado);
+        }
     }
 }

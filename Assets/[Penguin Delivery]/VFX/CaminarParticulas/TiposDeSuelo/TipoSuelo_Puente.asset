@@ -14,4 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Puente
   efectoSonido: {fileID: 0}
+  sonidosPasos:
+  - {fileID: 8300000, guid: fc633e592634482408b11d66d2f38393, type: 3}
+  - {fileID: 8300000, guid: a6a5680e05edab046a7bf3bcfb11b767, type: 3}
+  - {fileID: 8300000, guid: fd0a65e01b6ab50419cd96bfad8bbccd, type: 3}
+  - {fileID: 8300000, guid: a00b9de2ef09c8441a105c9cdbcb75fc, type: 3}
+  - {fileID: 8300000, guid: b0550feb5c3222444bcf94fda465c1c0, type: 3}
+  sonidosSaltoSuelo: []
+  sonidosCaidaSuelo: []
   efectoVisualCaminar: {fileID: 3383157717785543197, guid: 9c72e20391f13aa4899d0a549196e84f, type: 3}

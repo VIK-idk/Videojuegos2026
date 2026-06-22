@@ -30,11 +30,15 @@ public class ToggleInterruptorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private float velocidadMovimiento = 15f;
     [SerializeField] private float velocidadHover = 12f;
 
+    [Header("Sonido")]
+    [SerializeField] private bool reproducirSonidoAlCambiar = true;
+
     private Vector2 posicionObjetivo;
     private Vector3 escalaObjetivo;
 
     private bool mouseEncima = false;
     private bool seleccionado = false;
+    private bool sonidoHabilitado = false;
 
     private void Awake()
     {
@@ -45,9 +49,12 @@ public class ToggleInterruptorUI : MonoBehaviour, IPointerEnterHandler, IPointer
             imagenBolita = bolita.GetComponent<Image>();
 
         if (toggle != null)
-            toggle.onValueChanged.AddListener(ActualizarEstadoToggle);
+            toggle.onValueChanged.AddListener(AlCambiarValorToggle);
 
         RefrescarVisual();
+
+        // Evita que suene al inicializar el menú o cargar el valor guardado.
+        sonidoHabilitado = true;
     }
 
     private void OnEnable()
@@ -58,7 +65,7 @@ public class ToggleInterruptorUI : MonoBehaviour, IPointerEnterHandler, IPointer
     private void OnDestroy()
     {
         if (toggle != null)
-            toggle.onValueChanged.RemoveListener(ActualizarEstadoToggle);
+            toggle.onValueChanged.RemoveListener(AlCambiarValorToggle);
     }
 
     private void Update()
@@ -78,9 +85,15 @@ public class ToggleInterruptorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         ActualizarEstadoInteractivo();
 
         if (bolita != null)
-        {
             bolita.anchoredPosition = posicionObjetivo;
-        }
+    }
+
+    private void AlCambiarValorToggle(bool encendido)
+    {
+        ActualizarEstadoToggle(encendido);
+
+        if (sonidoHabilitado && reproducirSonidoAlCambiar && isActiveAndEnabled)
+            SonidosUIManager.ReproducirToggle();
     }
 
     private void ActualizarEstadoToggle(bool encendido)
@@ -101,9 +114,7 @@ public class ToggleInterruptorUI : MonoBehaviour, IPointerEnterHandler, IPointer
         escalaObjetivo = activo ? escalaHover : escalaNormal;
 
         if (imagenBolita != null && spriteBolitaNormal != null && spriteBolitaHover != null)
-        {
             imagenBolita.sprite = activo ? spriteBolitaHover : spriteBolitaNormal;
-        }
     }
 
     private void MoverBolita()

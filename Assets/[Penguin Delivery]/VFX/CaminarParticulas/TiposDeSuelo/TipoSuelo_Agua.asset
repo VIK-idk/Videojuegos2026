@@ -14,4 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Agua
   efectoSonido: {fileID: 0}
+  sonidosPasos:
+  - {fileID: 8300000, guid: a80516ff6c4ba5e40a643f6653b96cc3, type: 3}
+  - {fileID: 8300000, guid: fd3c28e23fb245f469f68f9922add24d, type: 3}
+  - {fileID: 8300000, guid: b4b06223beba1124791d35a28967798b, type: 3}
+  - {fileID: 8300000, guid: e1a6f37ccae1e5940ba61b8e7f4c59d8, type: 3}
+  - {fileID: 8300000, guid: 0ee7ad19f99afb7459f5c4d0a8afdfa0, type: 3}
+  sonidosSaltoSuelo: []
+  sonidosCaidaSuelo:
+  - {fileID: 8300000, guid: 707e668d183f15f488dbd6b108417b2e, type: 3}
   efectoVisualCaminar: {fileID: 3383157717785543197, guid: bed30848b02523e4587edfe4dab0bdbd, type: 3}

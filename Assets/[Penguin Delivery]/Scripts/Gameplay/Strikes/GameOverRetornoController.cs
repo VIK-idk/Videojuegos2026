@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class GameOverRetornoController : MonoBehaviour
@@ -15,12 +16,28 @@ public class GameOverRetornoController : MonoBehaviour
     [SerializeField] private ReyMorsaAnimacion reyMorsaAnimacion;
     [SerializeField] private float intervaloEnojoReyMorsa = 1.2f;
 
+    [Header("Jugador")]
+    [SerializeField] private Player jugador;
+
     [Header("UI derrota")]
     [SerializeField] private CanvasGroup panelNegro;
     [SerializeField] private Text textoMensaje;
     [SerializeField] private Text textoPuntos;
     [SerializeField] private Text textoContinuar;
     [SerializeField] private Image imagenPinguinoTriste;
+
+    [Header("Audio - Pantalla de derrota 2D")]
+    [SerializeField] private AudioSource audioSourceDerrotaGlobal;
+    [SerializeField] private AudioSource audioSourceTextosDerrota;
+    [SerializeField] private AudioMixerGroup grupoMixerDerrota;
+
+    [Tooltip("Empieza cuando aparece el primer texto de derrota.")]
+    [SerializeField] private AudioClip sonidoDerrotaGlobal;
+    [SerializeField, Range(0f, 1f)] private float volumenDerrotaGlobal = 0.9f;
+
+    [Tooltip("Se reproduce cada vez que aparece uno de los textos: mensaje, puntos y continuar.")]
+    [SerializeField] private AudioClip sonidoAparicionTexto;
+    [SerializeField, Range(0f, 1f)] private float volumenAparicionTexto = 0.7f;
 
     [Header("Tiempos")]
     [SerializeField] private float esperaAntesCamara = 1f;
@@ -31,6 +48,13 @@ public class GameOverRetornoController : MonoBehaviour
     [SerializeField] private float esperaTextoPuntos = 1f;
     [SerializeField] private float duracionFadeTextoContinuar = 1f;
     [SerializeField] private float velocidadParpadeoTexto = 3f;
+
+    [Header("Musica durante la derrota")]
+    [Tooltip("Empieza a bajar la musica al recibir el ultimo strike y termina al aparecer el primer texto.")]
+    [SerializeField] private bool hacerFadeMusicaGameplay = true;
+
+    [Tooltip("Valor negativo = termina antes. Valor positivo = termina despues del primer texto.")]
+    [SerializeField] private float ajusteDuracionFadeMusica = 0f;
 
     [Header("Escena")]
     [SerializeField] private StrikeManager strikeManager;
@@ -43,6 +67,7 @@ public class GameOverRetornoController : MonoBehaviour
     {
         DerrotaActiva = false;
 
+        ConfigurarAudioDerrota();
         BuscarReferencias();
         PrepararEstadoInicial();
     }
@@ -74,6 +99,9 @@ public class GameOverRetornoController : MonoBehaviour
         DerrotaActiva = true;
         Time.timeScale = 1f;
 
+        BuscarReferencias();
+        IniciarFadeMusicaDerrota();
+
         StartCoroutine(SecuenciaDerrota(puntosRonda));
     }
 
@@ -82,6 +110,8 @@ public class GameOverRetornoController : MonoBehaviour
         secuenciaActiva = true;
 
         BuscarReferencias();
+        ConfigurarAudioDerrota();
+        DetenerAudioPantallaDerrota();
         OcultarElementosDerrota();
 
         if (panelNegro != null)
@@ -94,6 +124,9 @@ public class GameOverRetornoController : MonoBehaviour
 
         yield return new WaitForSeconds(esperaAntesCamara);
 
+        // En cuanto empieza la cinematica hacia el Rey Morsa, Guppy deja de
+        // recibir movimiento y se cortan sus pasos/salto/caida.
+        BloquearJugadorAlIniciarCamaraDerrota();
         PrepararCamaraDerrota();
 
         if (camaraDerrota != null && puntoCamaraReyMorsa != null)
@@ -110,6 +143,10 @@ public class GameOverRetornoController : MonoBehaviour
             yield return StartCoroutine(FadeNegro(0f, 1f, duracionFadeNegro));
         }
 
+        // En este punto la pantalla de derrota ya cubre completamente la imagen.
+        // Detenemos la queja del Rey Morsa y todos los sonidos de movimiento de Guppy.
+        DetenerSonidosAlCompletarPantallaDerrota();
+
         yield return new WaitForSeconds(esperaTextoMensaje);
 
         if (imagenPinguinoTriste != null)
@@ -119,6 +156,8 @@ public class GameOverRetornoController : MonoBehaviour
         {
             textoMensaje.text = "Vuelve a tu celda a descansar...";
             textoMensaje.gameObject.SetActive(true);
+            ReproducirInicioPantallaDerrota();
+            ReproducirSonidoAparicionTexto();
         }
 
         yield return new WaitForSeconds(esperaTextoPuntos);
@@ -127,6 +166,7 @@ public class GameOverRetornoController : MonoBehaviour
         {
             textoPuntos.text = "Puntos: " + puntosRonda;
             textoPuntos.gameObject.SetActive(true);
+            ReproducirSonidoAparicionTexto();
         }
 
         yield return new WaitForSeconds(esperaTextoPuntos);
@@ -135,6 +175,7 @@ public class GameOverRetornoController : MonoBehaviour
         {
             textoContinuar.text = "Pulsa cualquier tecla para volver a tu celda";
             textoContinuar.gameObject.SetActive(true);
+            ReproducirSonidoAparicionTexto();
 
             CambiarAlphaTexto(textoContinuar, 0f);
             yield return StartCoroutine(FadeTexto(textoContinuar, 0f, 1f, duracionFadeTextoContinuar));
@@ -301,13 +342,143 @@ public class GameOverRetornoController : MonoBehaviour
             imagenPinguinoTriste.gameObject.SetActive(false);
     }
 
-    private void FinalizarRutinas()
+
+    private void IniciarFadeMusicaDerrota()
+    {
+        if (!hacerFadeMusicaGameplay)
+            return;
+
+        if (MusicaManager.Instancia == null)
+            return;
+
+        float tiempoMovimientoCamara = 0f;
+        if (camaraDerrota != null && puntoCamaraReyMorsa != null)
+            tiempoMovimientoCamara = Mathf.Max(0f, duracionMovimientoCamara);
+
+        float tiempoFadeNegro = panelNegro != null
+            ? Mathf.Max(0f, duracionFadeNegro)
+            : 0f;
+
+        float duracionHastaPrimerTexto =
+            Mathf.Max(0f, esperaAntesCamara) +
+            tiempoMovimientoCamara +
+            Mathf.Max(0f, esperaAntesFadeNegro) +
+            tiempoFadeNegro +
+            Mathf.Max(0f, esperaTextoMensaje) +
+            ajusteDuracionFadeMusica;
+
+        duracionHastaPrimerTexto = Mathf.Max(0f, duracionHastaPrimerTexto);
+
+        MusicaManager.Instancia.DesvanecerMusicaActual(duracionHastaPrimerTexto);
+    }
+
+    private void ConfigurarAudioDerrota()
+    {
+        if (audioSourceDerrotaGlobal == null)
+            audioSourceDerrotaGlobal = gameObject.AddComponent<AudioSource>();
+
+        if (audioSourceTextosDerrota == null)
+            audioSourceTextosDerrota = gameObject.AddComponent<AudioSource>();
+
+        ConfigurarAudioSource2D(audioSourceDerrotaGlobal);
+        ConfigurarAudioSource2D(audioSourceTextosDerrota);
+    }
+
+    private void ConfigurarAudioSource2D(AudioSource source)
+    {
+        if (source == null)
+            return;
+
+        source.playOnAwake = false;
+        source.loop = false;
+        source.spatialBlend = 0f;
+        source.dopplerLevel = 0f;
+
+        if (grupoMixerDerrota != null)
+            source.outputAudioMixerGroup = grupoMixerDerrota;
+    }
+
+    private void ReproducirInicioPantallaDerrota()
+    {
+        if (audioSourceDerrotaGlobal == null || sonidoDerrotaGlobal == null)
+            return;
+
+        audioSourceDerrotaGlobal.Stop();
+        audioSourceDerrotaGlobal.clip = sonidoDerrotaGlobal;
+        audioSourceDerrotaGlobal.volume = volumenDerrotaGlobal;
+        audioSourceDerrotaGlobal.loop = false;
+        audioSourceDerrotaGlobal.Play();
+    }
+
+    private void ReproducirSonidoAparicionTexto()
+    {
+        if (audioSourceTextosDerrota == null || sonidoAparicionTexto == null)
+            return;
+
+        audioSourceTextosDerrota.PlayOneShot(sonidoAparicionTexto, volumenAparicionTexto);
+    }
+
+    private void DetenerAudioPantallaDerrota()
+    {
+        if (audioSourceDerrotaGlobal != null)
+            audioSourceDerrotaGlobal.Stop();
+
+        if (audioSourceTextosDerrota != null)
+            audioSourceTextosDerrota.Stop();
+    }
+
+    private void BloquearJugadorAlIniciarCamaraDerrota()
+    {
+        if (jugador == null)
+            jugador = FindFirstObjectByType<Player>();
+
+        if (jugador != null)
+            jugador.BloquearMovimientoYAudioPorDerrota();
+    }
+
+    private void DetenerSonidosAlCompletarPantallaDerrota()
     {
         if (rutinaEnojo != null)
         {
             StopCoroutine(rutinaEnojo);
             rutinaEnojo = null;
         }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.DetenerAudioPorDerrota();
+        }
+
+        if (jugador != null)
+        {
+            jugador.SilenciarAudioPorDerrota();
+        }
+    }
+
+    private void FinalizarRutinas()
+    {
+        DetenerAudioPantallaDerrota();
+
+        if (rutinaEnojo != null)
+        {
+            StopCoroutine(rutinaEnojo);
+            rutinaEnojo = null;
+        }
+
+        if (reyMorsaAnimacion != null)
+        {
+            reyMorsaAnimacion.DetenerAudioPorDerrota();
+        }
+
+        if (jugador != null)
+        {
+            jugador.SilenciarAudioPorDerrota();
+        }
+    }
+
+    private void OnDisable()
+    {
+        DetenerAudioPantallaDerrota();
     }
 
     private void BuscarReferencias()
@@ -317,6 +488,9 @@ public class GameOverRetornoController : MonoBehaviour
 
         if (reyMorsaAnimacion == null)
             reyMorsaAnimacion = FindFirstObjectByType<ReyMorsaAnimacion>();
+
+        if (jugador == null)
+            jugador = FindFirstObjectByType<Player>();
 
         if (strikeManager == null)
             strikeManager = FindFirstObjectByType<StrikeManager>();

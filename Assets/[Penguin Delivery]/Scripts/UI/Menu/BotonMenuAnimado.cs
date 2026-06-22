@@ -4,173 +4,382 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BotonMenuAnimado : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class BotonMenuAnimado : MonoBehaviour,
+    IPointerEnterHandler,
+    IPointerExitHandler,
+    ISelectHandler,
+    IDeselectHandler,
+    IPointerDownHandler,
+    IPointerUpHandler,
+    IPointerClickHandler,
+    ISubmitHandler
 {
-    [Header("Imagenes")]
+    [Header("Referencias")]
+    [SerializeField] private Button boton;
     [SerializeField] private Image imagenBoton;
-    [SerializeField] private Sprite spriteNormal;
-    [SerializeField] private Sprite[] spritesExplosion;
+    [SerializeField] private RectTransform rectTransformBoton;
 
-    [Header("Animacion click")]
-    [SerializeField] private float duracionExplosion = 0.07f;
+    [Header("Grieta")]
+    [SerializeField] private Image imagenGrieta;
+    [SerializeField] private RectTransform rectTransformGrieta;
+    [SerializeField] private float duracionFadeGrieta = 0.2f;
+    [SerializeField] private float escalaGrieta = 1f;
 
-    [Header("Comportamiento al terminar")]
-    [SerializeField] private bool restaurarSpriteAlFinal = true;
+    [Header("Animacion escala")]
+    [SerializeField] private float escalaHoverSelected = 1.06f;
+    [SerializeField] private float escalaPressed = 0.96f;
+    [SerializeField] private float velocidadEscala = 14f;
 
-    [Header("Hover / Selected")]
-    [SerializeField] private float escalaSeleccionado = 1.08f;
-    [SerializeField] private float velocidadEscala = 12f;
-    [SerializeField] private Color colorNormal = Color.white;
-    [SerializeField] private Color colorSeleccionado = new Color(0.75f, 0.9f, 1f, 1f);
+    [Header("Click")]
+    [SerializeField] private float tiempoAntesDeAccion = 0.2f;
 
     [Header("Accion al terminar")]
     [SerializeField] private UnityEvent accionAlTerminar;
 
-    private Button boton;
-    private RectTransform rectTransform;
     private Vector3 escalaNormal;
     private Vector3 escalaObjetivo;
-    private bool reproduciendoClick = false;
+
+    private bool mouseEncima = false;
+    private bool seleccionado = false;
+    private bool presionado = false;
+    private bool ejecutandoClick = false;
+
+    private Sprite spriteNormalInicial;
+    private Vector2 ultimaPosicionClickLocal = Vector2.zero;
+    private Coroutine rutinaGrieta;
 
     private void Awake()
     {
-        boton = GetComponent<Button>();
-        rectTransform = GetComponent<RectTransform>();
+        BuscarReferencias();
+        InicializarVisual();
+    }
 
-        if (imagenBoton == null)
-        {
-            imagenBoton = GetComponent<Image>();
-        }
-
-        escalaNormal = rectTransform.localScale;
-        escalaObjetivo = escalaNormal;
-
-        if (imagenBoton != null && spriteNormal != null)
-        {
-            imagenBoton.sprite = spriteNormal;
-        }
-
-        if (boton != null)
-        {
-            boton.onClick.AddListener(ReproducirClick);
-        }
+    private void OnEnable()
+    {
+        ResetearVisualCompleto();
     }
 
     private void Update()
     {
-        rectTransform.localScale = Vector3.Lerp(
-            rectTransform.localScale,
+        ActualizarEscalaSuave();
+        MantenerSpritePressedSiHaceFalta();
+    }
+
+    private void BuscarReferencias()
+    {
+        if (boton == null)
+            boton = GetComponent<Button>();
+
+        if (imagenBoton == null)
+            imagenBoton = GetComponent<Image>();
+
+        if (rectTransformBoton == null)
+            rectTransformBoton = GetComponent<RectTransform>();
+
+        if (imagenGrieta != null && rectTransformGrieta == null)
+            rectTransformGrieta = imagenGrieta.GetComponent<RectTransform>();
+    }
+
+    private void InicializarVisual()
+    {
+        if (rectTransformBoton != null)
+        {
+            escalaNormal = rectTransformBoton.localScale;
+            escalaObjetivo = escalaNormal;
+        }
+
+        if (imagenBoton != null)
+            spriteNormalInicial = imagenBoton.sprite;
+
+        OcultarGrietaInstantaneo();
+    }
+
+    private void ActualizarEscalaSuave()
+    {
+        if (rectTransformBoton == null)
+            return;
+
+        rectTransformBoton.localScale = Vector3.Lerp(
+            rectTransformBoton.localScale,
             escalaObjetivo,
             velocidadEscala * Time.unscaledDeltaTime
         );
     }
 
-    private void ReproducirClick()
+    private void MantenerSpritePressedSiHaceFalta()
     {
-        if (reproduciendoClick)
+        if (!presionado && !ejecutandoClick)
             return;
 
-        StartCoroutine(AnimacionClick());
-    }
-
-    private IEnumerator AnimacionClick()
-    {
-        reproduciendoClick = true;
-
-        if (EventSystem.current != null)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-        }
-
-        if (spritesExplosion != null && spritesExplosion.Length > 0 && imagenBoton != null)
-        {
-            float tiempoPorSprite = duracionExplosion / spritesExplosion.Length;
-
-            for (int i = 0; i < spritesExplosion.Length; i++)
-            {
-                imagenBoton.sprite = spritesExplosion[i];
-
-                if (i < spritesExplosion.Length - 1)
-                {
-                    yield return new WaitForSecondsRealtime(tiempoPorSprite);
-                }
-            }
-        }
-        else
-        {
-            yield return new WaitForSecondsRealtime(duracionExplosion);
-        }
-
-        if (restaurarSpriteAlFinal)
-        {
-            ResetearVisual();
-        }
-
-        accionAlTerminar.Invoke();
-
-        reproduciendoClick = false;
+        AplicarSpritePressed();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SeleccionarVisualmente();
+        mouseEncima = true;
+        ActualizarEscala();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        DeseleccionarVisualmente();
+        mouseEncima = false;
+
+        if (!ejecutandoClick)
+            ActualizarEscala();
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        SeleccionarVisualmente();
+        seleccionado = true;
+        ActualizarEscala();
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        DeseleccionarVisualmente();
+        seleccionado = false;
+
+        if (!ejecutandoClick)
+            ActualizarEscala();
     }
 
-    private void SeleccionarVisualmente()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (reproduciendoClick)
+        if (boton != null && !boton.interactable)
             return;
 
-        escalaObjetivo = escalaNormal * escalaSeleccionado;
+        GuardarPosicionClick(eventData);
 
-        if (imagenBoton != null)
+        presionado = true;
+        ActualizarEscala();
+        AplicarSpritePressed();
+
+        MostrarGrietaFija();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        DesvanecerGrieta();
+        StartCoroutine(ResetearPressedSiNoFueClick());
+    }
+
+    private IEnumerator ResetearPressedSiNoFueClick()
+    {
+        yield return null;
+
+        if (ejecutandoClick)
+            yield break;
+
+        presionado = false;
+        ActualizarEscala();
+        RestaurarSpriteSegunEstado();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        GuardarPosicionClick(eventData);
+        EjecutarBoton();
+    }
+
+    public void OnSubmit(BaseEventData eventData)
+    {
+        if (boton != null && !boton.interactable)
+            return;
+
+        ultimaPosicionClickLocal = Vector2.zero;
+
+        presionado = true;
+        ActualizarEscala();
+        AplicarSpritePressed();
+
+        MostrarGrietaFija();
+        DesvanecerGrieta();
+
+        EjecutarBoton();
+    }
+
+    private void EjecutarBoton()
+    {
+        if (ejecutandoClick)
+            return;
+
+        if (boton != null && !boton.interactable)
+            return;
+
+        StartCoroutine(SecuenciaClick());
+    }
+
+    private IEnumerator SecuenciaClick()
+    {
+        ejecutandoClick = true;
+        presionado = true;
+
+        ActualizarEscala();
+        AplicarSpritePressed();
+
+        yield return new WaitForSecondsRealtime(tiempoAntesDeAccion);
+
+        // Antes de ejecutar la acción lo dejamos preparado.
+        // Si la acción desactiva este botón, ya no intentamos lanzar ninguna coroutine después.
+        presionado = false;
+        ejecutandoClick = false;
+        ActualizarEscala();
+        RestaurarSpriteSegunEstado();
+
+        accionAlTerminar?.Invoke();
+    }
+
+    private void GuardarPosicionClick(PointerEventData eventData)
+    {
+        if (rectTransformBoton == null)
+            return;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            rectTransformBoton,
+            eventData.position,
+            eventData.pressEventCamera,
+            out ultimaPosicionClickLocal
+        );
+    }
+
+    private void ActualizarEscala()
+    {
+        if (rectTransformBoton == null)
+            return;
+
+        if (presionado || ejecutandoClick)
         {
-            imagenBoton.color = colorSeleccionado;
-        }
-    }
-
-    private void DeseleccionarVisualmente()
-    {
-        if (reproduciendoClick)
+            escalaObjetivo = escalaNormal * escalaPressed;
             return;
+        }
 
-        ResetearVisual();
-    }
+        if (mouseEncima || seleccionado)
+        {
+            escalaObjetivo = escalaNormal * escalaHoverSelected;
+            return;
+        }
 
-    private void ResetearVisual()
-    {
         escalaObjetivo = escalaNormal;
-        rectTransform.localScale = escalaNormal;
+    }
 
-        if (imagenBoton != null)
+    private void AplicarSpritePressed()
+    {
+        if (boton == null || imagenBoton == null)
+            return;
+
+        Sprite spritePressed = boton.spriteState.pressedSprite;
+
+        if (spritePressed != null)
+            imagenBoton.sprite = spritePressed;
+    }
+
+    private void RestaurarSpriteSegunEstado()
+    {
+        if (boton == null || imagenBoton == null)
+            return;
+
+        SpriteState estados = boton.spriteState;
+
+        if (seleccionado && estados.selectedSprite != null)
         {
-            imagenBoton.color = colorNormal;
-
-            if (spriteNormal != null)
-            {
-                imagenBoton.sprite = spriteNormal;
-            }
+            imagenBoton.sprite = estados.selectedSprite;
+            return;
         }
+
+        if (mouseEncima && estados.highlightedSprite != null)
+        {
+            imagenBoton.sprite = estados.highlightedSprite;
+            return;
+        }
+
+        if (spriteNormalInicial != null)
+            imagenBoton.sprite = spriteNormalInicial;
+    }
+
+    private void MostrarGrietaFija()
+    {
+        if (imagenGrieta == null || rectTransformGrieta == null)
+            return;
+
+        if (rutinaGrieta != null)
+        {
+            StopCoroutine(rutinaGrieta);
+            rutinaGrieta = null;
+        }
+
+        rectTransformGrieta.anchoredPosition = ultimaPosicionClickLocal;
+        rectTransformGrieta.localScale = Vector3.one * escalaGrieta;
+
+        imagenGrieta.gameObject.SetActive(true);
+
+        Color color = imagenGrieta.color;
+        color.a = 1f;
+        imagenGrieta.color = color;
+    }
+
+    private void DesvanecerGrieta()
+    {
+        if (imagenGrieta == null)
+            return;
+
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        if (rutinaGrieta != null)
+            StopCoroutine(rutinaGrieta);
+
+        rutinaGrieta = StartCoroutine(FadeGrieta());
+    }
+
+    private IEnumerator FadeGrieta()
+    {
+        if (imagenGrieta == null)
+            yield break;
+
+        float tiempo = 0f;
+        float alphaInicial = imagenGrieta.color.a;
+
+        while (tiempo < duracionFadeGrieta)
+        {
+            tiempo += Time.unscaledDeltaTime;
+
+            float t = tiempo / duracionFadeGrieta;
+
+            Color color = imagenGrieta.color;
+            color.a = Mathf.Lerp(alphaInicial, 0f, t);
+            imagenGrieta.color = color;
+
+            yield return null;
+        }
+
+        OcultarGrietaInstantaneo();
+    }
+
+    private void OcultarGrietaInstantaneo()
+    {
+        if (imagenGrieta == null)
+            return;
+
+        Color color = imagenGrieta.color;
+        color.a = 0f;
+        imagenGrieta.color = color;
+
+        imagenGrieta.gameObject.SetActive(false);
     }
 
     public void ResetearVisualCompleto()
     {
-        reproduciendoClick = false;
-        ResetearVisual();
+        ejecutandoClick = false;
+        presionado = false;
+        mouseEncima = false;
+        seleccionado = false;
+
+        if (rectTransformBoton != null)
+        {
+            rectTransformBoton.localScale = escalaNormal;
+            escalaObjetivo = escalaNormal;
+        }
+
+        RestaurarSpriteSegunEstado();
+        OcultarGrietaInstantaneo();
     }
 }

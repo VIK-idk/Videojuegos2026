@@ -14,4 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Nieve
   efectoSonido: {fileID: 0}
+  sonidosPasos:
+  - {fileID: 8300000, guid: e40e727894e5cac4bb34599c7d22b2cc, type: 3}
+  - {fileID: 8300000, guid: 34e6afd36b812f446a529bf801ddea9e, type: 3}
+  - {fileID: 8300000, guid: c0bf28aee026fd140b504a0baaecea32, type: 3}
+  - {fileID: 8300000, guid: efc5377ce10998441bd0f0d4286bc192, type: 3}
+  - {fileID: 8300000, guid: 2d6bbb8a70f37394d80ffce39f5ebd5a, type: 3}
+  sonidosSaltoSuelo: []
+  sonidosCaidaSuelo: []
   efectoVisualCaminar: {fileID: 3383157717785543197, guid: d1eb060b88bbb2c4faeea89661a7191f, type: 3}

@@ -12,6 +12,11 @@ public abstract class HabilidadBase : MonoBehaviour
     [SerializeField] protected string idCompra = "";
     [SerializeField] protected Sprite icono;
 
+    // === NUEVOS ICONOS DE ENTRADA ===
+    [Header("Iconos Input (UI)")]
+    [SerializeField] protected Sprite iconoTeclado;
+    [SerializeField] protected Sprite iconoMando;
+
     [Header("Tiempos")]
     [SerializeField] protected float duracion = 8f;
     [SerializeField] protected float cooldown = 10f;
@@ -20,103 +25,66 @@ public abstract class HabilidadBase : MonoBehaviour
     protected float tiempoActivoRestante = 0f;
     protected float tiempoCooldownRestante = 0f;
 
-    public string GetTitulo()
-    {
-        return titulo;
-    }
+    // === FUNCIONES PARA LEER LAS IMÁGENES ===
+    public Sprite GetIconoTeclado() { return iconoTeclado; }
+    public Sprite GetIconoMando() { return iconoMando; }
 
-    public string GetTextoTecla()
-    {
-        return textoTecla;
-    }
-
-    public bool EstaAdquirida()
-    {
-        return adquirida;
-    }
-
-    public bool EstaActiva()
-    {
-        return activa;
-    }
-    public Sprite GetIcono()
-    {
-        return icono;
-    }
-    public bool EstaEnCooldown()
-    {
-        return tiempoCooldownRestante > 0f;
-    }
-
-    public virtual bool EstaUsada()
-    {
-        return false;
-    }
+    public string GetTitulo() { return titulo; }
+    public string GetTextoTecla() { return textoTecla; }
+    public bool EstaAdquirida() { return adquirida; }
+    public bool EstaActiva() { return activa; }
+    public Sprite GetIcono() { return icono; }
+    public bool EstaEnCooldown() { return tiempoCooldownRestante > 0f; }
+    public virtual bool EstaUsada() { return false; }
 
     public float GetTiempoVisible()
     {
-        if (activa)
-            return tiempoActivoRestante;
-
+        if (activa) return tiempoActivoRestante;
         return tiempoCooldownRestante;
     }
+
     protected virtual void Awake()
     {
-        if (idCompra == "x2_peces")
-            adquirida = SesionPartida.habilidadX2Comprada;
-
-        if (idCompra == "iman")
-            adquirida = SesionPartida.habilidadImanComprada;
-
-        if (idCompra == "quitar_strike")
-            adquirida = SesionPartida.habilidadQuitarStrikeComprada;
+        if (idCompra == "x2_peces") adquirida = SesionPartida.habilidadX2Comprada;
+        if (idCompra == "iman") adquirida = SesionPartida.habilidadImanComprada;
+        if (idCompra == "quitar_strike") adquirida = SesionPartida.habilidadQuitarStrikeComprada;
     }
+
     public virtual void Tick(HabilidadesManager manager)
     {
         if (activa)
         {
             tiempoActivoRestante -= Time.deltaTime;
-
             if (tiempoActivoRestante <= 0f)
             {
                 tiempoActivoRestante = 0f;
                 activa = false;
-
                 AlTerminarEfecto(manager);
 
-                if (cooldown > 0f)
-                {
-                    tiempoCooldownRestante = cooldown;
-                }
+                if (manager != null)
+                    manager.NotificarHabilidadTerminada(this);
+
+                if (cooldown > 0f) tiempoCooldownRestante = cooldown;
             }
         }
         else if (tiempoCooldownRestante > 0f)
         {
             tiempoCooldownRestante -= Time.deltaTime;
-
-            if (tiempoCooldownRestante < 0f)
-                tiempoCooldownRestante = 0f;
+            if (tiempoCooldownRestante < 0f) tiempoCooldownRestante = 0f;
         }
     }
 
     public bool IntentarActivar(HabilidadesManager manager)
     {
-        if (!adquirida)
-            return false;
+        if (!adquirida || activa || EstaEnCooldown() || EstaUsada()) return false;
+        if (manager != null && manager.HayOtraHabilidadActiva(this)) return false;
 
-        if (activa)
-            return false;
+        bool activadaCorrectamente = Activar(manager);
 
-        if (EstaEnCooldown())
-            return false;
+        if (activadaCorrectamente && manager != null)
+            manager.NotificarHabilidadActivada(this);
 
-        if (EstaUsada())
-            return false;
-
-        if (manager != null && manager.HayOtraHabilidadActiva(this))
-            return false;
-
-        return Activar(manager);
+        return activadaCorrectamente;
     }
 
     protected void EmpezarEfecto()
@@ -127,7 +95,5 @@ public abstract class HabilidadBase : MonoBehaviour
 
     protected abstract bool Activar(HabilidadesManager manager);
 
-    protected virtual void AlTerminarEfecto(HabilidadesManager manager)
-    {
-    }
+    protected virtual void AlTerminarEfecto(HabilidadesManager manager) { }
 }

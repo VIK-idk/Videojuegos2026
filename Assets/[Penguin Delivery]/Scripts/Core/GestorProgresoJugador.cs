@@ -2,13 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-// ====================
-// GESTOR PROGRESO JUGADOR
-// ====================
 public class GestorProgresoJugador : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private GameManager gameManager;
+
+    [Header("UI monedas gameplay")]
+    [SerializeField] private LobbyMonedasUI monedasGameplayUI;
+
+    [Header("UI antigua opcional")]
     [SerializeField] private Text textoMonedasGanadas;
 
     [Header("Recompensas")]
@@ -22,6 +24,12 @@ public class GestorProgresoJugador : MonoBehaviour
     {
         if (gameManager == null)
             gameManager = FindFirstObjectByType<GameManager>();
+
+        if (monedasGameplayUI == null)
+            monedasGameplayUI = FindFirstObjectByType<LobbyMonedasUI>();
+
+        if (monedasGameplayUI != null)
+            monedasGameplayUI.ActualizarMonedas(true);
 
         if (textoMonedasGanadas != null)
             textoMonedasGanadas.enabled = false;
@@ -37,8 +45,20 @@ public class GestorProgresoJugador : MonoBehaviour
         if (cantidad <= 0)
             return;
 
+        int monedasAntes = SesionPartida.monedas;
+
         SesionPartida.monedas += cantidad;
-        MostrarMensajeMonedas(cantidad);
+
+        int monedasDespues = SesionPartida.monedas;
+
+        if (monedasGameplayUI != null)
+        {
+            monedasGameplayUI.MostrarGanancia(cantidad, monedasAntes, monedasDespues);
+        }
+        else
+        {
+            MostrarMensajeMonedasLegacy(cantidad, monedasAntes, monedasDespues);
+        }
     }
 
     public int GetMonedasTotales()
@@ -63,7 +83,7 @@ public class GestorProgresoJugador : MonoBehaviour
         intentoGuardado = true;
     }
 
-    private void MostrarMensajeMonedas(int cantidadGanada)
+    private void MostrarMensajeMonedasLegacy(int cantidadGanada, int monedasAntes, int monedasDespues)
     {
         if (textoMonedasGanadas == null)
             return;
@@ -71,15 +91,15 @@ public class GestorProgresoJugador : MonoBehaviour
         if (rutinaMensaje != null)
             StopCoroutine(rutinaMensaje);
 
-        rutinaMensaje = StartCoroutine(MostrarMensajeMonedasCoroutine(cantidadGanada));
+        rutinaMensaje = StartCoroutine(MostrarMensajeMonedasCoroutine(cantidadGanada, monedasDespues));
     }
 
-    private IEnumerator MostrarMensajeMonedasCoroutine(int cantidadGanada)
+    private IEnumerator MostrarMensajeMonedasCoroutine(int cantidadGanada, int monedasDespues)
     {
-        textoMonedasGanadas.text = "Monedas: " + SesionPartida.monedas + " (+" + cantidadGanada + ")";
+        textoMonedasGanadas.text = monedasDespues + " (+" + cantidadGanada + ")";
         textoMonedasGanadas.enabled = true;
 
-        yield return new WaitForSeconds(duracionMensajeMonedas);
+        yield return new WaitForSecondsRealtime(duracionMensajeMonedas);
 
         textoMonedasGanadas.enabled = false;
         rutinaMensaje = null;

@@ -11,6 +11,7 @@ public class PlayerSettings : MonoBehaviour
     [Header("Pantalla")]
     [SerializeField] private Toggle pantallaCompleta;
     [SerializeField] private Dropdown resolucionDrop;
+    [SerializeField] private GameObject filaResolucion;
 
     [Header("Audio")]
     [SerializeField] private Slider volumenMaster;
@@ -24,6 +25,40 @@ public class PlayerSettings : MonoBehaviour
 
     [Header("UI Mando")]
     [SerializeField] private GameObject primerBotonOpciones;
+
+    // ====================
+    // SONIDOS DE OPCIONES
+    // ====================
+    [Header("Sonidos UI de opciones")]
+    [SerializeField] private bool configurarSonidosAutomaticamente = true;
+    [SerializeField] private bool reproducirHoverEnControles = true;
+
+    [Header("Audio de prueba - Master")]
+    [SerializeField] private AudioClip sonidoPruebaMaster;
+    [SerializeField] private AudioMixerGroup grupoPruebaMaster;
+    [SerializeField, Range(0f, 1f)] private float volumenPruebaMaster = 0.8f;
+
+    [Header("Audio de prueba - Musica")]
+    [SerializeField] private AudioClip sonidoPruebaMusica;
+    [SerializeField] private AudioMixerGroup grupoPruebaMusica;
+    [SerializeField, Range(0f, 1f)] private float volumenPruebaMusica = 0.8f;
+
+    [Header("Audio de prueba - SFX")]
+    [SerializeField] private AudioClip sonidoPruebaSFX;
+    [SerializeField] private AudioMixerGroup grupoPruebaSFX;
+    [SerializeField, Range(0f, 1f)] private float volumenPruebaSFX = 0.8f;
+
+    [Header("Audio de prueba - Sensibilidad")]
+    [SerializeField] private AudioClip sonidoPruebaSensibilidad;
+    [SerializeField] private AudioMixerGroup grupoPruebaSensibilidad;
+    [SerializeField, Range(0f, 1f)] private float volumenPruebaSensibilidad = 0.8f;
+
+    [Header("Comportamiento pruebas sliders")]
+    [Tooltip("Normalmente se deja desactivado para no oir dos veces el mismo sonido.")]
+    [SerializeField] private bool reproducirPruebaAlPulsar = false;
+    [SerializeField] private bool reproducirPruebaAlSoltar = true;
+    [SerializeField] private bool reproducirPruebaConTecladoMando = true;
+    [SerializeField, Min(0f)] private float retardoPruebaTecladoMando = 0.14f;
 
     // ====================
     // PARAMETROS AUDIOMIXER
@@ -69,11 +104,18 @@ public class PlayerSettings : MonoBehaviour
     private void Start()
     {
         ConfigurarDropdownResolucion();
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    if (filaResolucion != null)
+        filaResolucion.SetActive(false);
+#endif
+
         ConfigurarSliderSensibilidad();
         ConfigurarSlidersAudio();
 
         CargarYAplicarSettings();
         RegistrarEventosSliders();
+        ConfigurarSonidosOpciones();
     }
 
     private void OnDestroy()
@@ -168,6 +210,89 @@ public class PlayerSettings : MonoBehaviour
 
         if (sensibilidadSlider != null)
             sensibilidadSlider.onValueChanged.RemoveListener(SetSensibilidadPref);
+    }
+
+    // ====================
+    // SONIDOS DE OPCIONES
+    // ====================
+    private void ConfigurarSonidosOpciones()
+    {
+        if (!configurarSonidosAutomaticamente)
+            return;
+
+        // Toggle y desplegable usan el mismo hover/selected que los botones del menú.
+        ConfigurarHoverControl(pantallaCompleta != null ? pantallaCompleta.gameObject : null);
+        ConfigurarHoverControl(resolucionDrop != null ? resolucionDrop.gameObject : null);
+
+        // Cada slider recibe su propio clip y su propio grupo del AudioMixer.
+        ConfigurarSonidoSlider(
+            volumenMaster,
+            sonidoPruebaMaster,
+            grupoPruebaMaster,
+            volumenPruebaMaster
+        );
+
+        ConfigurarSonidoSlider(
+            volumenMusica,
+            sonidoPruebaMusica,
+            grupoPruebaMusica,
+            volumenPruebaMusica
+        );
+
+        ConfigurarSonidoSlider(
+            volumenSFX,
+            sonidoPruebaSFX,
+            grupoPruebaSFX,
+            volumenPruebaSFX
+        );
+
+        ConfigurarSonidoSlider(
+            sensibilidadSlider,
+            sonidoPruebaSensibilidad,
+            grupoPruebaSensibilidad,
+            volumenPruebaSensibilidad
+        );
+    }
+
+    private void ConfigurarHoverControl(GameObject objeto)
+    {
+        if (objeto == null)
+            return;
+
+        SonidoControlOpcionesUI sonidoControl =
+            objeto.GetComponent<SonidoControlOpcionesUI>();
+
+        if (sonidoControl == null)
+            sonidoControl = objeto.AddComponent<SonidoControlOpcionesUI>();
+
+        sonidoControl.Configurar(reproducirHoverEnControles);
+    }
+
+    private void ConfigurarSonidoSlider(
+        Slider slider,
+        AudioClip clip,
+        AudioMixerGroup grupo,
+        float volumen)
+    {
+        if (slider == null)
+            return;
+
+        SonidoSliderOpcionesUI sonidoSlider =
+            slider.GetComponent<SonidoSliderOpcionesUI>();
+
+        if (sonidoSlider == null)
+            sonidoSlider = slider.gameObject.AddComponent<SonidoSliderOpcionesUI>();
+
+        sonidoSlider.Configurar(
+            clip,
+            grupo,
+            volumen,
+            reproducirHoverEnControles,
+            reproducirPruebaAlPulsar,
+            reproducirPruebaAlSoltar,
+            reproducirPruebaConTecladoMando,
+            retardoPruebaTecladoMando
+        );
     }
 
     // ====================
@@ -326,16 +451,30 @@ public class PlayerSettings : MonoBehaviour
     // ====================
     public void SetPantallaCompletaPref(bool valor)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // En WebGL solamente solicitamos el modo pantalla completa
+    // sin cambiar la resolución del canvas.
+    Screen.fullScreen = valor;
+#else
         int indiceActual = PlayerPrefs.GetInt(
             PREF_RESOLUCION_INDEX,
             BuscarIndiceResolucionActual()
         );
 
-        indiceActual = Mathf.Clamp(indiceActual, 0, resoluciones.Length - 1);
+        indiceActual = Mathf.Clamp(
+            indiceActual,
+            0,
+            resoluciones.Length - 1
+        );
 
         AplicarResolucion(indiceActual, valor);
+#endif
 
-        PlayerPrefs.SetInt(PREF_PANTALLA_COMPLETA, valor ? 1 : 0);
+        PlayerPrefs.SetInt(
+            PREF_PANTALLA_COMPLETA,
+            valor ? 1 : 0
+        );
+
         PlayerPrefs.Save();
     }
 
@@ -367,6 +506,10 @@ public class PlayerSettings : MonoBehaviour
 
     private void AplicarResolucion(int index, bool fullscreen)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // En WebGL no cambiamos el tamaño del canvas HTML.
+    return;
+#else
         if (index < 0 || index >= resoluciones.Length)
             return;
 
@@ -375,6 +518,7 @@ public class PlayerSettings : MonoBehaviour
             resoluciones[index].y,
             fullscreen
         );
+#endif
     }
 
     // ====================

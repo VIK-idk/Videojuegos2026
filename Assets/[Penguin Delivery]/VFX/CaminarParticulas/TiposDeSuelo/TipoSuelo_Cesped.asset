@@ -14,4 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: Cesped
   efectoSonido: {fileID: 0}
+  sonidosPasos:
+  - {fileID: 8300000, guid: 3f08d1d982d111343a2c42ff2f6a17a3, type: 3}
+  - {fileID: 8300000, guid: 72277820634dc3647a0df6ade6aacb61, type: 3}
+  sonidosSaltoSuelo: []
+  sonidosCaidaSuelo: []
   efectoVisualCaminar: {fileID: 3383157717785543197, guid: d99f8916ed5fbea45b290a137dc93759, type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 // ====================
@@ -65,16 +66,44 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     [Header("Panel")]
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private RectTransform panelRect;
+
+    [Header("Animacion entrada/salida")]
+    [SerializeField] private float duracionMovimientoPanel = 0.35f;
+    [SerializeField] private float distanciaEntradaIzquierda = 900f;
+    [SerializeField] private AnimationCurve curvaMovimiento = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+    // ====================
+    // AUDIO
+    // ====================
+    [Header("Audio - Encargos 2D")]
+    [SerializeField] private AudioSource audioSourceEncargos;
+    [SerializeField] private AudioMixerGroup grupoMixerEncargos;
+
+    [Header("Clips de encargo")]
+    [SerializeField] private AudioClip sonidoAparecerEncargo;
+    [SerializeField] private AudioClip sonidoDesaparecerEncargo;
+    [SerializeField] private AudioClip sonidoVictoriaEncargo;
+    [SerializeField] private AudioClip sonidoDerrotaEncargo;
+
+    [Header("Volumenes de encargo")]
+    [SerializeField, Range(0f, 1f)] private float volumenAparecer = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenDesaparecer = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenVictoria = 1f;
+    [SerializeField, Range(0f, 1f)] private float volumenDerrota = 1f;
 
     // ====================
     // EFECTO RECOGIDA
     // ====================
     [Header("Efecto recogida")]
     [SerializeField] private float escalaResalte = 1.35f;
-    [SerializeField] private float tiempoResaltado = 0.35f;
-    [SerializeField] private float duracionAnimacionResalte = 0.12f;
+    [SerializeField] private float tiempoResaltado = 0.2f;
+    [SerializeField] private float duracionAnimacionResalte = 0.08f;
 
     private Coroutine rutinaFade;
+
+    private Vector2 posicionOriginalPanel;
+    private Vector2 posicionOcultaIzquierda;
 
     private Coroutine rutinaRosa;
     private Coroutine rutinaAmarilla;
@@ -83,6 +112,7 @@ public class UIEncargoLegacy : MonoBehaviour
     private FilaEncargoUI filaActivaRosa;
     private FilaEncargoUI filaActivaAmarilla;
     private FilaEncargoUI filaActivaVerde;
+    private bool panelVisible = false;
 
     // ====================
     // UNITY
@@ -91,6 +121,17 @@ public class UIEncargoLegacy : MonoBehaviour
     {
         if (canvasGroup == null)
             canvasGroup = GetComponent<CanvasGroup>();
+
+        if (panelRect == null)
+            panelRect = GetComponent<RectTransform>();
+
+        if (panelRect != null)
+        {
+            posicionOriginalPanel = panelRect.anchoredPosition;
+            posicionOcultaIzquierda = posicionOriginalPanel + Vector2.left * distanciaEntradaIzquierda;
+        }
+
+        ConfigurarAudioSource();
 
         GuardarEscalasOriginales(plantilla1Tipo);
         GuardarEscalasOriginales(plantilla2Tipos);
@@ -184,10 +225,20 @@ public class UIEncargoLegacy : MonoBehaviour
 
     private void ActivarSoloPlantilla(PlantillaEncargoUI plantillaActiva)
     {
-        DesactivarTodasLasPlantillas();
+        // No desactivamos y reactivamos la misma plantilla cada frame.
+        // En el tutorial eso puede verse como un parpadeo justo después de entrar deslizándose.
+        ActivarPlantillaSiHaceFalta(plantilla1Tipo, plantillaActiva == plantilla1Tipo);
+        ActivarPlantillaSiHaceFalta(plantilla2Tipos, plantillaActiva == plantilla2Tipos);
+        ActivarPlantillaSiHaceFalta(plantilla3Tipos, plantillaActiva == plantilla3Tipos);
+    }
 
-        if (plantillaActiva != null && plantillaActiva.raiz != null)
-            plantillaActiva.raiz.SetActive(true);
+    private void ActivarPlantillaSiHaceFalta(PlantillaEncargoUI plantilla, bool activa)
+    {
+        if (plantilla == null || plantilla.raiz == null)
+            return;
+
+        if (plantilla.raiz.activeSelf != activa)
+            plantilla.raiz.SetActive(activa);
     }
 
     private void DesactivarTodasLasPlantillas()
@@ -209,8 +260,13 @@ public class UIEncargoLegacy : MonoBehaviour
 
         for (int i = 0; i < plantilla.filas.Length; i++)
         {
-            if (plantilla.filas[i] != null && plantilla.filas[i].raiz != null)
-                plantilla.filas[i].raiz.SetActive(false);
+            bool debeEstarActiva = i < datos.Count;
+
+            if (plantilla.filas[i] != null && plantilla.filas[i].raiz != null &&
+                plantilla.filas[i].raiz.activeSelf != debeEstarActiva)
+            {
+                plantilla.filas[i].raiz.SetActive(debeEstarActiva);
+            }
         }
 
         for (int i = 0; i < datos.Count && i < plantilla.filas.Length; i++)
@@ -222,14 +278,10 @@ public class UIEncargoLegacy : MonoBehaviour
 
             fila.color = datos[i].color;
 
-            if (fila.raiz != null)
-                fila.raiz.SetActive(true);
-
             if (fila.iconoPez != null)
             {
                 fila.iconoPez.sprite = ObtenerSpritePez(datos[i].color);
                 fila.iconoPez.enabled = fila.iconoPez.sprite != null;
-                fila.iconoPez.transform.localScale = fila.escalaOriginal;
             }
 
             if (fila.textoCantidad != null)
@@ -319,37 +371,48 @@ public class UIEncargoLegacy : MonoBehaviour
 
     private IEnumerator AnimarResalte(Image icono, Vector3 escalaOriginal)
     {
+        if (icono == null)
+            yield break;
+
+        Transform iconoTransform = icono.transform;
+
         Vector3 escalaGrande = escalaOriginal * escalaResalte;
+
+        // Aseguramos que empieza desde su tamaño normal.
+        iconoTransform.localScale = escalaOriginal;
 
         float tiempo = 0f;
 
+        // Subir una sola vez.
         while (tiempo < duracionAnimacionResalte)
         {
             tiempo += Time.deltaTime;
 
-            float t = tiempo / duracionAnimacionResalte;
-            icono.transform.localScale = Vector3.Lerp(escalaOriginal, escalaGrande, t);
+            float t = Mathf.Clamp01(tiempo / duracionAnimacionResalte);
+            iconoTransform.localScale = Vector3.Lerp(escalaOriginal, escalaGrande, t);
 
             yield return null;
         }
 
-        icono.transform.localScale = escalaGrande;
+        iconoTransform.localScale = escalaGrande;
 
+        // Se queda arriba un momento.
         yield return new WaitForSeconds(tiempoResaltado);
 
         tiempo = 0f;
 
+        // Volver a tamaño normal.
         while (tiempo < duracionAnimacionResalte)
         {
             tiempo += Time.deltaTime;
 
-            float t = tiempo / duracionAnimacionResalte;
-            icono.transform.localScale = Vector3.Lerp(escalaGrande, escalaOriginal, t);
+            float t = Mathf.Clamp01(tiempo / duracionAnimacionResalte);
+            iconoTransform.localScale = Vector3.Lerp(escalaGrande, escalaOriginal, t);
 
             yield return null;
         }
 
-        icono.transform.localScale = escalaOriginal;
+        iconoTransform.localScale = escalaOriginal;
     }
 
     // ====================
@@ -375,10 +438,22 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     public void Mostrar()
     {
+        // Evita volver a lanzar la entrada y su sonido si el encargo ya está visible.
+        if (panelVisible)
+            return;
+
+        panelVisible = true;
+        ReproducirClip(sonidoAparecerEncargo, volumenAparecer);
+
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
-        rutinaFade = StartCoroutine(Fade(0f, 1f));
+        rutinaFade = StartCoroutine(MoverPanel(
+            posicionOcultaIzquierda,
+            posicionOriginalPanel,
+            0f,
+            1f
+        ));
     }
 
     // ====================
@@ -386,10 +461,22 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     public void Ocultar()
     {
+        // Evita sonidos de salida duplicados si ya estaba oculto.
+        if (!panelVisible)
+            return;
+
+        panelVisible = false;
+        ReproducirClip(sonidoDesaparecerEncargo, volumenDesaparecer);
+
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
-        rutinaFade = StartCoroutine(Fade(1f, 0f));
+        rutinaFade = StartCoroutine(MoverPanel(
+            posicionOriginalPanel,
+            posicionOcultaIzquierda,
+            1f,
+            0f
+        ));
     }
 
     // ====================
@@ -397,31 +484,93 @@ public class UIEncargoLegacy : MonoBehaviour
     // ====================
     public void OcultarInstantaneo()
     {
+        panelVisible = false;
+
         if (rutinaFade != null)
             StopCoroutine(rutinaFade);
 
         if (canvasGroup != null)
             canvasGroup.alpha = 0f;
+
+        if (panelRect != null)
+            panelRect.anchoredPosition = posicionOcultaIzquierda;
     }
 
     // ====================
-    // FADE
+    // SONIDOS DE RESULTADO
     // ====================
-    private IEnumerator Fade(float inicio, float fin)
+    public void ReproducirVictoria()
     {
-        if (canvasGroup == null)
+        ReproducirClip(sonidoVictoriaEncargo, volumenVictoria);
+    }
+
+    public void ReproducirDerrota()
+    {
+        ReproducirClip(sonidoDerrotaEncargo, volumenDerrota);
+    }
+
+    private void ConfigurarAudioSource()
+    {
+        if (audioSourceEncargos == null)
+            audioSourceEncargos = GetComponent<AudioSource>();
+
+        if (audioSourceEncargos == null)
+            audioSourceEncargos = gameObject.AddComponent<AudioSource>();
+
+        audioSourceEncargos.playOnAwake = false;
+        audioSourceEncargos.loop = false;
+        audioSourceEncargos.spatialBlend = 0f;
+        audioSourceEncargos.dopplerLevel = 0f;
+
+        if (grupoMixerEncargos != null)
+            audioSourceEncargos.outputAudioMixerGroup = grupoMixerEncargos;
+    }
+
+    private void ReproducirClip(AudioClip clip, float volumen)
+    {
+        if (clip == null)
+            return;
+
+        if (audioSourceEncargos == null)
+            ConfigurarAudioSource();
+
+        if (audioSourceEncargos == null)
+            return;
+
+        audioSourceEncargos.PlayOneShot(clip, Mathf.Clamp01(volumen));
+    }
+
+    // ====================
+    // MOVER PANEL
+    // ====================
+    private IEnumerator MoverPanel(
+    Vector2 posicionInicio,
+    Vector2 posicionFinal,
+    float alphaInicio,
+    float alphaFinal)
+    {
+        if (canvasGroup == null || panelRect == null)
             yield break;
 
         float tiempo = 0f;
-        float duracion = 0.25f;
 
-        while (tiempo < duracion)
+        canvasGroup.alpha = alphaInicio;
+        panelRect.anchoredPosition = posicionInicio;
+
+        while (tiempo < duracionMovimientoPanel)
         {
             tiempo += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(inicio, fin, tiempo / duracion);
+
+            float t = Mathf.Clamp01(tiempo / duracionMovimientoPanel);
+            float curva = curvaMovimiento != null ? curvaMovimiento.Evaluate(t) : t;
+
+            panelRect.anchoredPosition = Vector2.Lerp(posicionInicio, posicionFinal, curva);
+            canvasGroup.alpha = Mathf.Lerp(alphaInicio, alphaFinal, t);
+
             yield return null;
         }
 
-        canvasGroup.alpha = fin;
+        panelRect.anchoredPosition = posicionFinal;
+        canvasGroup.alpha = alphaFinal;
     }
 }

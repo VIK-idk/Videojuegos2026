@@ -5,16 +5,10 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    // ====================
-    // ESCENAS
-    // ====================
     [Header("Escenas")]
     [SerializeField] private string nombreEscena = "Gameplay";
     [SerializeField] private string nombreEscenaTutorial = "Tutorial";
 
-    // ====================
-    // PANELES
-    // ====================
     [Header("Paneles")]
     [SerializeField] private GameObject panelMenuPrincipal;
     [SerializeField] private GameObject panelOpciones;
@@ -22,29 +16,23 @@ public class MainMenu : MonoBehaviour
     [Header("Fondo blur")]
     [SerializeField] private GameObject fondoBlurMenu;
 
-    // ====================
-    // UI MANDO
-    // ====================
-    [Header("UI Mando")]
+    [Header("Primeros botones")]
     [SerializeField] private GameObject primerBotonMenu;
     [SerializeField] private GameObject primerBotonOpciones;
 
-    // ====================
-    // UNITY
-    // ====================
     private void Start()
     {
+        // Entrar en la escena del menú principal inicia una sesión nueva.
+        // Esto reinicia monedas, habilidades y dificultad temporal.
+        SesionPartida.ReiniciarSesion();
         InicializarMenu();
     }
 
     private void Update()
     {
-        MantenerSeleccionMando();
+        ActualizarSeleccionSegunEntrada();
     }
 
-    // ====================
-    // INICIALIZAR
-    // ====================
     private void InicializarMenu()
     {
         Time.timeScale = 1f;
@@ -61,25 +49,15 @@ public class MainMenu : MonoBehaviour
         ResetearVisuales(panelMenuPrincipal);
         ResetearVisuales(panelOpciones);
 
-        SeleccionarObjeto(primerBotonMenu);
-        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonMenu));
+        PrepararSeleccion(primerBotonMenu);
     }
 
-    // ====================
-    // BOTONES
-    // ====================
     public void Jugar()
     {
-        SesionPartida.ReiniciarSesion();
-
         if (TutorialEstado.EstaCompletado())
-        {
             SceneLoader.CargarEscena(nombreEscena);
-        }
         else
-        {
             SceneLoader.CargarEscena(nombreEscenaTutorial);
-        }
     }
 
     public void AbrirOpciones()
@@ -96,8 +74,7 @@ public class MainMenu : MonoBehaviour
         if (panelOpciones != null)
             panelOpciones.SetActive(true);
 
-        SeleccionarObjeto(primerBotonOpciones);
-        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonOpciones));
+        PrepararSeleccion(primerBotonOpciones);
     }
 
     public void VolverMenuPrincipal()
@@ -114,8 +91,7 @@ public class MainMenu : MonoBehaviour
         if (panelMenuPrincipal != null)
             panelMenuPrincipal.SetActive(true);
 
-        SeleccionarObjeto(primerBotonMenu);
-        StartCoroutine(SeleccionarAlFinalDelFrame(primerBotonMenu));
+        PrepararSeleccion(primerBotonMenu);
     }
 
     public void Salir()
@@ -124,29 +100,42 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    // ====================
-    // SELECCION MANDO
-    // ====================
-    private void MantenerSeleccionMando()
+    private void ActualizarSeleccionSegunEntrada()
     {
         if (EventSystem.current == null)
             return;
+
+        if (!InputDetector.DebeMostrarSeleccionUI)
+        {
+            if (EventSystem.current.currentSelectedGameObject != null)
+                EventSystem.current.SetSelectedGameObject(null);
+
+            return;
+        }
 
         if (EventSystem.current.currentSelectedGameObject != null)
             return;
 
         if (panelOpciones != null && panelOpciones.activeInHierarchy)
-        {
             SeleccionarObjeto(primerBotonOpciones);
-        }
         else if (panelMenuPrincipal != null && panelMenuPrincipal.activeInHierarchy)
-        {
             SeleccionarObjeto(primerBotonMenu);
-        }
+    }
+
+    private void PrepararSeleccion(GameObject objeto)
+    {
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        if (InputDetector.DebeMostrarSeleccionUI)
+            StartCoroutine(SeleccionarAlFinalDelFrame(objeto));
     }
 
     private void SeleccionarObjeto(GameObject objeto)
     {
+        if (!InputDetector.DebeMostrarSeleccionUI)
+            return;
+
         if (EventSystem.current == null || objeto == null)
             return;
 
@@ -168,9 +157,6 @@ public class MainMenu : MonoBehaviour
         SeleccionarObjeto(objeto);
     }
 
-    // ====================
-    // VISUALES
-    // ====================
     private void ResetearVisuales(GameObject panel)
     {
         if (panel == null)
@@ -179,9 +165,7 @@ public class MainMenu : MonoBehaviour
         BotonMenuAnimado[] botones = panel.GetComponentsInChildren<BotonMenuAnimado>(true);
 
         for (int i = 0; i < botones.Length; i++)
-        {
             botones[i].ResetearVisualCompleto();
-        }
     }
 
     private void OnApplicationQuit()
